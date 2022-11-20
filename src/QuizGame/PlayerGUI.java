@@ -111,7 +111,7 @@ public class PlayerGUI extends JFrame implements ActionListener {
                 currentQuestion += 1;
             }
             TimerTask loadNewQuestions = new TimerTask() {
-                public void run() {
+                public void run() {//spelet har en tendens att frysa IBLAND, inte alltid. Kanske har något att göra med detta!
                     newQuestions();
                 }
             };
