@@ -69,9 +69,9 @@ public class PlayerGUI extends JFrame implements ActionListener {
             questionsPanel.add(b);
             b.addActionListener(this);
             //     b.addActionListener(ServerPlayer); <- perhaps useful?
-            ++i;
 
             this.answerButtons[i] = b;
+            ++i;
         }
         questionsPanel.revalidate();
         questionsPanel.repaint();
