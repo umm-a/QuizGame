@@ -14,7 +14,6 @@ public class PlayerGUI extends JFrame implements ActionListener {
     int currentQuestion = 0;
     int currentAnswer = 0;
     String[] questions = new String[2];
-    String hej;
     String[][] answers = new String[0][4];
     PlayerClient playerClient;
     String playerID;
