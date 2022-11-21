@@ -15,7 +15,7 @@ public class PlayerGUI extends JFrame implements ActionListener {
     int currentAnswer = 0;
     String[] questions = new String[2];
     String[][] answers = new String[0][4];
-    ServerPlayer serverPlayer;
+    PlayerClient playerClient;
     String playerID;
     String playerNick;
     JPanel mainPanel = new JPanel();
@@ -28,8 +28,8 @@ public class PlayerGUI extends JFrame implements ActionListener {
     JTextArea quizQuestion = new JTextArea("Here will be a question");
     JButton[] answerButtons = new JButton[4];
 
-    PlayerGUI(ServerPlayer serverPlayer, String playerID) {
-        this.serverPlayer = serverPlayer;
+    PlayerGUI(PlayerClient playerClient, String playerID) {
+        this.playerClient = playerClient;
         this.playerID = playerID;
 
         setSize(500, 500);
@@ -96,8 +96,8 @@ public class PlayerGUI extends JFrame implements ActionListener {
                 quizQuestion.setText("Correct!");
                 button.setBackground(new Color(0x9BC484));
 
-                serverPlayer.addOnePoint();
-                pointsTextArea.setText("Points: " + serverPlayer.getPoints());
+             //   serverPlayer.addOnePoint();
+             //   pointsTextArea.setText("Points: " + serverPlayer.getPoints());
                 nickPanel.repaint();
                 nickPanel.revalidate();
             } else { //we'd probably want to make all of the wrong JButtons red if wrong

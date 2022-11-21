@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 
-class ServerPlayer extends Thread implements ActionListener {
+class ServerPlayer extends Thread {
     PlayerHelpClass playerHelpClass;
     String playerName;
     ServerPlayer opponent;
@@ -36,8 +36,6 @@ class ServerPlayer extends Thread implements ActionListener {
             inputbuffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outputwriter = new PrintWriter(socket.getOutputStream(), true);
             outputwriter.println("WELCOME " + playerName);
-
-            GUI = new PlayerGUI(this, playerName);
             outputwriter.println(playerName + " START GAME?");
 
             String inputMessage = "";
@@ -62,7 +60,7 @@ class ServerPlayer extends Thread implements ActionListener {
         }
     }
 
-    public void notifyWinner() {
+    public void notifyWinner() {//todo behöver få info från PlayerClient
         if (points > getOpponent().points) {
             outputwriter.println("Player 1 wins!"); //Ska man kunna välja användarnamn?
         } else if (points < getOpponent().points) {
@@ -80,11 +78,6 @@ class ServerPlayer extends Thread implements ActionListener {
 
     protected int getPoints() {
         return points;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        //Don't know if needed, but we can reach our GUI-stuff from here if we want to
     }
 }
 
