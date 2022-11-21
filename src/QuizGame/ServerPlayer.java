@@ -33,8 +33,8 @@ class ServerPlayer extends Thread {
     @Override
     public void run() {
         try {
-            inputbuffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outputwriter = new PrintWriter(socket.getOutputStream(), true);
+            inputbuffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outputwriter.println("WELCOME " + playerName);
             outputwriter.println(playerName + " START GAME?");
 
