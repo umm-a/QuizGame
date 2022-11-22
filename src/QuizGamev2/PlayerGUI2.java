@@ -1,6 +1,6 @@
 package QuizGamev2;
 
-
+//Ny version
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
