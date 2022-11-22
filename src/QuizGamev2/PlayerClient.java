@@ -43,8 +43,14 @@ public class PlayerClient implements ActionListener {
 
             //här hämtas lista med frågekategorier
             obj = inObj.readObject();
-            List<String> categories = new ArrayList<>((List<String>) obj);
-            playerGUI2.setCategoryLayout(categories);
+            List<String> objList = new ArrayList<>((List<String>) obj);//todo om den innehåller FRÅGA - ta sedan bort sista index-platsen och skicka in
+            if(objList.contains("CATEGORIES")){
+                objList.remove(objList.size() -1 );
+                playerGUI2.setCategoryLayout(objList);
+            } else if(objList.contains("QUESTION")){
+                System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
+            }
+
 
 
 
