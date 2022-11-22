@@ -47,8 +47,7 @@ public class PlayerClient implements ActionListener {
                 playerGUI2.setCategoryLayout(objList);
             }} else if ((obj instanceof Question)){
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
-
-                //skicka questionObject
+                playerGUI2.setQuestionLayout((Question) obj, this);
             } else {
                 System.out.println("This is where things tend to go wrong");
             }
