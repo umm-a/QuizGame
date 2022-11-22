@@ -1,0 +1,6 @@
+Djur & Natur, Vilket djur är störst?, Elefant, Hare, Myra, Katt
+Musik & Kultur, Från vilket land kommer Adele?, Storbritannien, Frankrike, USA, Kanada
+Teknik, Vilket av dessa är ett programmeringsspråk?, Java, Banan, Bully, Hoppsan
+Litteratur, Vem skrev böckerna om Pippi Långstrump?, Astrid Lindgren, Michael Jackson, Stephen King, Ingvar Kamprad
+Musik & Kultur, Vad är Röyksopp?, Norsk elektro-musikduo, Tobak, en Maträtt, en musikal
+Djur & Natur, Hur många timmar sover en hund per dygn?, 12-18 , 2-4 , 6-8 , 0

@@ -23,6 +23,7 @@ class ServerPlayer extends Thread {
     }
 
     public void setOpponent(ServerPlayer opponent) {
+
         this.opponent = opponent;
     }
 
