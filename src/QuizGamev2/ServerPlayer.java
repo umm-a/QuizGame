@@ -6,7 +6,6 @@ import java.io.*;
 import java.net.Socket;
 
 class ServerPlayer extends Thread {
-    PlayerHelpClass playerHelpClass;
     ServerGameEngine gameEngine;
     String playerName;
     String nickName;

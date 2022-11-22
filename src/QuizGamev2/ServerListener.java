@@ -13,8 +13,6 @@ public class ServerListener {
         System.out.println("QuizGame's server is up and running");
         try {
             while (true) {
-
-                PlayerHelpClass helpclass = new PlayerHelpClass();//Do we even need it? Do we want to break out our code, perhaps, from ServerPlayer?
                 ServerGameEngine gameEngine = new ServerGameEngine(new QuestionDatabase2());
                 ServerPlayer playerOne = new ServerPlayer(listener.accept(), "Player 1", gameEngine);
                 playerOne.start();
