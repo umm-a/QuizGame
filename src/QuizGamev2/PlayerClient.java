@@ -3,10 +3,7 @@ package QuizGamev2;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +40,18 @@ public class PlayerClient implements ActionListener {
 
             //här hämtas lista med frågekategorier
             obj = inObj.readObject();
-            List<String> objList = new ArrayList<>((List<String>) obj);//todo om den innehåller FRÅGA - ta sedan bort sista index-platsen och skicka in
+            if(obj instanceof List) {
+                List<String> objList = new ArrayList<>((List<String>) obj);
             if(objList.contains("CATEGORIES")){
-                objList.remove(objList.size() -1 );
+                objList.remove(objList.size() - 1);
                 playerGUI2.setCategoryLayout(objList);
-            } else if(objList.contains("QUESTION")){
+            }} else if ((obj instanceof Question)){
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
+
+                //skicka questionObject
+            } else {
+                System.out.println("This is where things tend to go wrong");
             }
-
-
 
 
 
