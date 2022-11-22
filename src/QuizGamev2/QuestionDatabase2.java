@@ -62,14 +62,4 @@ public class QuestionDatabase2 implements Serializable {
         Collections.shuffle(myQuestionList);
         return myQuestionList.get(0);
     }
-
-
-    public static void main(String[] args) {
-        QuestionDatabase2 q = new QuestionDatabase2();
-    }
-
-
-
-
-
 }
