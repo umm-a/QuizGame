@@ -70,9 +70,7 @@ public class PlayerClient implements ActionListener {
         if (e.getSource() == playerGUI2.startButton) {
             System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
-        }
-
-        if((state==QUESTIONSTATE) && (e.getSource() instanceof JButton)) {
+        } else if((state==QUESTIONSTATE) && (e.getSource() instanceof JButton)) {
             System.out.println("är vi här?");
             chosenCategory = ((JButton) e.getSource()).getText();
           /*  for (JButton jb : playerGUI2.catButtons) {
