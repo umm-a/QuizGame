@@ -68,17 +68,15 @@ class ServerPlayer extends Thread {
                 nickName = inputbuffer.readLine();
                 state=2;
 
-            System.out.println(nickName);
-
                 Object question = null;
 
 
                 while (true) {
                     if (state == 2) {
-                        objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
+                      //  objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
 
                         if (this.equals(currentplayer)) {
-                        //    objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
+                            objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
                             chosenCategory = inputbuffer.readLine();
                         }
                         state = 3;
@@ -87,11 +85,15 @@ class ServerPlayer extends Thread {
                          //   chosenCategory = "Djur & Natur"; //todo hårdkodad för testning
                             question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
                             objectOut.writeObject(question);
+
+                            //todo här ska bägge spelare få svara
+
                             isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
                             if (isCorrectanswer) {
                                 setScore[i] = 1;
                             }
                         }
+                    //    opponent.changePlayerTurn(); changePlayerTurn();
                         state = 4;
                     } else if (state == 4) {
                         //SKICKA POÄNG TILL CLIENTSIDAN
@@ -100,6 +102,13 @@ class ServerPlayer extends Thread {
 
                 } catch(IOException e){
                     System.out.println("Player died: " + e);
+                }
+            }
+            public void changePlayerTurn(){
+                if(currentplayer == this){
+                    currentplayer = getOpponent();
+                } else {
+                    currentplayer = this;
                 }
             }
 

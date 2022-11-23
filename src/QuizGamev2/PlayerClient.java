@@ -17,7 +17,7 @@ public class PlayerClient implements ActionListener {
 
     PlayerGUI2 playerGUI2;
     String chosenCategory;
-    String playerTurn = "Player 1";
+    String playerName;
     protected int state = 0;
     static final int START = 1;
     static final int SETCATEGORY = 2;
@@ -34,6 +34,11 @@ public class PlayerClient implements ActionListener {
 
         String welcomemessage = inbuf.readLine();
         System.out.println(welcomemessage);
+        if(welcomemessage.contains("Player 1")){
+            this.playerName = "Player 1";
+        } else {
+            this.playerName = "player 2";
+        }
 
 
         playerGUI2.setWelcomeLayout(this);
@@ -71,6 +76,9 @@ public class PlayerClient implements ActionListener {
         if (e.getSource() == playerGUI2.startButton) {
             System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
+            if(playerName=="Player 2"){
+                //Watiting for opponent-ruta
+            }
         } else if((state==QUESTIONSTATE)) {
             chosenCategory = ((JButton) e.getSource()).getText();
           /*  for (JButton jb : playerGUI2.catButtons) {
