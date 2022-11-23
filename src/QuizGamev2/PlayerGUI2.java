@@ -33,20 +33,20 @@ public class PlayerGUI2 extends JFrame {
 
 
     //bara för test:
-    String[] cata = {"Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"};
+   /* String[] cata = {"Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"};
     List<String> catlist = new ArrayList<String>(Arrays.asList(cata));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
     int[] playerScore = new int[8];
     int[] opponentScore = new int[8];
-
+*/
 // test slut
 
     public PlayerGUI2() throws Exception {
-        // this.playerClient = new PlayerClient(this);
+         this.playerClient = new PlayerClient(this);
 
 
 //bara för test
-        setWelcomeLayout(playerClient);
+       /* setWelcomeLayout(playerClient);
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
         //Thread.sleep(10000);
@@ -57,7 +57,7 @@ public class PlayerGUI2 extends JFrame {
         sc.nextLine();
         setScoreLayout(2,4,playerScore,opponentScore, "Your turn");
 
-
+*/
     }
 
 
