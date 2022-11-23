@@ -40,15 +40,17 @@ public class ServerGameEngine{
     }
 
     public void separateScoreString(String pointString){
+
         String[] scoreString = pointString.split("," );
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
-        ServerPlayer player = new ServerPlayer(scoreString[0]); //lägg till en ny construktor i Serverplayer? Blir det samma player då?
+        currentPlayer.playerName = scoreString[0];
+
         if (isCorrectAnswer == true){
-            player.points ++;
-            scoreToString(player.points);
+            currentPlayer.points ++;
+            scoreToString(currentPlayer.points);
         }
         else {
-            scoreToString(player.points);
+            scoreToString(currentPlayer.points);
         }
     }
 
