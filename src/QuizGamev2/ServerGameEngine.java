@@ -79,11 +79,17 @@ public class ServerGameEngine{
 
     public void notifyWinner (ServerPlayer player) {//todo behöver få info från PlayerClient
         if (player.points > player.getOpponent().points) {
-            player.outputwriter.println("Player 1 wins!"); //Ska man kunna välja användarnamn?
+
+            player.outputwriter.println(player.playerName + " wins!"); //Ska man kunna välja användarnamn?
+
         } else if (player.points < player.getOpponent().points) {
-            player.outputwriter.println("Player 2 wins!");
+
+            player.outputwriter.println(player.getOpponent().playerName + " wins");
+
         } else if (player.points == player.getOpponent().points) {
+
             player.outputwriter.println("TIE");
+
         } else {
             player.outputwriter.println("Something went wrong in notifyWinner-method of Player");
         }
