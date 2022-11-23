@@ -21,9 +21,10 @@ public class PlayerGUI2 extends JFrame {
     JPanel scorePanel;
     JButton startButton;
     List<JButton> catButtons;
-    Font myFont = new Font("Ink Free", Font.BOLD, 19);
-    Font myFont2 = new Font("Ink Free", Font.BOLD, 15);
-    Font myFont3 = new Font("Ink Free", Font.BOLD, 14);
+    Font myFont4 = new Font("Arial", Font.BOLD, 22);
+    Font myFont = new Font("Arial", Font.BOLD, 19);
+    Font myFont2 = new Font("Arial", Font.BOLD, 15);
+    Font myFont3 = new Font("Arial", Font.BOLD, 14);
     PlayerClient playerClient;
     JTextField nickNametf;
     String opponentNickname;
@@ -186,8 +187,50 @@ public class PlayerGUI2 extends JFrame {
         scorePanel.setBounds(10, 10, 320, 450);
         scorePanel.setBorder(new EtchedBorder());
 
+        JLabel gameInfoLabel = new JLabel("Your turn",SwingConstants.CENTER);
+        gameInfoLabel.setBounds(80,70,160,30);
+        gameInfoLabel.setFont(myFont2);
+        gameInfoLabel.setBorder(new EtchedBorder());
+        scorePanel.add(gameInfoLabel);
 
 
+        JLabel playerNameLabel = new JLabel("Nick1",SwingConstants.CENTER);
+        playerNameLabel.setBounds(0,20,120,30);
+        playerNameLabel.setFont(myFont2);
+        playerNameLabel.setBorder(new EtchedBorder());
+        scorePanel.add(playerNameLabel);
+
+        JLabel opponentNameLabel = new JLabel("Nick2",SwingConstants.CENTER);
+        opponentNameLabel.setBounds(200,20,120,30);
+        opponentNameLabel.setFont(myFont2);
+        opponentNameLabel.setBorder(new EtchedBorder());
+        scorePanel.add(opponentNameLabel);
+
+
+
+        JLabel playerGameScore = new JLabel("5",SwingConstants.CENTER);
+        playerGameScore.setBounds(40,70,40,40);
+        playerGameScore.setFont(myFont4);
+        playerGameScore.setBorder(new EtchedBorder());
+        scorePanel.add(playerGameScore);
+
+        JLabel opponentGameScore = new JLabel("5",SwingConstants.CENTER);
+        opponentGameScore.setBounds(240,70,40,40);
+        opponentGameScore.setFont(myFont4);
+        opponentGameScore.setBorder(new EtchedBorder());
+        scorePanel.add(opponentGameScore);
+
+
+
+
+
+
+       /* JPanel gameScorePanel = new JPanel();
+        gameScorePanel.setLayout(new GridLayout(1,3));
+        gameScorePanel.setBounds(100,40,120,40);
+        gameScorePanel.setBorder(new EtchedBorder());
+        scorePanel.add(gameScorePanel);
+*/
 
         JPanel playerScorePanel = new JPanel();
         playerScorePanel.setLayout(new GridLayout(4,2));
@@ -195,22 +238,31 @@ public class PlayerGUI2 extends JFrame {
         playerScorePanel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         playerScorePanel.setBorder(new EtchedBorder());
 
+
         scorePanel.add(playerScorePanel);
 
         JPanel opponentScorePanel = new JPanel();
-        opponentScorePanel.setLayout(new GridLayout(rounds,questions));
+        opponentScorePanel.setLayout(new GridLayout(4,2));
         opponentScorePanel.setBounds(200,120,120,240);
         opponentScorePanel.setBorder(new EtchedBorder());
         scorePanel.add(opponentScorePanel);
 
 
-        List<SmallCircle>circles = new ArrayList<>();
+        List<SmallCircle>playerDots = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            circles.add(new SmallCircle(Color.RED));
-            circles.get(i).setBorder(new EtchedBorder());
-            playerScorePanel.add(circles.get(i));
+            playerDots.add(new SmallCircle(Color.RED));
+            playerDots.get(i).setBorder(new EtchedBorder());
+            playerScorePanel.add(playerDots.get(i));
         }
+
+        List<SmallCircle>opponentDots = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            opponentDots.add(new SmallCircle(Color.GREEN));
+            opponentDots.get(i).setBorder(new EtchedBorder());
+            opponentScorePanel.add(opponentDots.get(i));
+        }
+
 
         JButton fortsättButton = new JButton("Fortsätt");
         fortsättButton.setBounds(110,380,100,50);
