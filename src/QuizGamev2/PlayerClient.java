@@ -86,7 +86,7 @@ public class PlayerClient implements ActionListener {
     }
     protected void sendPoint(boolean bool){//todo poäng
         outpw.println(playerName + "," + bool);
-        System.out.println("Point: " + bool + " skickades till ServerPlayer");
+        System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
     }
 
 
