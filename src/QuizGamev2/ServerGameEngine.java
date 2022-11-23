@@ -39,10 +39,23 @@ public class ServerGameEngine{
         return tempQuestionList.get(i);
     }
 
+    public void separateScoreString(String pointString){
+        String[] scoreString = pointString.split("," );
+        boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
+        ServerPlayer player = new ServerPlayer(scoreString[0]); //lägg till en ny construktor i Serverplayer? Blir det samma player då?
+        if (isCorrectAnswer == true){
+            player.points ++;
+            scoreToString(player.points);
+        }
+        else {
+            scoreToString(player.points);
+        }
+    }
+
     public int countScore(int state, boolean isCorrectAnswer, ServerPlayer player){
         if (state == 3  && isCorrectAnswer == true){
             player.points++;
-
+            scoreToString(player.points);
         }
         else if (state == 4){
             scoreToString(player.points);
