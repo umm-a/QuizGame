@@ -33,31 +33,29 @@ public class PlayerGUI2 extends JFrame {
 
 
     //bara för test:
-   /* String[] cata = {"Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"};
+    String[] cata = {"Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"};
     List<String> catlist = new ArrayList<String>(Arrays.asList(cata));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
     int[] playerScore = new int[8];
     int[] opponentScore = new int[8];
-*/
 // test slut
 
     public PlayerGUI2() throws Exception {
-         this.playerClient = new PlayerClient(this);
+       //  this.playerClient = new PlayerClient(this);
 
 
 //bara för test
-       /* setWelcomeLayout(playerClient);
+        setWelcomeLayout(playerClient);
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
         //Thread.sleep(10000);
-        setCategoryLayout(catlist);
+        setCategoryLayout(catlist,playerClient);
         sc.nextLine();
         //Thread.sleep(10000);
         setQuestionLayout(qtest, playerClient);
         sc.nextLine();
         setScoreLayout(2,4,playerScore,opponentScore, "Your turn");
 
-*/
     }
 
 
@@ -238,6 +236,14 @@ public class PlayerGUI2 extends JFrame {
         opponentScorePanel.setBorder(new EtchedBorder());
         scorePanel.add(opponentScorePanel);
 
+        //hämtar in griddimensioner som används av SmallCircle-klassen för centrering av cirkel i sin JPanel
+        int panelwidth = playerScorePanel.getSize().width;
+        int panelheight = playerScorePanel.getSize().height;
+         gridwidth = (panelwidth/questions) +6 ; //adderar 6 för att kompensera för borderbortfall
+         gridheight = (panelheight/rounds) +6;  //adderar 6 för att kompensera för borderbortfall
+
+
+
 
         List<SmallCircle>playerDots = new ArrayList<>();
 
@@ -255,14 +261,24 @@ public class PlayerGUI2 extends JFrame {
         }
 
 
-        JButton fortsättButton = new JButton("Fortsätt");
-        fortsättButton.setBounds(110,380,100,50);
-        scorePanel.add(fortsättButton);
+
+
+
 
 
         baseFrame.add(scorePanel);
         baseFrame.revalidate();
         baseFrame.repaint();
+
+        System.out.println("gw "+gridwidth);
+
+
+
+
+        JButton fortsättButton = new JButton("Fortsätt");
+        fortsättButton.setBounds(110,380,100,50);
+        scorePanel.add(fortsättButton);
+
 
 
 
@@ -272,7 +288,8 @@ public class PlayerGUI2 extends JFrame {
 
 
 
-
+    int gridwidth;
+    int gridheight;
     //Denna klass ritar en cirkel, används i ScoreLayout
         class SmallCircle extends JPanel {
         int radie, x, y;
@@ -280,8 +297,11 @@ public class PlayerGUI2 extends JFrame {
         public SmallCircle(Color color){
             super();
             radie=15;
-            x=0;
-            y=0;
+            x=(gridwidth/2)-radie;
+            System.out.println(gridwidth);
+            y=(gridheight/2)-radie;
+
+
             this.color=color;
         }
             public void paintComponent(Graphics comp) {
