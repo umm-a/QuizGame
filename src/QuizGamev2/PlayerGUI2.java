@@ -91,7 +91,7 @@ public class PlayerGUI2 extends JFrame{
     }
 
 
-    public void setCategoryLayout(List<String> categorylist) {
+    public void setCategoryLayout(List<String> categorylist ,PlayerClient playerClient) {
         catButtons = new ArrayList<>();
         int noOfCat = categorylist.size();
         baseFrame.getContentPane().removeAll();
