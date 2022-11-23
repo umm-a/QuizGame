@@ -45,6 +45,8 @@ public class ServerGameEngine{
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
         currentPlayer.playerName = scoreString[0];
 
+        //countScore(3,isCorrectAnswer,+++)
+
         if (isCorrectAnswer == true){
             currentPlayer.points ++;
             scoreToString(currentPlayer.points);
