@@ -49,7 +49,7 @@ public class PlayerClient implements ActionListener {
                 List<String> objList = new ArrayList<>((List<String>) obj);
             if(objList.contains("CATEGORIES")){
                 objList.remove(objList.size() - 1);
-                playerGUI2.setCategoryLayout(objList);
+                playerGUI2.setCategoryLayout(objList, this);
                 state=QUESTIONSTATE;
             }
             } else if ((obj instanceof Question)){
@@ -70,8 +70,7 @@ public class PlayerClient implements ActionListener {
         if (e.getSource() == playerGUI2.startButton) {
             System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
-        } else if((state==QUESTIONSTATE) && (e.getSource() instanceof JButton)) {
-            System.out.println("är vi här?");
+        } else if((state==QUESTIONSTATE)) {
             chosenCategory = ((JButton) e.getSource()).getText();
           /*  for (JButton jb : playerGUI2.catButtons) {
                 if (e.getSource() == jb) {
