@@ -17,8 +17,6 @@ public class ServerGameEngine{
 
     QuestionDatabase2 questionDatabase2;
 
-    public ServerGameEngine(){};
-
 
     public ServerGameEngine(QuestionDatabase2 questionDatabase2){
         this.questionDatabase2 = questionDatabase2;
@@ -54,7 +52,6 @@ public class ServerGameEngine{
     }
 
 
-    //
     public int countScore(int state, boolean isCorrectAnswer, ServerPlayer player){
         if (state == 3  && isCorrectAnswer == true){
             player.points++;
