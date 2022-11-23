@@ -78,13 +78,13 @@ class ServerPlayer extends Thread {
                         objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
 
                         if (this.equals(currentplayer)) {
-                            objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
+                        //    objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
                             chosenCategory = inputbuffer.readLine();
                         }
                         state = 3;
                     } else if (state == 3) {
                         for (int i = 0; i < numberOfQuestions; i++) {
-                           // chosenCategory = "Djur & Natur"; //todo hårdkodad för testning
+                         //   chosenCategory = "Djur & Natur"; //todo hårdkodad för testning
                             question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
                             objectOut.writeObject(question);
                             isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());

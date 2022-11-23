@@ -17,6 +17,11 @@ public class PlayerClient implements ActionListener {
 
     PlayerGUI2 playerGUI2;
     String chosenCategory;
+    protected int state = 0;
+    static final int START = 1;
+    static final int SETCATEGORY = 2;
+    static final int QUESTIONSTATE = 3;
+    static final int UPDATESETSCORE = 4;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -45,7 +50,9 @@ public class PlayerClient implements ActionListener {
             if(objList.contains("CATEGORIES")){
                 objList.remove(objList.size() - 1);
                 playerGUI2.setCategoryLayout(objList);
-            }} else if ((obj instanceof Question)){
+                state=QUESTIONSTATE;
+            }
+            } else if ((obj instanceof Question)){
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
             } else {
@@ -65,14 +72,16 @@ public class PlayerClient implements ActionListener {
             outpw.println(playerGUI2.nickNametf.getText());
         }
 
-        for (JButton jb : playerGUI2.catButtons) {
-            if (e.getSource() == jb) {
-                chosenCategory = jb.getText();
+        if((state==QUESTIONSTATE) && (e.getSource() instanceof JButton)) {
+            System.out.println("är vi här?");
+            chosenCategory = ((JButton) e.getSource()).getText();
+          /*  for (JButton jb : playerGUI2.catButtons) {
+                if (e.getSource() == jb) {
+                    chosenCategory = jb.getText();
+                }*/
+                outpw.println(chosenCategory);
+                System.out.println("Test från PlayerClient: " + chosenCategory);
+
             }
-            outpw.println(chosenCategory);
-            System.out.println("Test från PlayerClient: " + chosenCategory);
-
         }
-    }
-
 }
