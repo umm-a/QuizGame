@@ -5,11 +5,14 @@ package QuizGamev2;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.util.*;
 import java.util.List;
 
-public class PlayerGUI2 extends JFrame{
+public class PlayerGUI2 extends JFrame {
 
     JFrame baseFrame = new JFrame("QuizGame");
     JPanel welcomePanel;
@@ -20,29 +23,35 @@ public class PlayerGUI2 extends JFrame{
     List<JButton> catButtons;
     Font myFont = new Font("Ink Free", Font.BOLD, 19);
     Font myFont2 = new Font("Ink Free", Font.BOLD, 15);
-    Font myFont3 = new Font("Ink Free", Font.BOLD, 12);
-   PlayerClient playerClient;
+    Font myFont3 = new Font("Ink Free", Font.BOLD, 14);
+    PlayerClient playerClient;
     JTextField nickNametf;
     String opponentNickname;
+    Graphics2D g2d;
 
 
     //bara för test:
-  //  String[] cata = {"Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"};
-  //  List<String> catlist = new ArrayList<String>(Arrays.asList(cata));
-  //  Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
+    String[] cata = {"Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"};
+    List<String> catlist = new ArrayList<String>(Arrays.asList(cata));
+    Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
 // test slut
 
     public PlayerGUI2() throws Exception {
-        this.playerClient = new PlayerClient(this);
+        // this.playerClient = new PlayerClient(this);
 
 
 //bara för test
-       /* setWelcomeLayout(playerClient);
+        setWelcomeLayout(playerClient);
         Scanner sc = new Scanner(System.in);
-        Thread.sleep(10000);
+        sc.nextLine();
+        //Thread.sleep(10000);
         setCategoryLayout(catlist);
-        Thread.sleep(10000);
-        setQuestionLayout(qtest,playerClient);*/
+        sc.nextLine();
+        //Thread.sleep(10000);
+        setQuestionLayout(qtest, playerClient);
+        sc.nextLine();
+        setScoreLayout(2,4);
+
 
     }
 
@@ -74,7 +83,7 @@ public class PlayerGUI2 extends JFrame{
         welcomePanel.add(nickNametf);
 
         startButton = new JButton("START GAME");
-        startButton.setBounds(60,240,200,60);
+        startButton.setBounds(60, 240, 200, 60);
         startButton.setFont(myFont);
         welcomePanel.add(startButton);
         startButton.addActionListener(playerClient);
@@ -110,13 +119,13 @@ public class PlayerGUI2 extends JFrame{
 
         JPanel buttonPanel = new JPanel(new GridLayout(noOfCat, 1, 5, 5));
         buttonPanel.setBounds(10, 100, 300, 320);
-        buttonPanel.setFont(myFont3);
         buttonPanel.setBorder(new EtchedBorder());
         categoryPanel.add(buttonPanel);
 
         for (int i = 0; i < categorylist.size(); i++) {
             catButtons.add(new JButton(categorylist.get(i)));
             buttonPanel.add(catButtons.get(i));
+            catButtons.get(i).setFont(myFont3);
             catButtons.get(i).addActionListener(playerClient);
         }
 
@@ -169,22 +178,78 @@ public class PlayerGUI2 extends JFrame{
         }
     }
 
-        public void setScoreLayout() {
-            baseFrame.getContentPane().removeAll();
-            scorePanel = new JPanel();
-            scorePanel.setLayout(null);
-            scorePanel.setBounds(10, 10, 320, 450);
-            scorePanel.setBorder(new EtchedBorder());
+    public void setScoreLayout(int questions, int rounds) {
+
+        baseFrame.getContentPane().removeAll();
+        scorePanel = new JPanel();
+        scorePanel.setLayout(null);
+        scorePanel.setBounds(10, 10, 320, 450);
+        scorePanel.setBorder(new EtchedBorder());
+
+
+
+
+        JPanel playerScorePanel = new JPanel();
+        playerScorePanel.setLayout(new GridLayout(4,2));
+        playerScorePanel.setBounds(0,120,120,240);
+        playerScorePanel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        playerScorePanel.setBorder(new EtchedBorder());
+
+        scorePanel.add(playerScorePanel);
+
+        JPanel opponentScorePanel = new JPanel();
+        opponentScorePanel.setLayout(new GridLayout(rounds,questions));
+        opponentScorePanel.setBounds(200,120,120,240);
+        opponentScorePanel.setBorder(new EtchedBorder());
+        scorePanel.add(opponentScorePanel);
+
+
+        List<SmallCircle>circles = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            circles.add(new SmallCircle(Color.RED));
+            circles.get(i).setBorder(new EtchedBorder());
+            playerScorePanel.add(circles.get(i));
+        }
+
+        JButton fortsättButton = new JButton("Fortsätt");
+        fortsättButton.setBounds(110,380,100,50);
+        scorePanel.add(fortsättButton);
+
+
+        baseFrame.add(scorePanel);
+        baseFrame.revalidate();
+        baseFrame.repaint();
+
+
+    }
 
 
 
 
 
 
-             }
-
-
-
+    //Denna klass ritar en cirkel, används i ScoreLayout
+        class SmallCircle extends JPanel {
+        int radie, x, y;
+        Color color;
+        public SmallCircle(Color color){
+            super();
+            radie=15;
+            x=0;
+            y=0;
+            this.color=color;
+        }
+            public void paintComponent(Graphics comp) {
+                Graphics2D comp2D = (Graphics2D) comp;
+                Color bgcolor = scorePanel.getBackground();
+                comp2D.setColor(bgcolor);
+                comp2D.fillRect(0, 0, getSize().width, getSize().height);
+                comp2D.setColor(color);
+                Ellipse2D.Float circle = new Ellipse2D.Float(x, y, radie, radie);
+                comp2D.fill(circle);
+            }
+        }
 
 
         public static void main (String[]args) throws Exception {
@@ -192,4 +257,4 @@ public class PlayerGUI2 extends JFrame{
         }
 
 
-}
+    }
