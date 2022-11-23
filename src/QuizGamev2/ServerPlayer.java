@@ -89,11 +89,14 @@ class ServerPlayer extends Thread {
                             objectOut.writeObject(question);
                             isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
                             if (isCorrectanswer) {
-                                setScore[i] = 1;
+                                //setScore[i] = 1;
+                                gameEngine.countScore(state, true, this);
+
                             }
                         }
                         state = 4;
                     } else if (state == 4) {
+                        objectOut.writeObject(gameEngine.countScore(state, true, this));
                         //SKICKA POÄNG TILL CLIENTSIDAN
                     }
                 }

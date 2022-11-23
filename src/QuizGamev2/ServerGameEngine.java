@@ -7,20 +7,17 @@ import java.util.List;
 
 public class ServerGameEngine{
 
-
-
-
     ServerPlayer player1;
     ServerPlayer player2;
 
     String nickName1;
     String nickName2;
-
-
     ServerPlayer currentPlayer;
     List<Question> tempQuestionList = new ArrayList<>();
 
     QuestionDatabase2 questionDatabase2;
+
+    public ServerGameEngine(){};
 
 
     public ServerGameEngine(QuestionDatabase2 questionDatabase2){
@@ -76,7 +73,6 @@ public class ServerGameEngine{
         return pointString;
 
     }
-
     public void notifyWinner (ServerPlayer player) {//todo behöver få info från PlayerClient
         if (player.points > player.getOpponent().points) {
 
@@ -94,10 +90,5 @@ public class ServerGameEngine{
             player.outputwriter.println("Something went wrong in notifyWinner-method of Player");
         }
     }
-
-
-
-
-
 
 }
