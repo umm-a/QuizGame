@@ -31,10 +31,14 @@ public class PlayerGUI2 extends JFrame {
     Graphics2D g2d;
 
 
+
     //bara för test:
     String[] cata = {"Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"};
     List<String> catlist = new ArrayList<String>(Arrays.asList(cata));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
+    int[] playerScore = new int[8];
+    int[] opponentScore = new int[8];
+
 // test slut
 
     public PlayerGUI2() throws Exception {
@@ -51,7 +55,7 @@ public class PlayerGUI2 extends JFrame {
         //Thread.sleep(10000);
         setQuestionLayout(qtest, playerClient);
         sc.nextLine();
-        setScoreLayout(2,4);
+        setScoreLayout(2,4,playerScore,opponentScore, "Your turn");
 
 
     }
@@ -179,7 +183,7 @@ public class PlayerGUI2 extends JFrame {
         }
     }
 
-    public void setScoreLayout(int questions, int rounds) {
+    public void setScoreLayout(int questions, int rounds, int[] playerScore, int[] opponentScore, String statusMessage) {
 
         baseFrame.getContentPane().removeAll();
         scorePanel = new JPanel();
@@ -187,7 +191,7 @@ public class PlayerGUI2 extends JFrame {
         scorePanel.setBounds(10, 10, 320, 450);
         scorePanel.setBorder(new EtchedBorder());
 
-        JLabel gameInfoLabel = new JLabel("Your turn",SwingConstants.CENTER);
+        JLabel gameInfoLabel = new JLabel(statusMessage,SwingConstants.CENTER);
         gameInfoLabel.setBounds(80,70,160,30);
         gameInfoLabel.setFont(myFont2);
         gameInfoLabel.setBorder(new EtchedBorder());
@@ -207,7 +211,6 @@ public class PlayerGUI2 extends JFrame {
         scorePanel.add(opponentNameLabel);
 
 
-
         JLabel playerGameScore = new JLabel("5",SwingConstants.CENTER);
         playerGameScore.setBounds(40,70,40,40);
         playerGameScore.setFont(myFont4);
@@ -221,28 +224,16 @@ public class PlayerGUI2 extends JFrame {
         scorePanel.add(opponentGameScore);
 
 
-
-
-
-
-       /* JPanel gameScorePanel = new JPanel();
-        gameScorePanel.setLayout(new GridLayout(1,3));
-        gameScorePanel.setBounds(100,40,120,40);
-        gameScorePanel.setBorder(new EtchedBorder());
-        scorePanel.add(gameScorePanel);
-*/
-
         JPanel playerScorePanel = new JPanel();
-        playerScorePanel.setLayout(new GridLayout(4,2));
+        playerScorePanel.setLayout(new GridLayout(0,questions));
         playerScorePanel.setBounds(0,120,120,240);
-        playerScorePanel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         playerScorePanel.setBorder(new EtchedBorder());
-
-
         scorePanel.add(playerScorePanel);
 
+
+
         JPanel opponentScorePanel = new JPanel();
-        opponentScorePanel.setLayout(new GridLayout(4,2));
+        opponentScorePanel.setLayout(new GridLayout(0,questions));
         opponentScorePanel.setBounds(200,120,120,240);
         opponentScorePanel.setBorder(new EtchedBorder());
         scorePanel.add(opponentScorePanel);
@@ -250,15 +241,15 @@ public class PlayerGUI2 extends JFrame {
 
         List<SmallCircle>playerDots = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
-            playerDots.add(new SmallCircle(Color.RED));
+        for (int i = 0; i < (questions*rounds); i++) {
+            playerDots.add(new SmallCircle(Color.white));
             playerDots.get(i).setBorder(new EtchedBorder());
             playerScorePanel.add(playerDots.get(i));
         }
 
         List<SmallCircle>opponentDots = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            opponentDots.add(new SmallCircle(Color.GREEN));
+        for (int i = 0; i < (questions*rounds); i++) {
+            opponentDots.add(new SmallCircle(Color.white));
             opponentDots.get(i).setBorder(new EtchedBorder());
             opponentScorePanel.add(opponentDots.get(i));
         }
@@ -272,6 +263,7 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.add(scorePanel);
         baseFrame.revalidate();
         baseFrame.repaint();
+
 
 
     }
