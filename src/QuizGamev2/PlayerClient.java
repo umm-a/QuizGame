@@ -68,7 +68,6 @@ public class PlayerClient implements ActionListener {
         for (JButton jb : playerGUI2.catButtons) {
             if (e.getSource() == jb) {
                 chosenCategory = jb.getText();
-                outpw.println(chosenCategory);
             }
             outpw.println(chosenCategory);
             System.out.println("Test från PlayerClient: " + chosenCategory);

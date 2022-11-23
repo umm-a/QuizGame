@@ -63,12 +63,12 @@ class ServerPlayer extends Thread {
 
             String inputMessage = "";
 
-            outputwriter.println("Välkommen till spelet!");
+            outputwriter.println("Välkommen till spelet " + playerName + "!");
 
                 nickName = inputbuffer.readLine();
                 state=2;
 
-
+            System.out.println(nickName);
 
                 Object question = null;
 
@@ -84,7 +84,7 @@ class ServerPlayer extends Thread {
                         state = 3;
                     } else if (state == 3) {
                         for (int i = 0; i < numberOfQuestions; i++) {
-                         //   chosenCategory = "Djur & Natur"; //todo hårdkodad för testning
+                           // chosenCategory = "Djur & Natur"; //todo hårdkodad för testning
                             question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
                             objectOut.writeObject(question);
                             isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
