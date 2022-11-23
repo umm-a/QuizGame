@@ -98,7 +98,7 @@ class ServerPlayer extends Thread {
                         }
                         state = 3;
                     } else if (state == 3) {
-                        if(this.equals(currentplayer) && (roundDone == false)) { //man kan även lägga till en int för att räkna antal varv, och få dessa via antal frågor från Propertis-fil (kanske skickad från GUI)
+                        if(this.equals(currentplayer) && (roundDone == false)) { //man kan även lägga till en int för att räkna antal varv, och få dessa via antal frågor från Propertis-fil
                             for (int i = 0; i < numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
                                 if (turn==1) {
                                     question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
