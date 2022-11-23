@@ -1,12 +1,15 @@
 package QuizGamev2;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PlayerClient implements ActionListener {
     private final int PORT = 25252;
@@ -24,6 +27,7 @@ public class PlayerClient implements ActionListener {
     static final int SETCATEGORY = 2;
     static final int QUESTIONSTATE = 3;
     static final int UPDATESETSCORE = 4;
+    Question currentObject;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -61,6 +65,7 @@ public class PlayerClient implements ActionListener {
             }
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
+                setCurrentObject((Question) obj);
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
             } else {
@@ -71,6 +76,16 @@ public class PlayerClient implements ActionListener {
 
 
         }
+    }
+    public Object getCurrentObject(){
+        return this.currentObject;
+    }
+    public void setCurrentObject(Question obj){
+        this.currentObject=obj;
+    }
+    protected void sendQuestion(){
+        outpw.println(chosenQuestion);
+        System.out.println(chosenQuestion + " valdes som svar");
     }
 
 
@@ -90,8 +105,22 @@ public class PlayerClient implements ActionListener {
             state=QUESTIONSTATE;
             } else if (state==QUESTIONSTATE) {
             chosenQuestion = ((JButton) e.getSource()).getText();
-            outpw.println(chosenQuestion);
-            System.out.println(chosenQuestion + " valdes som svar");
+            JButton button = (JButton) e.getSource();
+            if((currentObject.answerCorrect)==chosenQuestion){
+                button.setBackground(new Color(0x9BC484));
+            } else {
+                button.setBackground(new Color(0xF83B3B));
+            }
+            playerGUI2.questionPanel.repaint();
+            playerGUI2.questionPanel.revalidate();
+            TimerTask sendQuestionTask = new TimerTask() {
+                public void run() {
+                    sendQuestion();
+                }
+            };
+            java.util.Timer timer = new Timer("Timer");
+            int delay = 1500;
+            timer.schedule(sendQuestionTask, delay);
 
         }
         }
