@@ -83,7 +83,7 @@ public class PlayerClient implements ActionListener {
     public void setCurrentObject(Question obj){
         this.currentObject=obj;
     }
-    protected void sendQuestion(){
+    protected void sendQuestion(){//skicka istället poäng härifrån
         outpw.println(chosenQuestion);
         System.out.println(chosenQuestion + " valdes som svar");
     }
