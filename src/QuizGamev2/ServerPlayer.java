@@ -103,17 +103,7 @@ class ServerPlayer extends Thread {
                 }
             }
 
-            public void notifyWinner () {//todo behöver få info från PlayerClient
-                if (points > getOpponent().points) {
-                    outputwriter.println("Player 1 wins!"); //Ska man kunna välja användarnamn?
-                } else if (points < getOpponent().points) {
-                    outputwriter.println("Player 2 wins!");
-                } else if (points == getOpponent().points) {
-                    outputwriter.println("TIE");
-                } else {
-                    outputwriter.println("Something went wrong in notifyWinner-method of Player");
-                }
-            }
+
 
             protected void addOnePoint () {
                 points += 1;
