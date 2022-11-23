@@ -26,6 +26,7 @@ class ServerPlayer extends Thread {
     static final int UPDATEGAMESCORE = 4;
 
     int gameround;
+    String pointString;
 
 
     protected int state = 0;
@@ -108,7 +109,7 @@ class ServerPlayer extends Thread {
                                 } else {
                                     objectOut.writeObject(gameEngine.getFromQuestionList(i));
                                 }
-                                chosenQuestion = inputbuffer.readLine();
+                                pointString = inputbuffer.readLine(); //todo poäng
                                /* isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
                                 if (isCorrectanswer) {
                                     setScore[i] = 1;

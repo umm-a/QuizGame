@@ -28,6 +28,7 @@ public class PlayerClient implements ActionListener {
     static final int QUESTIONSTATE = 3;
     static final int UPDATESETSCORE = 4;
     Question currentObject;
+    boolean point=false;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -83,9 +84,9 @@ public class PlayerClient implements ActionListener {
     public void setCurrentObject(Question obj){
         this.currentObject=obj;
     }
-    protected void sendQuestion(){//skicka istället poäng härifrån
-        outpw.println(chosenQuestion);
-        System.out.println(chosenQuestion + " valdes som svar");
+    protected void sendPoint(boolean bool){//todo poäng
+        outpw.println(playerName + "," + bool);
+        System.out.println("Point: " + bool + " skickades till ServerPlayer");
     }
 
 
@@ -108,14 +109,16 @@ public class PlayerClient implements ActionListener {
             JButton button = (JButton) e.getSource();
             if((currentObject.answerCorrect)==chosenQuestion){
                 button.setBackground(new Color(0x9BC484));
+                point=true; //todo poäng
             } else {
                 button.setBackground(new Color(0xF83B3B));
+                point=false; //todo poäng
             }
             playerGUI2.questionPanel.repaint();
             playerGUI2.questionPanel.revalidate();
             TimerTask sendQuestionTask = new TimerTask() {
                 public void run() {
-                    sendQuestion();
+                    sendPoint(point);//todo poäng
                 }
             };
             java.util.Timer timer = new Timer("Timer");
