@@ -39,6 +39,8 @@ class ServerPlayer extends Thread {
     int turn = 1;
     boolean roundDone = false;
 
+    List<Object> tempQuestionList = new ArrayList<>();
+
 
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
         this.socket = socket;
@@ -82,7 +84,7 @@ class ServerPlayer extends Thread {
 
                 Object question = null;
 
-                while(opponent==null){
+                while(opponent==null){//innan opponent anslutet så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
                     Thread.sleep(1000);
                 }
 
@@ -96,15 +98,14 @@ class ServerPlayer extends Thread {
                         }
                         state = 3;
                     } else if (state == 3) {
-                        List<Object> tempQuestionList = new ArrayList<>();
                         if(this.equals(currentplayer) && (roundDone == false)) { //man kan även lägga till en int för att räkna antal varv, och få dessa via antal frågor från Propertis-fil (kanske skickad från GUI)
-                            for (int i = 0; i <  numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
+                            for (int i = 0; i < numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
                                 if (turn==1) {
                                     question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
                                     objectOut.writeObject(question);
                                     tempQuestionList.add(question);
                                 } else {
-                                    objectOut.writeObject(tempQuestionList.get(i));
+                                    objectOut.writeObject(tempQuestionList.get(i)); //index o out of bounds for length 0 dvs. tom lista
                                 }
 
                                /* isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
@@ -112,8 +113,6 @@ class ServerPlayer extends Thread {
                                     setScore[i] = 1;
                                 }*/
                             }
-                            changePlayerTurn(); //här ändras både currentplayer och turn
-                            opponent.changePlayerTurn();
                             if(turn==2){
                                 for (Object o: tempQuestionList) {
                                     tempQuestionList.remove(o);
@@ -121,6 +120,9 @@ class ServerPlayer extends Thread {
                                 turn=1;
                                 roundDone=true;
                             }
+                            changePlayerTurn(); //här ändras både currentplayer och turn
+                            opponent.changePlayerTurn();
+                            //todo skicka meddelande om att byta layout
                         }
 
 
@@ -131,7 +133,7 @@ class ServerPlayer extends Thread {
                 }
 
                 } catch(IOException e){
-                    System.out.println("Player died: " + e);
+                    System.out.println("Player " + playerName + " died: " + e);
                 } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

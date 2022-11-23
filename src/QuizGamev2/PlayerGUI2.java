@@ -5,6 +5,7 @@ package QuizGamev2;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -183,6 +184,78 @@ public class PlayerGUI2 extends JFrame{
 
              }
 
+    public void setScoreLayout(int questions, int rounds) {
+
+        baseFrame.getContentPane().removeAll();
+        scorePanel = new JPanel();
+        scorePanel.setLayout(null);
+        scorePanel.setBounds(10, 10, 320, 450);
+        scorePanel.setBorder(new EtchedBorder());
+
+
+
+
+        JPanel playerScorePanel = new JPanel();
+        playerScorePanel.setLayout(new GridLayout(4,2));
+        playerScorePanel.setBounds(0,120,120,240);
+        playerScorePanel.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        playerScorePanel.setBorder(new EtchedBorder());
+
+        scorePanel.add(playerScorePanel);
+
+        JPanel opponentScorePanel = new JPanel();
+        opponentScorePanel.setLayout(new GridLayout(rounds,questions));
+        opponentScorePanel.setBounds(200,120,120,240);
+        opponentScorePanel.setBorder(new EtchedBorder());
+        scorePanel.add(opponentScorePanel);
+
+
+        List<SmallCircle>circles = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            circles.add(new SmallCircle(Color.RED));
+            circles.get(i).setBorder(new EtchedBorder());
+            playerScorePanel.add(circles.get(i));
+        }
+
+        JButton fortsättButton = new JButton("Fortsätt");
+        fortsättButton.setBounds(110,380,100,50);
+        scorePanel.add(fortsättButton);
+
+
+        baseFrame.add(scorePanel);
+        baseFrame.revalidate();
+        baseFrame.repaint();
+
+
+    }
+
+
+
+
+
+
+    //Denna klass ritar en cirkel, används i ScoreLayout
+    class SmallCircle extends JPanel {
+        int radie, x, y;
+        Color color;
+        public SmallCircle(Color color){
+            super();
+            radie=15;
+            x=0;
+            y=0;
+            this.color=color;
+        }
+        public void paintComponent(Graphics comp) {
+            Graphics2D comp2D = (Graphics2D) comp;
+            Color bgcolor = scorePanel.getBackground();
+            comp2D.setColor(bgcolor);
+            comp2D.fillRect(0, 0, getSize().width, getSize().height);
+            comp2D.setColor(color);
+            Ellipse2D.Float circle = new Ellipse2D.Float(x, y, radie, radie);
+            comp2D.fill(circle);
+        }
+    }
 
 
 

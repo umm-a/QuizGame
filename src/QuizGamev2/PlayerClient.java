@@ -57,7 +57,7 @@ public class PlayerClient implements ActionListener {
             if(objList.contains("CATEGORIES")){
                 objList.remove(objList.size() - 1);
                 playerGUI2.setCategoryLayout(objList, this);
-                state=QUESTIONSTATE;
+                state=SETCATEGORY;
             }
             } else if ((obj instanceof Question)){
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
@@ -78,8 +78,9 @@ public class PlayerClient implements ActionListener {
         if (e.getSource() == playerGUI2.startButton) {
             System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
-            if(playerName=="Player 2"){
+            if(playerName=="player 2"){
                 //Watiting for opponent-ruta
+                playerGUI2.setScoreLayout(1, 1);
             }
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
@@ -88,6 +89,8 @@ public class PlayerClient implements ActionListener {
             state=QUESTIONSTATE;
             } else if (state==QUESTIONSTATE) {
             chosenQuestion = ((JButton) e.getSource()).getText();
+            System.out.println(chosenQuestion + " valdes som svar");
+
         }
         }
 }
