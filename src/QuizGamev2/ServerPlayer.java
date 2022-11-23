@@ -39,7 +39,7 @@ class ServerPlayer extends Thread {
     int turn = 1;
     boolean roundDone = false;
 
-    List<Object> tempQuestionList = new ArrayList<>();
+    List<Question> tempQuestionList = new ArrayList<>();
 
 
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
@@ -103,9 +103,11 @@ class ServerPlayer extends Thread {
                                 if (turn==1) {
                                     question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
                                     objectOut.writeObject(question);
-                                    tempQuestionList.add(question);
+                                  //  tempQuestionList.add((Question) question);
+                                    gameEngine.addQuestionToList((Question) question);
                                 } else {
-                                    objectOut.writeObject(tempQuestionList.get(i)); //index o out of bounds for length 0 dvs. tom lista
+                                  //  objectOut.writeObject(question);
+                                    objectOut.writeObject(gameEngine.getFromQuestionList(i)); //index o out of bounds for length 0 dvs. tom lista
                                 }
 
                                /* isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
@@ -114,9 +116,7 @@ class ServerPlayer extends Thread {
                                 }*/
                             }
                             if(turn==2){
-                                for (Object o: tempQuestionList) {
-                                    tempQuestionList.remove(o);
-                                }
+                                gameEngine.removeContentsFromQuestionList();
                                 turn=1;
                                 roundDone=true;
                             }
@@ -124,8 +124,6 @@ class ServerPlayer extends Thread {
                             opponent.changePlayerTurn();
                             //todo skicka meddelande om att byta layout
                         }
-
-
                         //  state = 4;
                     } else if (state == 4) {
                         //SKICKA POÄNG TILL CLIENTSIDAN
