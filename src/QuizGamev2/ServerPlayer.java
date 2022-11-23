@@ -4,6 +4,9 @@ package QuizGamev2;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 class ServerPlayer extends Thread {
     ServerGameEngine gameEngine;
@@ -33,6 +36,8 @@ class ServerPlayer extends Thread {
     boolean isCorrectanswer;
     int[] setScore = new int[numberOfQuestions];
     int[] gameScore = new int[numberOfRounds];
+    int turn = 1;
+    boolean roundDone = false;
 
 
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
@@ -60,7 +65,14 @@ class ServerPlayer extends Thread {
             objectOut = new ObjectOutputStream(socket.getOutputStream());
             inputbuffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+            Properties properties = new Properties();
+            try {
+                properties.load(new FileInputStream("C:\\javamapp\\QuizGame\\src\\QuizGamev2\\PropertiesFile.properties"));
+            } catch (Exception e){
+                e.printStackTrace();
+            }
 
+            numberOfQuestions = Integer.parseInt(properties.getProperty("questionsPerRound"));
             String inputMessage = "";
 
             outputwriter.println("Välkommen till spelet " + playerName + "!");
@@ -70,6 +82,9 @@ class ServerPlayer extends Thread {
 
                 Object question = null;
 
+                while(opponent==null){
+                    Thread.sleep(1000);
+                }
 
                 while (true) {
                     if (state == 2) {
@@ -81,20 +96,35 @@ class ServerPlayer extends Thread {
                         }
                         state = 3;
                     } else if (state == 3) {
-                        for (int i = 0; i < numberOfQuestions; i++) {
-                         //   chosenCategory = "Djur & Natur"; //todo hårdkodad för testning
-                            question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
-                            objectOut.writeObject(question);
+                        List<Object> tempQuestionList = new ArrayList<>();
+                        if(this.equals(currentplayer) && (roundDone == false)) { //man kan även lägga till en int för att räkna antal varv, och få dessa via antal frågor från Propertis-fil (kanske skickad från GUI)
+                            for (int i = 0; i <  numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
+                                if (turn==1) {
+                                    question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
+                                    objectOut.writeObject(question);
+                                    tempQuestionList.add(question);
+                                } else {
+                                    objectOut.writeObject(tempQuestionList.get(i));
+                                }
 
-                            //todo här ska bägge spelare få svara
-
-                            isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
-                            if (isCorrectanswer) {
-                                setScore[i] = 1;
+                               /* isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
+                                if (isCorrectanswer) {
+                                    setScore[i] = 1;
+                                }*/
+                            }
+                            changePlayerTurn(); //här ändras både currentplayer och turn
+                            opponent.changePlayerTurn();
+                            if(turn==2){
+                                for (Object o: tempQuestionList) {
+                                    tempQuestionList.remove(o);
+                                }
+                                turn=1;
+                                roundDone=true;
                             }
                         }
-                    //    opponent.changePlayerTurn(); changePlayerTurn();
-                        state = 4;
+
+
+                        //  state = 4;
                     } else if (state == 4) {
                         //SKICKA POÄNG TILL CLIENTSIDAN
                     }
@@ -102,13 +132,23 @@ class ServerPlayer extends Thread {
 
                 } catch(IOException e){
                     System.out.println("Player died: " + e);
-                }
-            }
+                } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
             public void changePlayerTurn(){
                 if(currentplayer == this){
                     currentplayer = getOpponent();
                 } else {
                     currentplayer = this;
+                }
+
+                if(turn==1){
+                    turn=2;
+                } else {
+                    if(turn==2){
+                        turn=1;
+                    }
                 }
             }
 

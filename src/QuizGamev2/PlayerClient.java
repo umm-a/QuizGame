@@ -17,6 +17,7 @@ public class PlayerClient implements ActionListener {
 
     PlayerGUI2 playerGUI2;
     String chosenCategory;
+    String chosenQuestion;
     String playerName;
     protected int state = 0;
     static final int START = 1;
@@ -64,6 +65,7 @@ public class PlayerClient implements ActionListener {
             } else {
                 System.out.println("This is where things tend to go wrong");
             }
+            //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
 
 
 
@@ -79,15 +81,13 @@ public class PlayerClient implements ActionListener {
             if(playerName=="Player 2"){
                 //Watiting for opponent-ruta
             }
-        } else if((state==QUESTIONSTATE)) {
+        } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
-          /*  for (JButton jb : playerGUI2.catButtons) {
-                if (e.getSource() == jb) {
-                    chosenCategory = jb.getText();
-                }*/
                 outpw.println(chosenCategory);
                 System.out.println("Test från PlayerClient: " + chosenCategory);
-
-            }
+            state=QUESTIONSTATE;
+            } else if (state==QUESTIONSTATE) {
+            chosenQuestion = ((JButton) e.getSource()).getText();
+        }
         }
 }
