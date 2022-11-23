@@ -36,7 +36,8 @@ public class PlayerGUI2 extends JFrame {
     String[] cata = {"Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"};
     List<String> catlist = new ArrayList<String>(Arrays.asList(cata));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
-    int[] playerScore = new int[8];
+    int[] playerScore = {1,1,0,1,0,0,0,0};
+
     int[] opponentScore = new int[8];
 // test slut
 
@@ -181,7 +182,10 @@ public class PlayerGUI2 extends JFrame {
         }
     }
 
+
     public void setScoreLayout(int questions, int rounds, int[] playerScore, int[] opponentScore, String statusMessage) {
+
+        int playerGamescore=0;
 
         baseFrame.getContentPane().removeAll();
         scorePanel = new JPanel();
@@ -209,7 +213,7 @@ public class PlayerGUI2 extends JFrame {
         scorePanel.add(opponentNameLabel);
 
 
-        JLabel playerGameScore = new JLabel("5",SwingConstants.CENTER);
+        JLabel playerGameScore = new JLabel(String.valueOf(playerGamescore),SwingConstants.CENTER);
         playerGameScore.setBounds(40,70,40,40);
         playerGameScore.setFont(myFont4);
         playerGameScore.setBorder(new EtchedBorder());
@@ -229,7 +233,6 @@ public class PlayerGUI2 extends JFrame {
         scorePanel.add(playerScorePanel);
 
 
-
         JPanel opponentScorePanel = new JPanel();
         opponentScorePanel.setLayout(new GridLayout(0,questions));
         opponentScorePanel.setBounds(200,120,120,240);
@@ -241,8 +244,6 @@ public class PlayerGUI2 extends JFrame {
         int panelheight = playerScorePanel.getSize().height;
          gridwidth = (panelwidth/questions) +6 ; //adderar 6 för att kompensera för borderbortfall
          gridheight = (panelheight/rounds) +6;  //adderar 6 för att kompensera för borderbortfall
-
-
 
 
         List<SmallCircle>playerDots = new ArrayList<>();
@@ -260,24 +261,29 @@ public class PlayerGUI2 extends JFrame {
             opponentScorePanel.add(opponentDots.get(i));
         }
 
-
-
-
-
-
-
         baseFrame.add(scorePanel);
         baseFrame.revalidate();
         baseFrame.repaint();
 
-        System.out.println("gw "+gridwidth);
-
-
-
-
         JButton fortsättButton = new JButton("Fortsätt");
         fortsättButton.setBounds(110,380,100,50);
+        fortsättButton.setFont(myFont2);
         scorePanel.add(fortsättButton);
+
+
+        //update score
+
+        for (int i = 0; i < 4; i++) {
+            if(playerScore[i]==1) {
+                playerDots.get(i).color = Color.GREEN;
+               playerGamescore++;
+            } else playerDots.get(i).color = Color.RED;
+
+            baseFrame.revalidate();
+            baseFrame.repaint();
+
+
+        }
 
 
 
