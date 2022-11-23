@@ -30,6 +30,7 @@ class ServerPlayer extends Thread {
 
     protected int state = 0;
     String chosenCategory;
+    String chosenQuestion;
     int points = 0;
     int numberOfQuestions = 2;
     int numberOfRounds;
@@ -103,13 +104,11 @@ class ServerPlayer extends Thread {
                                 if (turn==1) {
                                     question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
                                     objectOut.writeObject(question);
-                                  //  tempQuestionList.add((Question) question);
                                     gameEngine.addQuestionToList((Question) question);
                                 } else {
-                                  //  objectOut.writeObject(question);
-                                    objectOut.writeObject(gameEngine.getFromQuestionList(i)); //index o out of bounds for length 0 dvs. tom lista
+                                    objectOut.writeObject(gameEngine.getFromQuestionList(i));
                                 }
-
+                                chosenQuestion = inputbuffer.readLine();
                                /* isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
                                 if (isCorrectanswer) {
                                     setScore[i] = 1;
@@ -119,6 +118,7 @@ class ServerPlayer extends Thread {
                                 gameEngine.removeContentsFromQuestionList();
                                 turn=1;
                                 roundDone=true;
+                                opponent.roundDone=true;
                             }
                             changePlayerTurn(); //här ändras både currentplayer och turn
                             opponent.changePlayerTurn();

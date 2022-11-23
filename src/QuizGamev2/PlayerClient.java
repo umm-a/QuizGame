@@ -60,6 +60,7 @@ public class PlayerClient implements ActionListener {
                 state=SETCATEGORY;
             }
             } else if ((obj instanceof Question)){
+                state=QUESTIONSTATE;
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
             } else {
@@ -89,6 +90,7 @@ public class PlayerClient implements ActionListener {
             state=QUESTIONSTATE;
             } else if (state==QUESTIONSTATE) {
             chosenQuestion = ((JButton) e.getSource()).getText();
+            outpw.println(chosenQuestion);
             System.out.println(chosenQuestion + " valdes som svar");
 
         }
