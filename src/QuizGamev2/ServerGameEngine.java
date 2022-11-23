@@ -43,7 +43,7 @@ public class ServerGameEngine{
 
         String[] scoreString = pointString.split("," );
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
-        currentPlayer.playerName = scoreString[0];
+        currentPlayer.playerName = scoreString[0]; // är det samma player??
 
         //countScore(3,isCorrectAnswer,+++)
 
@@ -56,6 +56,8 @@ public class ServerGameEngine{
         }
     }
 
+
+    //
     public int countScore(int state, boolean isCorrectAnswer, ServerPlayer player){
         if (state == 3  && isCorrectAnswer == true){
             player.points++;
