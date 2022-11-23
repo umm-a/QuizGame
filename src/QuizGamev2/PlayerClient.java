@@ -17,6 +17,7 @@ public class PlayerClient implements ActionListener {
 
     PlayerGUI2 playerGUI2;
     String chosenCategory;
+    String playerTurn = "Player 1";
     protected int state = 0;
     static final int START = 1;
     static final int SETCATEGORY = 2;
