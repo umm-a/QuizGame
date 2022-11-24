@@ -182,7 +182,8 @@ public class PlayerGUI2 extends JFrame {
     }
 
 
-    public void setScoreLayout(int questions, int rounds, int[] playerScore, int[] opponentScore, String statusMessage) {
+    //todo ändra till list på playerscore
+    public void setScoreLayout(int questionPerRound, int rounds, int[] playerScore, int[] opponentScore, String statusMessage) {
 
         int playerGamescore=0;
 
@@ -226,14 +227,14 @@ public class PlayerGUI2 extends JFrame {
 
 
         JPanel playerScorePanel = new JPanel();
-        playerScorePanel.setLayout(new GridLayout(0,questions));
+        playerScorePanel.setLayout(new GridLayout(0,questionPerRound));
         playerScorePanel.setBounds(0,120,120,240);
         playerScorePanel.setBorder(new EtchedBorder());
         scorePanel.add(playerScorePanel);
 
 
         JPanel opponentScorePanel = new JPanel();
-        opponentScorePanel.setLayout(new GridLayout(0,questions));
+        opponentScorePanel.setLayout(new GridLayout(0,questionPerRound));
         opponentScorePanel.setBounds(200,120,120,240);
         opponentScorePanel.setBorder(new EtchedBorder());
         scorePanel.add(opponentScorePanel);
@@ -241,20 +242,20 @@ public class PlayerGUI2 extends JFrame {
         //hämtar in griddimensioner som används av SmallCircle-klassen för centrering av cirkel i sin JPanel
         int panelwidth = playerScorePanel.getSize().width;
         int panelheight = playerScorePanel.getSize().height;
-         gridwidth = (panelwidth/questions) +6 ; //adderar 6 för att kompensera för borderbortfall
+         gridwidth = (panelwidth/questionPerRound) +6 ; //adderar 6 för att kompensera för borderbortfall
          gridheight = (panelheight/rounds) +6;  //adderar 6 för att kompensera för borderbortfall
 
 
         List<SmallCircle>playerDots = new ArrayList<>();
 
-        for (int i = 0; i < (questions*rounds); i++) {
+        for (int i = 0; i < (questionPerRound*rounds); i++) {
             playerDots.add(new SmallCircle(Color.white));
             playerDots.get(i).setBorder(new EtchedBorder());
             playerScorePanel.add(playerDots.get(i));
         }
 
         List<SmallCircle>opponentDots = new ArrayList<>();
-        for (int i = 0; i < (questions*rounds); i++) {
+        for (int i = 0; i < (questionPerRound*rounds); i++) {
             opponentDots.add(new SmallCircle(Color.white));
             opponentDots.get(i).setBorder(new EtchedBorder());
             opponentScorePanel.add(opponentDots.get(i));
