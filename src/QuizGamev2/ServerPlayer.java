@@ -28,6 +28,9 @@ class ServerPlayer extends Thread {
     int gameround;
     String pointString;
 
+    List<Integer> player1Scores = new ArrayList<>();
+    List<Integer> player2Scores = new ArrayList<>();
+
 
     protected int state = 0;
     String chosenCategory;
@@ -129,7 +132,7 @@ class ServerPlayer extends Thread {
                         }
                         state = 4;
                     } else if (state == 4) {
-                        objectOut.writeObject(gameEngine.countScore(state, true, this));
+                        //objectOut.writeObject(gameEngine.countScore(state, true, this));
                         //SKICKA POÄNG TILL CLIENTSIDAN
                     }
                 }
