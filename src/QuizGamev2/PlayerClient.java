@@ -63,6 +63,7 @@ public class PlayerClient implements ActionListener {
                 objList.remove(objList.size() - 1);
                 playerGUI2.setCategoryLayout(objList, this);
                 state=SETCATEGORY;
+                System.out.println(" IN CATEGORIES ");
             }
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
