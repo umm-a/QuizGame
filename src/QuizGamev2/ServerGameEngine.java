@@ -1,5 +1,8 @@
 package QuizGamev2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ServerGameEngine{
 
 
@@ -13,6 +16,7 @@ public class ServerGameEngine{
 
 
     ServerPlayer currentPlayer;
+    List<Question> tempQuestionList = new ArrayList<>();
 
     QuestionDatabase2 questionDatabase2;
 
@@ -21,7 +25,17 @@ public class ServerGameEngine{
         this.questionDatabase2 = questionDatabase2;
 
     }
-
+    public void addQuestionToList(Question question){
+        this.tempQuestionList.add(question);
+    }
+    public void removeContentsFromQuestionList(){
+        for (Question q: tempQuestionList) {
+            this.tempQuestionList.remove(q);
+        }
+    }
+    public Question getFromQuestionList(int i){
+        return tempQuestionList.get(i);
+    }
 
 
 }
