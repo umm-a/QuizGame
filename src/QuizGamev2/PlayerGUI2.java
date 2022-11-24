@@ -47,7 +47,7 @@ public class PlayerGUI2 extends JFrame {
 // test slut
 
     public PlayerGUI2() throws Exception {
-         // this.playerClient = new PlayerClient(this);  //denna inaktiveras vid test
+          this.playerClient = new PlayerClient(this);  //denna inaktiveras vid test
 
 
 //bara för test:
