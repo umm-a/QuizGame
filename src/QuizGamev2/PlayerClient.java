@@ -97,7 +97,7 @@ public class PlayerClient implements ActionListener {
             outpw.println(playerGUI2.nickNametf.getText());
             if(playerName=="player 2"){
                 //Watiting for opponent-ruta
-               // playerGUI2.setScoreLayout(1, 1);
+                playerGUI2.setScoreLayout(1, 1);
             }
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
@@ -107,7 +107,7 @@ public class PlayerClient implements ActionListener {
             } else if (state==QUESTIONSTATE) {
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
-            if((currentObject.answerCorrect)==chosenQuestion){
+            if((currentObject.answerCorrect)== chosenQuestion){
                 button.setBackground(new Color(0x9BC484));
                 point=true; //todo poäng
             } else {

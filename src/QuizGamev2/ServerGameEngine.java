@@ -12,7 +12,7 @@ public class ServerGameEngine{
 
     String nickName1;
     String nickName2;
-    ServerPlayer currentPlayer;
+    ServerPlayer serverPlayer;
     List<Question> tempQuestionList = new ArrayList<>();
 
     QuestionDatabase2 questionDatabase2;
@@ -37,22 +37,39 @@ public class ServerGameEngine{
     public void separateScoreString(String pointString){
 
         String[] scoreString = pointString.split("," );
+        String playerName = scoreString[0].trim();
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
-        currentPlayer.playerName = scoreString[0]; // är det samma player??
 
-        //countScore(3,isCorrectAnswer,+++)
+        addScoreToList(playerName,isCorrectAnswer);
 
-        if (isCorrectAnswer == true){
-            currentPlayer.points ++;
-            scoreToString(currentPlayer.points);
+    }
+
+    public List<Integer> addScoreToList(String playerName, Boolean isCorrectAnswer){
+        if (playerName.equals("Player 1") && isCorrectAnswer == true){
+            serverPlayer.player1Scores.add(1);
+            return serverPlayer.player1Scores;
+        }
+        else if (playerName.equals("Player 1") && isCorrectAnswer == false){
+            serverPlayer.player1Scores.add(0);
+            return serverPlayer.player1Scores;
+        }
+        else if (playerName.equals("Player 2") && isCorrectAnswer == true) {
+            serverPlayer.player2Scores.add(1);
+            return serverPlayer.player2Scores;
+        }
+        else if (playerName.equals("player 2") && isCorrectAnswer == false){
+            serverPlayer.player2Scores.add(0);
+            return serverPlayer.player1Scores;
         }
         else {
-            scoreToString(currentPlayer.points);
+            System.out.println("Det gick inte att lägga poäng i listan");
+            return null;
         }
+
     }
 
 
-    public int countScore(int state, boolean isCorrectAnswer, ServerPlayer player){
+   /* public int countScore(int state, boolean isCorrectAnswer, ServerPlayer player){
         if (state == 3  && isCorrectAnswer == true){
             player.points++;
             scoreToString(player.points);
@@ -70,6 +87,8 @@ public class ServerGameEngine{
         return pointString;
 
     }
+
+    */
     public void notifyWinner (ServerPlayer player) {//todo behöver få info från PlayerClient
         if (player.points > player.getOpponent().points) {
 
