@@ -123,7 +123,7 @@ public class PlayerClient implements ActionListener {
                 }
             };
             java.util.Timer timer = new Timer("Timer");
-            int delay = 1500;
+            int delay = 500;
             timer.schedule(sendQuestionTask, delay);
 
         }

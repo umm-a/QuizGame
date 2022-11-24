@@ -41,6 +41,7 @@ class ServerPlayer extends Thread {
     int turn = 1;
     boolean roundDone = false;
     boolean setCategory = true;
+
     int currentRound = 0;
 
     List<Question> tempQuestionList = new ArrayList<>();
@@ -82,10 +83,10 @@ class ServerPlayer extends Thread {
             rounds = Integer.parseInt(properties.getProperty("rounds"));
             String inputMessage = "";
 
-            outputwriter.println("Välkommen till spelet " + playerName + "!");
+            outputwriter.println("Välkommen till spelet " + playerName + "!" + " Rounds are: " + rounds);
 
             nickName = inputbuffer.readLine();
-            state = 3;
+            state = 2;
 
             Object question = null;
 
@@ -98,6 +99,8 @@ class ServerPlayer extends Thread {
                 /*    if (this.equals(currentplayer)) { //todo OM SPELAREN EJ TRYCKT "STARTA" SKA DETTA EJ SKE! PGA. Annars kan spelare2 kan välja kategori
                         chooseCategory();
                     }*/
+
+                    currentRound = 0;
                     state = 3;
                 } else if (state == 3) {
                     // ServerGameEngine
@@ -124,15 +127,17 @@ class ServerPlayer extends Thread {
                                 // turn=1;
                             //    roundDone = true;
                             //    opponent.roundDone = true;
-                             //   this.state = 2;
-                             //   opponent.state = 2;
+                                setCategory=true;
+                                opponent.setCategory=true;
+                                setCurrentRoundPlusOne();
+                         //       changePlayerTurn(); //eftersom vi vill att varannan spelare ska få välja kategori
+                            //    opponent.changePlayerTurn();
                             }
                             changePlayerTurn(); //här ändras både currentplayer och turn
                             opponent.changePlayerTurn();
                             //todo skicka meddelande om att byta layout
                         }
                      //   roundDone=false;
-                        setCurrentRoundPlusOne();
                     }
                    // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
@@ -153,25 +158,25 @@ class ServerPlayer extends Thread {
     public void chooseCategory() throws IOException {
         objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
         objectOut.flush();
-        chosenCategory = inputbuffer.readLine();
+        this.chosenCategory = inputbuffer.readLine();
     }
     public void setCurrentRoundPlusOne(){
-        currentRound+=1;
+        this.currentRound+=1;
         opponent.currentRound+=1;
     }
 
     public void changePlayerTurn() {
-        if (currentplayer == this) {
+        if (this.currentplayer == this) {
             currentplayer = getOpponent();
         } else {
             currentplayer = this;
         }
 
-        if (turn == 1) {
-            turn = 2;
+        if (this.turn == 1) {
+            this.turn = 2;
         } else {
-            if (turn == 2) {
-                turn = 1;
+            if (this.turn == 2) {
+                this.turn = 1;
             }
         }
         //roundDone=true? för bäggedera

@@ -26,9 +26,18 @@ public class ServerGameEngine{
         this.tempQuestionList.add(question);
     }
     public void removeContentsFromQuestionList(){
+        List<Question> toRemove = new ArrayList<>();
+
         for (Question q: tempQuestionList) {
-            this.tempQuestionList.remove(q);
+            toRemove.add(q);
         }
+
+
+       /* for (Question q: tempQuestionList) {
+            this.tempQuestionList.remove(q);
+        }*/
+
+        tempQuestionList.removeAll(toRemove);
     }
     public Question getFromQuestionList(int i){
         return tempQuestionList.get(i);
