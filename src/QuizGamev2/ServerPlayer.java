@@ -4,6 +4,9 @@ package QuizGamev2;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 class ServerPlayer extends Thread {
     ServerGameEngine gameEngine;
@@ -23,16 +26,22 @@ class ServerPlayer extends Thread {
     static final int UPDATEGAMESCORE = 4;
 
     int gameround;
+    String pointString;
 
 
     protected int state = 0;
     String chosenCategory;
+    String chosenQuestion;
     int points = 0;
     int numberOfQuestions = 2;
     int numberOfRounds;
     boolean isCorrectanswer;
     int[] setScore = new int[numberOfQuestions];
     int[] gameScore = new int[numberOfRounds];
+    int turn = 1;
+    boolean roundDone = false;
+
+    List<Question> tempQuestionList = new ArrayList<>();
 
 
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
@@ -60,7 +69,14 @@ class ServerPlayer extends Thread {
             objectOut = new ObjectOutputStream(socket.getOutputStream());
             inputbuffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+            Properties properties = new Properties();
+            try {
+                properties.load(new FileInputStream("C:\\javamapp\\QuizGame\\src\\QuizGamev2\\PropertiesFile.properties"));
+            } catch (Exception e){
+                e.printStackTrace();
+            }
 
+            numberOfQuestions = Integer.parseInt(properties.getProperty("questionsPerRound"));
             String inputMessage = "";
 
             outputwriter.println("Välkommen till spelet " + playerName + "!");
@@ -72,27 +88,44 @@ class ServerPlayer extends Thread {
 
                 Object question = null;
 
+                while(opponent==null){//innan opponent anslutet så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
+                    Thread.sleep(1000);
+                }
 
                 while (true) {
                     if (state == 2) {
-                        objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
+                      //  objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
 
                         if (this.equals(currentplayer)) {
-                        //    objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
+                            objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
                             chosenCategory = inputbuffer.readLine();
                         }
                         state = 3;
                     } else if (state == 3) {
-                        for (int i = 0; i < numberOfQuestions; i++) {
-                         //   chosenCategory = "Djur & Natur"; //todo hårdkodad för testning
-                            question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
-                            objectOut.writeObject(question);
-                            isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
-                            if (isCorrectanswer) {
-                                //setScore[i] = 1;
-                                gameEngine.countScore(state, true, this);
-
+                        if(this.equals(currentplayer) && (roundDone == false)) { //man kan även lägga till en int för att räkna antal varv, och få dessa via antal frågor från Propertis-fil
+                            for (int i = 0; i < numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
+                                if (turn==1) {
+                                    question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
+                                    objectOut.writeObject(question);
+                                    gameEngine.addQuestionToList((Question) question);
+                                } else {
+                                    objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                                }
+                                pointString = inputbuffer.readLine(); //todo poäng
+                               /* isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
+                                if (isCorrectanswer) {
+                                    setScore[i] = 1;
+                                }*/
                             }
+                            if(turn==2){
+                                gameEngine.removeContentsFromQuestionList();
+                                turn=1;
+                                roundDone=true;
+                                opponent.roundDone=true;
+                            }
+                            changePlayerTurn(); //här ändras både currentplayer och turn
+                            opponent.changePlayerTurn();
+                            //todo skicka meddelande om att byta layout
                         }
                         state = 4;
                     } else if (state == 4) {
@@ -102,7 +135,24 @@ class ServerPlayer extends Thread {
                 }
 
                 } catch(IOException e){
-                    System.out.println("Player died: " + e);
+                    System.out.println("Player " + playerName + " died: " + e);
+                } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+            public void changePlayerTurn(){
+                if(currentplayer == this){
+                    currentplayer = getOpponent();
+                } else {
+                    currentplayer = this;
+                }
+
+                if(turn==1){
+                    turn=2;
+                } else {
+                    if(turn==2){
+                        turn=1;
+                    }
                 }
             }
 
