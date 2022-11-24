@@ -30,28 +30,28 @@ public class PlayerGUI2 extends JFrame {
     List<SmallCircle> opponentDots;
     PlayerClient playerClient;
     boolean isBuiltScorePanel = false;
-    boolean isBuiltCatPanel = false;
+
     JTextField nickNametf;
     String opponentNickname;
 
 
     //bara för test:
-   /* List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"));
+    List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"));
     List<String> catlist2 = new ArrayList<String>(Arrays.asList("Historia", "Matematik", "Geologi", "Teknik"));
     List<String> catlist3 = new ArrayList<String>(Arrays.asList("Astronomi", "Astrologi", "Religion", "Konst"));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
     Question qtest2 = new Question("Matematik", "Vilket tal ligger närmast PI", "3.14", "5.14", "14.3", "200");
     Question qtest3 = new Question("Historia", "Under vilket sekel levde Birger Jarl ", "1200-talet", "1700-talet", "1400-talet", "1600-talet");
     List<Integer> playerScore = new ArrayList<>(Arrays.asList(1));
-    List<Integer> opponentScore = new ArrayList<>(Arrays.asList(0));*/
+    List<Integer> opponentScore = new ArrayList<>(Arrays.asList(0));
 // test slut
 
     public PlayerGUI2() throws Exception {
-          this.playerClient = new PlayerClient(this);  //denna inaktiveras vid test
+         // this.playerClient = new PlayerClient(this);  //denna inaktiveras vid test
 
 
 //bara för test:
-       /* setWelcomeLayout(playerClient);
+       setWelcomeLayout(playerClient);
         opponentNickname="Tomten";
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
@@ -75,7 +75,7 @@ public class PlayerGUI2 extends JFrame {
         opponentScore = new ArrayList<>(Arrays.asList(0, 0,1));
         setScoreLayout(2, 4, playerScore, opponentScore, "Another turn");
         sc.nextLine();
-        setCategoryLayout(catlist3, playerClient);*/
+        setCategoryLayout(catlist3, playerClient);
 
 //test slut
     }
@@ -147,7 +147,6 @@ public class PlayerGUI2 extends JFrame {
             chooseCatlb.setBorder(new EtchedBorder());
             categoryPanel.add(chooseCatlb);
 
-            isBuiltCatPanel=true;
 
 
             buttonPanel = new JPanel(new GridLayout(noOfCat, 1, 5, 5));
