@@ -28,7 +28,7 @@ public class PlayerGUI2 extends JFrame {
     PlayerClient playerClient;
     JTextField nickNametf;
     String opponentNickname;
-    Graphics2D g2d;
+
 
 
 
@@ -37,15 +37,14 @@ public class PlayerGUI2 extends JFrame {
     List<String> catlist = new ArrayList<String>(Arrays.asList(cata));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
     int[] playerScore = {1,1,0,1,0,0,0,0};
-
     int[] opponentScore = new int[8];
 // test slut
 
     public PlayerGUI2() throws Exception {
-       //  this.playerClient = new PlayerClient(this);
+       //  this.playerClient = new PlayerClient(this);  //denna inaktiveras vid test
 
 
-//bara för test
+//bara för test:
         setWelcomeLayout(playerClient);
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
@@ -56,7 +55,7 @@ public class PlayerGUI2 extends JFrame {
         setQuestionLayout(qtest, playerClient);
         sc.nextLine();
         setScoreLayout(2,4,playerScore,opponentScore, "Your turn");
-
+//test slut
     }
 
 
@@ -271,16 +270,27 @@ public class PlayerGUI2 extends JFrame {
         scorePanel.add(fortsättButton);
 
 
-        //update score
-
+        //update score dots with depending on points
+        //update thisPlayer
         for (int i = 0; i < 4; i++) {
-            if(playerScore[i]==1) {
+            if (playerScore[i] == 1) {
                 playerDots.get(i).color = Color.GREEN;
-               playerGamescore++;
+                playerGamescore++;
             } else playerDots.get(i).color = Color.RED;
 
             baseFrame.revalidate();
             baseFrame.repaint();
+        }
+
+            //update opponentPlayer
+            for (int i = 0; i < 4; i++) {
+                if(playerScore[i]==1) {
+                    playerDots.get(i).color = Color.GREEN;
+                    playerGamescore++;
+                } else playerDots.get(i).color = Color.RED;
+
+                baseFrame.revalidate();
+                baseFrame.repaint();
 
 
         }
