@@ -4,3 +4,5 @@ Teknik, Vilket av dessa är ett programmeringsspråk?, Java, Banan, Bully, Hopps
 Litteratur, Vem skrev böckerna om Pippi Långstrump?, Astrid Lindgren, Michael Jackson, Stephen King, Ingvar Kamprad
 Musik & Kultur, Vad är Röyksopp?, Norsk elektro-musikduo, Tobak, en Maträtt, en musikal
 Djur & Natur, Hur många timmar sover en hund per dygn?, 12-18 , 2-4 , 6-8 , 0
+Teknik, Vad uppfanns av svensken Alfred Nobel, som instiftade Nobelpriset?, Dynamiten, Kullagret, Blixtlåset, Osthyveln
+Teknik, Vilken partikel har negativ laddning?, Elektron, Proton, Neutron, Anti-slip-partikeln

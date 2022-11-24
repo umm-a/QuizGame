@@ -101,11 +101,6 @@ class ServerPlayer extends Thread {
                     state = 3;
                 } else if (state == 3) {
                     // ServerGameEngine
-                    if ((this.equals(currentplayer)) && (setCategory==true)) {
-                        chooseCategory();
-                        setCategory=false;
-                        opponent.setCategory=false;
-                    }
                     while (currentRound<rounds){
                         if ((this.equals(currentplayer)) && (setCategory==true)) {
                             chooseCategory();
