@@ -104,7 +104,7 @@ public class PlayerClient implements ActionListener {
                 outpw.println(chosenCategory);
                 System.out.println("Test från PlayerClient: " + chosenCategory);
             state=QUESTIONSTATE;
-            } else if (state==QUESTIONSTATE) {
+            } else if (state==QUESTIONSTATE) {//todo OBS man ska inte kunna trycka på fler knappar när man svarat på en specifik fråga
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
             if((currentObject.answerCorrect)== chosenQuestion){

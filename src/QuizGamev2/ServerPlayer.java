@@ -33,7 +33,8 @@ class ServerPlayer extends Thread {
     String chosenCategory;
     String chosenQuestion;
     int points = 0;
-    int numberOfQuestions = 2;
+    int numberOfQuestions = 0;
+    int rounds;
     int numberOfRounds;
     boolean isCorrectanswer;
     int[] setScore = new int[numberOfQuestions];
@@ -77,12 +78,13 @@ class ServerPlayer extends Thread {
             }
 
             numberOfQuestions = Integer.parseInt(properties.getProperty("questionsPerRound"));
+            rounds = Integer.parseInt(properties.getProperty("rounds"));
             String inputMessage = "";
 
             outputwriter.println("Välkommen till spelet " + playerName + "!");
 
                 nickName = inputbuffer.readLine();
-                state=2;
+                state=3;
 
             System.out.println(nickName);
 
@@ -102,31 +104,42 @@ class ServerPlayer extends Thread {
                         }
                         state = 3;
                     } else if (state == 3) {
-                        if(this.equals(currentplayer) && (roundDone == false)) { //man kan även lägga till en int för att räkna antal varv, och få dessa via antal frågor från Propertis-fil
-                            for (int i = 0; i < numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
-                                if (turn==1) {
-                                    question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
-                                    //todo kontrollera att question inte redan använts, metod i ServerGameEngine
-                                    objectOut.writeObject(question);
-                                    gameEngine.addQuestionToList((Question) question);
-                                } else {
-                                    objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                        for (int j = 0; j < rounds; j++) {
+                            if (this.equals(currentplayer)) {
+                                objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
+                                chosenCategory = inputbuffer.readLine();
+                            }
+                            //todo skicka meddelande om att välja kategori
+
+
+                            while(this.equals(currentplayer) && (roundDone == false)) { //man kan även lägga till en int för att räkna antal varv, och få dessa via antal frågor från Propertis-fil
+                                for (int i = 0; i < numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
+                                    if (turn == 1) {
+                                        question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
+                                        objectOut.writeObject(question);
+                                        gameEngine.addQuestionToList((Question) question);
+                                    } else {
+                                        objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                                    }
+                                    objectOut.flush(); //kolla mer här hehe todo
+                                    pointString = inputbuffer.readLine(); //  objectOut.writeObject(gameEngine.countScore(state, true, this));
                                 }
-                                pointString = inputbuffer.readLine(); //todo poäng
+                                if (turn == 2) {
+                                    gameEngine.removeContentsFromQuestionList();
+                                    //turn = 1;
+                                    //opponent.turn = 1;
+                                    roundDone = true;
+                                    opponent.roundDone = true;
+                                }
+                                changePlayerTurn(); //här ändras både currentplayer och turn
+                                opponent.changePlayerTurn();
+                                //todo skicka meddelande om att byta layout
                             }
-                            if(turn==2){
-                                gameEngine.removeContentsFromQuestionList();
-                                turn=1;
-                                roundDone=true;
-                                opponent.roundDone=true;
-                            }
-                            changePlayerTurn(); //här ändras både currentplayer och turn
-                            opponent.changePlayerTurn();
-                            //todo skicka meddelande om att byta layout
+                            //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
+                           // roundDone=false;
                         }
-                        //  state = 4;
+                          state = 4;
                     } else if (state == 4) {
-                        objectOut.writeObject(gameEngine.countScore(state, true, this));
                         //SKICKA POÄNG TILL CLIENTSIDAN
                     }
                 }
