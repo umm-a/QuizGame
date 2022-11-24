@@ -84,6 +84,8 @@ class ServerPlayer extends Thread {
                 nickName = inputbuffer.readLine();
                 state=2;
 
+            System.out.println(nickName);
+
                 Object question = null;
 
                 while(opponent==null){//innan opponent anslutet så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
@@ -124,6 +126,7 @@ class ServerPlayer extends Thread {
                         }
                         //  state = 4;
                     } else if (state == 4) {
+                        objectOut.writeObject(gameEngine.countScore(state, true, this));
                         //SKICKA POÄNG TILL CLIENTSIDAN
                     }
                 }
@@ -150,17 +153,7 @@ class ServerPlayer extends Thread {
                 }
             }
 
-            public void notifyWinner () {//todo behöver få info från PlayerClient
-                if (points > getOpponent().points) {
-                    outputwriter.println("Player 1 wins!"); //Ska man kunna välja användarnamn?
-                } else if (points < getOpponent().points) {
-                    outputwriter.println("Player 2 wins!");
-                } else if (points == getOpponent().points) {
-                    outputwriter.println("TIE");
-                } else {
-                    outputwriter.println("Something went wrong in notifyWinner-method of Player");
-                }
-            }
+
 
             protected void addOnePoint () {
                 points += 1;
