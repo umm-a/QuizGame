@@ -114,7 +114,9 @@ class ServerPlayer extends Thread {
                                 } else {
                                     objectOut.writeObject(gameEngine.getFromQuestionList(i));
                                 }
-                                pointString = inputbuffer.readLine(); //todo poäng
+                                pointString = inputbuffer.readLine();//todo poäng
+                                gameEngine.separateScoreString(pointString); //poäng läggs i listorna som finns i ServerPlayer
+
                                /* isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
                                 if (isCorrectanswer) {
                                     setScore[i] = 1;

@@ -12,6 +12,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PlayerClient implements ActionListener {
+
+    ServerGameEngine serverGameEngine;
     private final int PORT = 25252;
     private Socket socket;
     BufferedReader inbuf;
@@ -85,7 +87,9 @@ public class PlayerClient implements ActionListener {
         this.currentObject=obj;
     }
     protected void sendPoint(boolean bool){//todo poäng
-        outpw.println(playerName + "," + bool);
+       outpw.println(playerName + "," + bool);
+
+
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
     }
 
