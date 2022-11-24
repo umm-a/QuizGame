@@ -13,7 +13,6 @@ import java.util.TimerTask;
 
 public class PlayerClient implements ActionListener {
 
-    ServerGameEngine serverGameEngine;
     private final int PORT = 25252;
     private Socket socket;
     BufferedReader inbuf;
@@ -45,7 +44,7 @@ public class PlayerClient implements ActionListener {
         if(welcomemessage.contains("Player 1")){
             this.playerName = "Player 1";
         } else {
-            this.playerName = "player 2";
+            this.playerName = "Player 2";
         }
 
 
@@ -89,7 +88,6 @@ public class PlayerClient implements ActionListener {
     protected void sendPoint(boolean bool){//todo poäng
        outpw.println(playerName + "," + bool);
 
-
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
     }
 
@@ -99,7 +97,7 @@ public class PlayerClient implements ActionListener {
         if (e.getSource() == playerGUI2.startButton) {
             System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
-            if(playerName=="player 2"){
+            if(playerName=="Player 2"){
                 //Watiting for opponent-ruta
                 playerGUI2.setScoreLayout(1, 1);
             }

@@ -12,7 +12,7 @@ public class ServerGameEngine{
 
     String nickName1;
     String nickName2;
-    ServerPlayer serverPlayer;
+    ServerPlayer serverPlayer = new ServerPlayer();
     List<Question> tempQuestionList = new ArrayList<>();
 
     QuestionDatabase2 questionDatabase2;
@@ -57,7 +57,7 @@ public class ServerGameEngine{
             serverPlayer.player2Scores.add(1);
             return serverPlayer.player2Scores;
         }
-        else if (playerName.equals("player 2") && isCorrectAnswer == false){
+        else if (playerName.equals("Player 2") && isCorrectAnswer == false){
             serverPlayer.player2Scores.add(0);
             return serverPlayer.player1Scores;
         }

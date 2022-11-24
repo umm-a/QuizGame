@@ -46,6 +46,8 @@ class ServerPlayer extends Thread {
 
     List<Question> tempQuestionList = new ArrayList<>();
 
+    public ServerPlayer(){};
+
 
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
         this.socket = socket;
@@ -115,7 +117,7 @@ class ServerPlayer extends Thread {
                                     objectOut.writeObject(gameEngine.getFromQuestionList(i));
                                 }
                                 pointString = inputbuffer.readLine();//todo poäng
-                                gameEngine.separateScoreString(pointString); //poäng läggs i listorna som finns i ServerPlayer
+                                gameEngine.separateScoreString(pointString); //poäng läggs i listorna, i ServerPlayer
 
                                /* isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
                                 if (isCorrectanswer) {
