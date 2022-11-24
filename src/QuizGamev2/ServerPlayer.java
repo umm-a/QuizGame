@@ -104,16 +104,13 @@ class ServerPlayer extends Thread {
                             for (int i = 0; i < numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
                                 if (turn==1) {
                                     question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
+                                    //todo kontrollera att question inte redan använts, metod i ServerGameEngine
                                     objectOut.writeObject(question);
                                     gameEngine.addQuestionToList((Question) question);
                                 } else {
                                     objectOut.writeObject(gameEngine.getFromQuestionList(i));
                                 }
                                 pointString = inputbuffer.readLine(); //todo poäng
-                               /* isCorrectanswer = Boolean.parseBoolean(inputbuffer.readLine());
-                                if (isCorrectanswer) {
-                                    setScore[i] = 1;
-                                }*/
                             }
                             if(turn==2){
                                 gameEngine.removeContentsFromQuestionList();
