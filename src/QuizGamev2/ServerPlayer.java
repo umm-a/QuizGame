@@ -32,17 +32,18 @@ class ServerPlayer extends Thread {
     String chosenCategory;
     String chosenQuestion;
     int points = 0;
-    int numberOfQuestions = 0;
+    int questionsPerRound = 0;
     int rounds;
     int numberOfRounds;
     boolean isCorrectanswer;
-    int[] setScore = new int[numberOfQuestions];
+    int[] setScore = new int[questionsPerRound];
     int[] gameScore = new int[numberOfRounds];
     int turn = 1;
     boolean roundDone = false;
     boolean setCategory = true;
 
     int currentRound = 0;
+    String readyToPlay = "";
 
     List<Question> tempQuestionList = new ArrayList<>();
 
@@ -79,7 +80,7 @@ class ServerPlayer extends Thread {
                 e.printStackTrace();
             }
 
-            numberOfQuestions = Integer.parseInt(properties.getProperty("questionsPerRound"));
+            questionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound"));
             rounds = Integer.parseInt(properties.getProperty("rounds"));
             String inputMessage = "";
 
@@ -90,70 +91,82 @@ class ServerPlayer extends Thread {
 
             Object question = null;
 
-            while (opponent == null) {//innan opponent anslutet så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
-                Thread.sleep(1000);
-            } //todo ta in meddelande ifall båda är uppkopplade -> då startar vi
 
-            while (true) {
-                if (state == 2) {
+            this.readyToPlay = inputbuffer.readLine();
+            System.out.println(readyToPlay);
+
+            if (readyToPlay.contains("player 1")) {
+                gameEngine.player1Ready = true;
+            } else if (readyToPlay.contains("player 2")) {
+                gameEngine.player2Ready = true;
+            }
+
+            System.out.println("MOTSTÅNDAREN: " + opponent.readyToPlay);//kladd
+
+            while ((!gameEngine.player2Ready)) {//innan opponent anslutet så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
+                Thread.sleep(1000);
+            }
+
+                while (true) {
+                    if (state == 2) {
                 /*    if (this.equals(currentplayer)) { //todo OM SPELAREN EJ TRYCKT "STARTA" SKA DETTA EJ SKE! PGA. Annars kan spelare2 kan välja kategori
                         chooseCategory();
                     }*/
-
-                    currentRound = 0;
-                    state = 3;
-                } else if (state == 3) {
-                    // ServerGameEngine
-                    while (currentRound<rounds){
-                        if ((this.equals(currentplayer)) && (setCategory==true)) {
-                            chooseCategory();
-                            setCategory=false;
-                            opponent.setCategory=false;
-                        }
-                        if (this.equals(currentplayer)) { //&& (roundDone == false)
-                            for (int i = 0; i < numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
-                                if (turn == 1) {
-                                    question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);//todo kontrollera att question inte redan använts, metod i ServerGameEngine
-                                    objectOut.writeObject(question);
-                                    gameEngine.addQuestionToList((Question) question);
-                                } else {
-                                    objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                        currentRound = 0;
+                        state = 3;
+                    } else if (state == 3) {
+                        // ServerGameEngine
+                        while (currentRound < rounds) {
+                            if ((this.equals(currentplayer)) && (setCategory == true)) {
+                                chooseCategory();
+                                setCategory = false;
+                                opponent.setCategory = false;
+                            }
+                            if (this.equals(currentplayer)) { //&& (roundDone == false)
+                                for (int i = 0; i < questionsPerRound; i++) { //properties-filen väljer ju antal ronder samt frågor
+                                    if (turn == 1) {
+                                        question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);//todo kontrollera att question inte redan använts, metod i ServerGameEngine
+                                        objectOut.writeObject(question);
+                                        gameEngine.addQuestionToList((Question) question);
+                                    } else {
+                                        objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                                    }
+                                    objectOut.flush();
+                                    pointString = inputbuffer.readLine(); //todo poäng
                                 }
-                                objectOut.flush();
-                                pointString = inputbuffer.readLine(); //todo poäng
+                                if (turn == 2) {
+                                    gameEngine.removeContentsFromQuestionList();
+                                    // turn=1;
+                                    //    roundDone = true;
+                                    //    opponent.roundDone = true;
+                                    setCategory = true;
+                                    opponent.setCategory = true;
+                                    setCurrentRoundPlusOne();
+                                    //       changePlayerTurn(); //eftersom vi vill att varannan spelare ska få välja kategori
+                                    //    opponent.changePlayerTurn();
+                                }
+                                changePlayerTurn(); //här ändras både currentplayer och turn
+                                opponent.changePlayerTurn();
+                                //todo skicka meddelande om att byta layout
                             }
-                            if (turn == 2) {
-                                gameEngine.removeContentsFromQuestionList();
-                                // turn=1;
-                            //    roundDone = true;
-                            //    opponent.roundDone = true;
-                                setCategory=true;
-                                opponent.setCategory=true;
-                                setCurrentRoundPlusOne();
-                         //       changePlayerTurn(); //eftersom vi vill att varannan spelare ska få välja kategori
-                            //    opponent.changePlayerTurn();
-                            }
-                            changePlayerTurn(); //här ändras både currentplayer och turn
-                            opponent.changePlayerTurn();
-                            //todo skicka meddelande om att byta layout
+                            //   roundDone=false;
                         }
-                     //   roundDone=false;
+                        // currentRound=0; //ska enbart sättas om vi startar nytt spel
+
+                        //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
+                        //  state = 4;
+                    } else if (state == 4) {
+                        //SKICKA POÄNG TILL CLIENTSIDAN
                     }
-                   // currentRound=0; //ska enbart sättas om vi startar nytt spel
-
-                    //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
-                    //  state = 4;
-                } else if (state == 4) {
-                    //SKICKA POÄNG TILL CLIENTSIDAN
                 }
+            } catch(IOException e){
+                System.out.println("Player " + playerName + " died: " + e);
+            } catch(InterruptedException e){
+                throw new RuntimeException(e);
             }
-
-        } catch (IOException e) {
-            System.out.println("Player " + playerName + " died: " + e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
-    }
+
+
 
     public void chooseCategory() throws IOException {
         objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
