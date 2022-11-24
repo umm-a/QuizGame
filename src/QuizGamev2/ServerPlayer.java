@@ -132,7 +132,7 @@ class ServerPlayer extends Thread {
                         }
                         state = 4;
                     } else if (state == 4) {
-                        //objectOut.writeObject(gameEngine.countScore(state, true, this));
+
                         //SKICKA POÄNG TILL CLIENTSIDAN
                     }
                 }

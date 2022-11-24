@@ -89,22 +89,33 @@ public class ServerGameEngine{
     }
 
     */
-    public void notifyWinner (ServerPlayer player) {//todo behöver få info från PlayerClient
-        if (player.points > player.getOpponent().points) {
+    public void notifyWinner (List<Integer> player1Scores, List<Integer> player2Scores) {//todo behöver få info från PlayerClient
 
-            player.outputwriter.println(player.playerName + " wins!"); //Ska man kunna välja användarnamn?
 
-        } else if (player.points < player.getOpponent().points) {
+        if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
 
-            player.outputwriter.println(player.getOpponent().playerName + " wins");
+            serverPlayer.outputwriter.println("Player 1 wins"); //Ska man kunna välja användarnamn?
 
-        } else if (player.points == player.getOpponent().points) {
+        } else if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
 
-            player.outputwriter.println("TIE");
+            serverPlayer.outputwriter.println("Palyer 2 wins");
+
+        } else if (sumOfScores(player1Scores) == sumOfScores(player1Scores)) {
+
+            serverPlayer.outputwriter.println("TIE");
 
         } else {
-            player.outputwriter.println("Something went wrong in notifyWinner-method of Player");
+            serverPlayer.outputwriter.println("Something went wrong in notifyWinner-method of Player");
         }
+    }
+
+    public int sumOfScores (List<Integer> scores){
+
+        int sum = 0;
+        for (int i : scores){
+            sum += i;
+        }
+        return sum;
     }
 
 }
