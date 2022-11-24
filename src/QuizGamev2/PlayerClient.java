@@ -97,7 +97,7 @@ public class PlayerClient implements ActionListener {
             outpw.println(playerGUI2.nickNametf.getText());
             if(playerName=="player 2"){
                 //Watiting for opponent-ruta
-                playerGUI2.setScoreLayout(1, 1);
+          //      playerGUI2.setScoreLayout(1, 1);
             }
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
