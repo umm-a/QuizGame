@@ -25,23 +25,25 @@ public class PlayerGUI2 extends JFrame {
     Font myFont = new Font("Arial", Font.BOLD, 19);
     Font myFont2 = new Font("Arial", Font.BOLD, 15);
     Font myFont3 = new Font("Arial", Font.BOLD, 14);
+    List<SmallCircle> playerDots;
+    List<SmallCircle> opponentDots;
     PlayerClient playerClient;
+    boolean isBuilt = false;
     JTextField nickNametf;
     String opponentNickname;
-
-
 
 
     //bara för test:
     String[] cata = {"Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"};
     List<String> catlist = new ArrayList<String>(Arrays.asList(cata));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
-    int[] playerScore = {1,1,0,1,0,0,0,0};
-    int[] opponentScore = new int[8];
+    Question qtest2 = new Question("Matematik", "Vilket tal ligger närmast PI", "3.14", "5.14", "14.3", "200");
+    List<Integer> playerScore = new ArrayList<>(Arrays.asList(1));
+    List<Integer> opponentScore = new ArrayList<>(Arrays.asList(0));
 // test slut
 
     public PlayerGUI2() throws Exception {
-       //  this.playerClient = new PlayerClient(this);  //denna inaktiveras vid test
+        //  this.playerClient = new PlayerClient(this);  //denna inaktiveras vid test
 
 
 //bara för test:
@@ -49,12 +51,19 @@ public class PlayerGUI2 extends JFrame {
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
         //Thread.sleep(10000);
-        setCategoryLayout(catlist,playerClient);
+        setCategoryLayout(catlist, playerClient);
         sc.nextLine();
         //Thread.sleep(10000);
         setQuestionLayout(qtest, playerClient);
         sc.nextLine();
-        setScoreLayout(2,4,playerScore,opponentScore, "Your turn");
+        setScoreLayout(2, 4, playerScore, opponentScore, "Your turn");
+        sc.nextLine();
+        setQuestionLayout(qtest, playerClient);
+        List<Integer> playerScore = new ArrayList<>(Arrays.asList(1, 1));
+        List<Integer> opponentScore = new ArrayList<>(Arrays.asList(0, 0));
+        setScoreLayout(2, 4, playerScore, opponentScore, "Your turn");
+
+
 //test slut
     }
 
@@ -103,10 +112,14 @@ public class PlayerGUI2 extends JFrame {
     }
 
 
-    public void setCategoryLayout(List<String> categorylist ,PlayerClient playerClient) {
+    public void setCategoryLayout(List<String> categorylist, PlayerClient playerClient) {
         catButtons = new ArrayList<>();
         int noOfCat = categorylist.size();
-        baseFrame.getContentPane().removeAll();
+        //  baseFrame.getContentPane().removeAll();
+
+        if (scorePanel != null && scorePanel.isVisible())
+            scorePanel.setVisible(false);
+        else welcomePanel.setVisible(false);
 
         categoryPanel = new JPanel();
         categoryPanel.setLayout(null);
@@ -140,7 +153,12 @@ public class PlayerGUI2 extends JFrame {
 
 
     public void setQuestionLayout(Question qObj, PlayerClient playerClient) {
-        baseFrame.getContentPane().removeAll();
+        // baseFrame.getContentPane().removeAll();
+
+        if (scorePanel != null && scorePanel.isVisible())
+            scorePanel.setVisible(false);
+        else categoryPanel.setVisible(false);
+
         questionPanel = new JPanel();
         questionPanel.setLayout(null);
         questionPanel.setBounds(10, 10, 320, 450);
@@ -183,159 +201,166 @@ public class PlayerGUI2 extends JFrame {
 
 
     //todo ändra till list på playerscore
-    public void setScoreLayout(int questionPerRound, int rounds, int[] playerScore, int[] opponentScore, String statusMessage) {
+    public void setScoreLayout(int questionPerRound, int rounds, List<Integer> playerScore, List<Integer> opponentScore, String statusMessage) {
 
-        int playerGamescore=0;
+        int playerGamescore = playerScore.stream().mapToInt(Integer::intValue).sum();
+        int opponentGamescore = opponentScore.stream().mapToInt(Integer::intValue).sum();
+        JLabel gameInfoLabel;
+        JLabel playerNameLabel;
+        JLabel opponentNameLabel;
+        JLabel playerGameScore;
+        JLabel opponentGameScore;
+        JPanel playerScorePanel;
+        JPanel opponentScorePanel;
+        JButton fortsättButton;
 
-        baseFrame.getContentPane().removeAll();
-        scorePanel = new JPanel();
-        scorePanel.setLayout(null);
-        scorePanel.setBounds(10, 10, 320, 450);
-        scorePanel.setBorder(new EtchedBorder());
-
-        JLabel gameInfoLabel = new JLabel(statusMessage,SwingConstants.CENTER);
-        gameInfoLabel.setBounds(80,70,160,30);
-        gameInfoLabel.setFont(myFont2);
-        gameInfoLabel.setBorder(new EtchedBorder());
-        scorePanel.add(gameInfoLabel);
-
-
-        JLabel playerNameLabel = new JLabel("Nick1",SwingConstants.CENTER);
-        playerNameLabel.setBounds(0,20,120,30);
-        playerNameLabel.setFont(myFont2);
-        playerNameLabel.setBorder(new EtchedBorder());
-        scorePanel.add(playerNameLabel);
-
-        JLabel opponentNameLabel = new JLabel("Nick2",SwingConstants.CENTER);
-        opponentNameLabel.setBounds(200,20,120,30);
-        opponentNameLabel.setFont(myFont2);
-        opponentNameLabel.setBorder(new EtchedBorder());
-        scorePanel.add(opponentNameLabel);
+        // baseFrame.getContentPane().removeAll();
+        questionPanel.setVisible(false);
 
 
-        JLabel playerGameScore = new JLabel(String.valueOf(playerGamescore),SwingConstants.CENTER);
-        playerGameScore.setBounds(40,70,40,40);
-        playerGameScore.setFont(myFont4);
-        playerGameScore.setBorder(new EtchedBorder());
-        scorePanel.add(playerGameScore);
+        if (!isBuilt) {
+            scorePanel = new JPanel();
+            scorePanel.setLayout(null);
+            scorePanel.setBounds(10, 10, 320, 450);
+            scorePanel.setBorder(new EtchedBorder());
 
-        JLabel opponentGameScore = new JLabel("5",SwingConstants.CENTER);
-        opponentGameScore.setBounds(240,70,40,40);
-        opponentGameScore.setFont(myFont4);
-        opponentGameScore.setBorder(new EtchedBorder());
-        scorePanel.add(opponentGameScore);
+            gameInfoLabel = new JLabel(statusMessage, SwingConstants.CENTER);
+            gameInfoLabel.setBounds(80, 70, 160, 30);
+            gameInfoLabel.setFont(myFont2);
+            gameInfoLabel.setBorder(new EtchedBorder());
+            scorePanel.add(gameInfoLabel);
 
+            playerNameLabel = new JLabel("Nick1", SwingConstants.CENTER);
+            playerNameLabel.setBounds(0, 20, 120, 30);
+            playerNameLabel.setFont(myFont2);
+            playerNameLabel.setBorder(new EtchedBorder());
+            scorePanel.add(playerNameLabel);
 
-        JPanel playerScorePanel = new JPanel();
-        playerScorePanel.setLayout(new GridLayout(0,questionPerRound));
-        playerScorePanel.setBounds(0,120,120,240);
-        playerScorePanel.setBorder(new EtchedBorder());
-        scorePanel.add(playerScorePanel);
-
-
-        JPanel opponentScorePanel = new JPanel();
-        opponentScorePanel.setLayout(new GridLayout(0,questionPerRound));
-        opponentScorePanel.setBounds(200,120,120,240);
-        opponentScorePanel.setBorder(new EtchedBorder());
-        scorePanel.add(opponentScorePanel);
-
-        //hämtar in griddimensioner som används av SmallCircle-klassen för centrering av cirkel i sin JPanel
-        int panelwidth = playerScorePanel.getSize().width;
-        int panelheight = playerScorePanel.getSize().height;
-         gridwidth = (panelwidth/questionPerRound) +6 ; //adderar 6 för att kompensera för borderbortfall
-         gridheight = (panelheight/rounds) +6;  //adderar 6 för att kompensera för borderbortfall
+            opponentNameLabel = new JLabel("Nick2", SwingConstants.CENTER);
+            opponentNameLabel.setBounds(200, 20, 120, 30);
+            opponentNameLabel.setFont(myFont2);
+            opponentNameLabel.setBorder(new EtchedBorder());
+            scorePanel.add(opponentNameLabel);
 
 
-        List<SmallCircle>playerDots = new ArrayList<>();
+            playerGameScore = new JLabel(String.valueOf(playerGamescore), SwingConstants.CENTER);
+            playerGameScore.setBounds(40, 70, 40, 40);
+            playerGameScore.setFont(myFont4);
+            playerGameScore.setBorder(new EtchedBorder());
+            scorePanel.add(playerGameScore);
 
-        for (int i = 0; i < (questionPerRound*rounds); i++) {
-            playerDots.add(new SmallCircle(Color.white));
-            playerDots.get(i).setBorder(new EtchedBorder());
-            playerScorePanel.add(playerDots.get(i));
+            opponentGameScore = new JLabel(String.valueOf(opponentGamescore), SwingConstants.CENTER);
+            opponentGameScore.setBounds(240, 70, 40, 40);
+            opponentGameScore.setFont(myFont4);
+            opponentGameScore.setBorder(new EtchedBorder());
+            scorePanel.add(opponentGameScore);
+
+            playerScorePanel = new JPanel();
+            playerScorePanel.setLayout(new GridLayout(0, questionPerRound));
+            playerScorePanel.setBounds(0, 120, 120, 240);
+            playerScorePanel.setBorder(new EtchedBorder());
+            scorePanel.add(playerScorePanel);
+
+            opponentScorePanel = new JPanel();
+            opponentScorePanel.setLayout(new GridLayout(0, questionPerRound));
+            opponentScorePanel.setBounds(200, 120, 120, 240);
+            opponentScorePanel.setBorder(new EtchedBorder());
+            scorePanel.add(opponentScorePanel);
+
+            //hämtar in griddimensioner som används av SmallCircle-klassen för centrering av cirkel i sin JPanel (måste ligga innan baseFrame.revalidate().paint().add())
+            int panelwidth = playerScorePanel.getSize().width;
+            int panelheight = playerScorePanel.getSize().height;
+            gridwidth = (panelwidth / questionPerRound) + 6; //adderar 6 för att kompensera för borderbortfall
+            gridheight = (panelheight / rounds) + 6;  //adderar 6 för att kompensera för borderbortfall
+
+
+            //skapa upp nya scoreDots vid spelets första fråga
+
+
+            playerDots = new ArrayList<>();
+            for (int i = 0; i < (questionPerRound * rounds); i++) {
+                playerDots.add(new SmallCircle(Color.white));
+                playerDots.get(i).setBorder(new EtchedBorder());
+                playerScorePanel.add(playerDots.get(i));
+            }
+
+            opponentDots = new ArrayList<>();
+            for (int i = 0; i < (questionPerRound * rounds); i++) {
+                opponentDots.add(new SmallCircle(Color.white));
+                opponentDots.get(i).setBorder(new EtchedBorder());
+                opponentScorePanel.add(opponentDots.get(i));
+            }
+            isBuilt = true;
+
+
+            baseFrame.add(scorePanel);
+            baseFrame.revalidate();
+            baseFrame.repaint();
+
+            fortsättButton = new JButton("Fortsätt");
+            fortsättButton.setBounds(110, 380, 100, 50);
+            fortsättButton.setFont(myFont2);
+            scorePanel.add(fortsättButton);
+
+
+            isBuilt = true;
         }
-
-        List<SmallCircle>opponentDots = new ArrayList<>();
-        for (int i = 0; i < (questionPerRound*rounds); i++) {
-            opponentDots.add(new SmallCircle(Color.white));
-            opponentDots.get(i).setBorder(new EtchedBorder());
-            opponentScorePanel.add(opponentDots.get(i));
-        }
-
-        baseFrame.add(scorePanel);
-        baseFrame.revalidate();
-        baseFrame.repaint();
-
-        JButton fortsättButton = new JButton("Fortsätt");
-        fortsättButton.setBounds(110,380,100,50);
-        fortsättButton.setFont(myFont2);
-        scorePanel.add(fortsättButton);
 
 
         //update score dots with depending on points
         //update thisPlayer
-        for (int i = 0; i < 4; i++) {
-            if (playerScore[i] == 1) {
-                playerDots.get(i).color = Color.GREEN;
-                playerGamescore++;
-            } else playerDots.get(i).color = Color.RED;
+        if (playerScore.get(playerScore.size() - 1) == 1)
+            playerDots.get(playerScore.size() - 1).color = Color.GREEN;
+        else playerDots.get(playerScore.size() - 1).color = Color.RED;
 
-            baseFrame.revalidate();
-            baseFrame.repaint();
-        }
+        baseFrame.revalidate();
+        baseFrame.repaint();
 
-            //update opponentPlayer
-            for (int i = 0; i < 4; i++) {
-                if(playerScore[i]==1) {
-                    playerDots.get(i).color = Color.GREEN;
-                    playerGamescore++;
-                } else playerDots.get(i).color = Color.RED;
+        //update opponentPlayer
+        if (opponentScore.get(opponentScore.size() - 1) == 1)
+            opponentDots.get(opponentScore.size() - 1).color = Color.GREEN;
+        else opponentDots.get(opponentScore.size() - 1).color = Color.RED;
 
-                baseFrame.revalidate();
-                baseFrame.repaint();
-
-
-        }
-
-
-
-
+        baseFrame.revalidate();
+        baseFrame.repaint();
+        scorePanel.setVisible(true);
     }
-
-
-
 
 
     int gridwidth;
     int gridheight;
+
     //Denna klass ritar en cirkel, används i ScoreLayout
-        class SmallCircle extends JPanel {
+    class SmallCircle extends JPanel {
         int radie, x, y;
         Color color;
-        public SmallCircle(Color color){
+
+        public SmallCircle(Color color) {
             super();
-            radie=15;
-            x=(gridwidth/2)-radie;
+            radie = 15;
+            x = (gridwidth / 2) - radie;
             System.out.println(gridwidth);
-            y=(gridheight/2)-radie;
+            y = (gridheight / 2) - radie;
 
 
-            this.color=color;
-        }
-            public void paintComponent(Graphics comp) {
-                Graphics2D comp2D = (Graphics2D) comp;
-                Color bgcolor = scorePanel.getBackground();
-                comp2D.setColor(bgcolor);
-                comp2D.fillRect(0, 0, getSize().width, getSize().height);
-                comp2D.setColor(color);
-                Ellipse2D.Float circle = new Ellipse2D.Float(x, y, radie, radie);
-                comp2D.fill(circle);
-            }
+            this.color = color;
         }
 
-
-        public static void main (String[]args) throws Exception {
-            PlayerGUI2 g2 = new PlayerGUI2();
+        public void paintComponent(Graphics comp) {
+            Graphics2D comp2D = (Graphics2D) comp;
+            Color bgcolor = scorePanel.getBackground();
+            comp2D.setColor(bgcolor);
+            comp2D.fillRect(0, 0, getSize().width, getSize().height);
+            comp2D.setColor(color);
+            Ellipse2D.Float circle = new Ellipse2D.Float(x, y, radie, radie);
+            comp2D.fill(circle);
         }
-
-
     }
+
+
+    public static void main(String[] args) throws Exception {
+        PlayerGUI2 g2 = new PlayerGUI2();
+    }
+
+
+}
