@@ -61,6 +61,10 @@ public class QuestionDatabase2 implements Serializable {
             }
         }
         Collections.shuffle(myQuestionList);
-        return myQuestionList.get(0);
+        Question questionToSend = myQuestionList.get(0);
+        questionlist.remove(questionToSend);
+        return questionToSend;
     }
+
 }
+
