@@ -46,15 +46,15 @@ public class ServerGameEngine{
         String playerName = scoreString[0].trim();
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
 
-        if (playerName.equals("Player 1") && isCorrectAnswer == true){
+        if (playerName.equals("player 1") && isCorrectAnswer == true){
             serverPlayer.player1Scores.add(1);
             return serverPlayer.player1Scores;
         }
-        else if (playerName.equals("Player 1") && isCorrectAnswer == false){
+        else if (playerName.equals("player 1") && isCorrectAnswer == false){
             serverPlayer.player1Scores.add(0);
             return serverPlayer.player1Scores;
         }
-        else if (playerName.equals("Player 2") && isCorrectAnswer == true) {
+        else if (playerName.equals("player 2") && isCorrectAnswer == true) {
             serverPlayer.player2Scores.add(1);
             return serverPlayer.player2Scores;
         }
@@ -74,10 +74,10 @@ public class ServerGameEngine{
 
         String[] scoreString = pointString.split("," );
         String playerName = scoreString[0].trim();
-        if (playerName.equals("Player 1")){
+        if (playerName.equals("player 1")){
             return "ScoreList of player 1";
         }
-        else if (playerName.equals("Player 2")){
+        else if (playerName.equals("player 2")){
             return "ScoreList of player 2";
         }
         else{
