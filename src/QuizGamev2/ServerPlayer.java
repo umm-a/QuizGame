@@ -159,7 +159,7 @@ class ServerPlayer extends Thread {
                         //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
                         //  state = 4;
                     } else if (state == 4) {
-                        objectOut.writeObject(gameEngine.countScore(state, true, this));
+                       // objectOut.writeObject(gameEngine.countScore(state, true, this));
                         //SKICKA POÄNG TILL CLIENTSIDAN
                     }
                 }
