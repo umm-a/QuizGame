@@ -230,11 +230,6 @@ public class PlayerGUI2 extends JFrame{
 
     }
 
-
-
-
-
-
     //Denna klass ritar en cirkel, används i ScoreLayout
     class SmallCircle extends JPanel {
         int radie, x, y;
