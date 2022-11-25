@@ -17,6 +17,7 @@ public class PlayerGUI2 extends JFrame {
     JPanel welcomePanel;
     JPanel categoryPanel;
     JPanel questionPanel;
+    JPanel waitingPanel;
     JPanel scorePanel;
     JButton startButton;
     List<JButton> catButtons;
@@ -35,23 +36,26 @@ public class PlayerGUI2 extends JFrame {
     PlayerClient playerClient;
 
     //bara för test:
-   /* List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"));
+  /*  List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"));
     List<String> catlist2 = new ArrayList<String>(Arrays.asList("Historia", "Matematik", "Geologi", "Teknik"));
     List<String> catlist3 = new ArrayList<String>(Arrays.asList("Astronomi", "Astrologi", "Religion", "Konst"));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
     Question qtest2 = new Question("Matematik", "Vilket tal ligger närmast PI", "3.14", "5.14", "14.3", "200");
     Question qtest3 = new Question("Historia", "Under vilket sekel levde Birger Jarl ", "1200-talet", "1700-talet", "1400-talet", "1600-talet");
     List<Integer> playerScore = new ArrayList<>(Arrays.asList(1));
-    List<Integer> opponentScore = new ArrayList<>(Arrays.asList(0));*/
+    List<Integer> opponentScore = new ArrayList<>(Arrays.asList(0));
+    String waitingMessage ="Waiting for opponent to connect";*/
 // test slut
 
     public PlayerGUI2() throws Exception {
-        this.playerClient = new PlayerClient(this);
+    //    this.playerClient = new PlayerClient(this);
 
 //bara för test:
       /* setWelcomeLayout(playerClient);
         opponentNickname="Tomten";
         Scanner sc = new Scanner(System.in);
+        sc.nextLine();
+        setWaitingLayout(waitingMessage);
         sc.nextLine();
         setCategoryLayout(catlist, playerClient);
         sc.nextLine();
@@ -197,10 +201,29 @@ public class PlayerGUI2 extends JFrame {
             baseFrame.add(questionPanel);
             baseFrame.revalidate();
             baseFrame.repaint();
-            questionPanel.setVisible(true);
+
         }
     }
 
+    public void setWaitingLayout(String message){
+        baseFrame.getContentPane().removeAll();
+
+        waitingPanel = new JPanel();
+        waitingPanel.setLayout(null);
+        waitingPanel.setBounds(10, 10, 320, 450);
+        waitingPanel.setBorder(new EtchedBorder());
+
+        JLabel waitingMessagelb = new JLabel("<html><body style='text-align:center'>" + message, SwingConstants.CENTER);
+        waitingMessagelb.setBounds(30, 100, 260, 120);
+        waitingMessagelb.setFont(myFont);
+        waitingMessagelb.setBorder(new EtchedBorder());
+        waitingPanel.add(waitingMessagelb);
+
+        baseFrame.add(waitingPanel);
+        baseFrame.revalidate();
+        baseFrame.repaint();
+
+    }
 
     //todo ändra till list på playerscore
     public void setScoreLayout(int questionPerRound, int rounds, List<Integer> playerScore, List<Integer> opponentScore, String statusMessage,PlayerClient playerClient) {
