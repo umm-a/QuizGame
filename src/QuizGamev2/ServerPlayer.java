@@ -138,7 +138,7 @@ class ServerPlayer extends Thread {
                                     }
                                     objectOut.flush();
                                     pointString = inputbuffer.readLine();
-                                    System.out.println(pointString); //Här fick vi endast nickname av spelaren
+                                    System.out.println(pointString + " är mottagen");
                                     gameEngine.addScoreToList(pointString);//todo Ling, din koddel passar någonstans här <------------
 
                                 }

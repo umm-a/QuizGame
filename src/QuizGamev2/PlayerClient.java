@@ -81,7 +81,7 @@ public class PlayerClient implements ActionListener {
                 setCurrentObject((Question) obj);
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
-            } else {
+            }   else {
                 System.out.println("This is where things tend to go wrong");
             }
             //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
@@ -145,9 +145,8 @@ public class PlayerClient implements ActionListener {
 
             state = UPDATESETSCORE;
 
-        } else if (state == UPDATESETSCORE) {
-            //playerGUI2.setScoreLayout(questionsPerRound,rounds,);
-
         }
+
+
     }
 }
