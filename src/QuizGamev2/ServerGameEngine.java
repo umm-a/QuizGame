@@ -10,7 +10,7 @@ public class ServerGameEngine{
 
     String nickName1;
     String nickName2;
-    ServerPlayer serverPlayer;
+    ServerPlayer serverPlayer = new ServerPlayer();
     List<Question> tempQuestionList = new ArrayList<>();
 
     QuestionDatabase2 questionDatabase2;
@@ -40,17 +40,12 @@ public class ServerGameEngine{
         return tempQuestionList.get(i);
     }
 
-    public void separateScoreString(String pointString){
+    public List<Integer> addScoreToList(String pointString){
 
         String[] scoreString = pointString.split("," );
         String playerName = scoreString[0].trim();
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
 
-        addScoreToList(playerName,isCorrectAnswer);
-
-    }
-
-    public List<Integer> addScoreToList(String playerName, Boolean isCorrectAnswer){
         if (playerName.equals("Player 1") && isCorrectAnswer == true){
             serverPlayer.player1Scores.add(1);
             return serverPlayer.player1Scores;
@@ -75,24 +70,19 @@ public class ServerGameEngine{
     }
 
 
-    //
-    public int countScore(int state, boolean isCorrectAnswer, ServerPlayer player){
-        if (state == 3  && isCorrectAnswer == true){
-            player.points++;
-            scoreToString(player.points);
+    public String checkPlayer(String pointString){
+
+        String[] scoreString = pointString.split("," );
+        String playerName = scoreString[0].trim();
+        if (playerName.equals("Player 1")){
+            return "ScoreList of player 1";
         }
-        else if (state == 4){
-            scoreToString(player.points);
+        else if (playerName.equals("Player 2")){
+            return "ScoreList of player 2";
         }
-        return player.points;
-    }
-
-    public String scoreToString(int points){
-
-        String pointString = "Your score: " + points;
-
-        return pointString;
-
+        else{
+            return "Något gick fel i checkPlayer()";
+        }
     }
 
 
