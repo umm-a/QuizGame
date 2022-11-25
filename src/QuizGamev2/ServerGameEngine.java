@@ -10,7 +10,7 @@ public class ServerGameEngine{
 
     String nickName1;
     String nickName2;
-    ServerPlayer currentPlayer;
+    ServerPlayer serverPlayer;
     List<Question> tempQuestionList = new ArrayList<>();
 
     QuestionDatabase2 questionDatabase2;
@@ -34,11 +34,6 @@ public class ServerGameEngine{
             toRemove.add(q);
         }
 
-
-       /* for (Question q: tempQuestionList) {
-            this.tempQuestionList.remove(q);
-        }*/
-
         tempQuestionList.removeAll(toRemove);
     }
     public Question getFromQuestionList(int i){
@@ -48,18 +43,35 @@ public class ServerGameEngine{
     public void separateScoreString(String pointString){
 
         String[] scoreString = pointString.split("," );
+        String playerName = scoreString[0].trim();
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
-        currentPlayer.playerName = scoreString[0]; // är det samma player??
 
-        //countScore(3,isCorrectAnswer,+++)
+        addScoreToList(playerName,isCorrectAnswer);
 
-        if (isCorrectAnswer == true){
-            currentPlayer.points ++;
-            scoreToString(currentPlayer.points);
+    }
+
+    public List<Integer> addScoreToList(String playerName, Boolean isCorrectAnswer){
+        if (playerName.equals("Player 1") && isCorrectAnswer == true){
+            serverPlayer.player1Scores.add(1);
+            return serverPlayer.player1Scores;
+        }
+        else if (playerName.equals("Player 1") && isCorrectAnswer == false){
+            serverPlayer.player1Scores.add(0);
+            return serverPlayer.player1Scores;
+        }
+        else if (playerName.equals("Player 2") && isCorrectAnswer == true) {
+            serverPlayer.player2Scores.add(1);
+            return serverPlayer.player2Scores;
+        }
+        else if (playerName.equals("player 2") && isCorrectAnswer == false){
+            serverPlayer.player2Scores.add(0);
+            return serverPlayer.player1Scores;
         }
         else {
-            scoreToString(currentPlayer.points);
+            System.out.println("Det gick inte att lägga poäng i listan");
+            return null;
         }
+
     }
 
 
@@ -82,22 +94,35 @@ public class ServerGameEngine{
         return pointString;
 
     }
-    public void notifyWinner (ServerPlayer player) {//todo behöver få info från PlayerClient
-        if (player.points > player.getOpponent().points) {
 
-            player.outputwriter.println(player.playerName + " wins!"); //Ska man kunna välja användarnamn?
+    */
+    public void notifyWinner (List<Integer> player1Scores, List<Integer> player2Scores) {//todo behöver få info från PlayerClient
 
-        } else if (player.points < player.getOpponent().points) {
 
-            player.outputwriter.println(player.getOpponent().playerName + " wins");
+        if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
 
-        } else if (player.points == player.getOpponent().points) {
+            serverPlayer.outputwriter.println("Player 1 wins"); //Ska man kunna välja användarnamn?
 
-            player.outputwriter.println("TIE");
+        } else if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
+
+            serverPlayer.outputwriter.println("Palyer 2 wins");
+
+        } else if (sumOfScores(player1Scores) == sumOfScores(player1Scores)) {
+
+            serverPlayer.outputwriter.println("TIE");
 
         } else {
-            player.outputwriter.println("Something went wrong in notifyWinner-method of Player");
+            serverPlayer.outputwriter.println("Something went wrong in notifyWinner-method of Player");
         }
+    }
+
+    public int sumOfScores (List<Integer> scores){
+
+        int sum = 0;
+        for (int i : scores){
+            sum += i;
+        }
+        return sum;
     }
 
 }

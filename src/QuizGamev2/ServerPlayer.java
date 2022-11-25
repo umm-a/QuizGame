@@ -27,6 +27,9 @@ class ServerPlayer extends Thread {
     int gameround;
     String pointString;
 
+    List<Integer> player1Scores = new ArrayList<>();
+    List<Integer> player2Scores = new ArrayList<>();
+
 
     protected int state = 0;
     String chosenCategory;
@@ -76,7 +79,7 @@ class ServerPlayer extends Thread {
             Properties properties = new Properties();
             try {
                 properties.load(new FileInputStream("src\\QuizGamev2\\PropertiesFile.properties"));
-            } catch (Exception e) {
+            } catch (Exception e){
                 e.printStackTrace();
             }
 
@@ -156,6 +159,7 @@ class ServerPlayer extends Thread {
                         //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
                         //  state = 4;
                     } else if (state == 4) {
+                        objectOut.writeObject(gameEngine.countScore(state, true, this));
                         //SKICKA POÄNG TILL CLIENTSIDAN
                     }
                 }
@@ -197,13 +201,13 @@ class ServerPlayer extends Thread {
     }
 
 
-    protected void addOnePoint() {
-        points += 1;
-    }
+            protected void addOnePoint () {
+                points += 1;
+            }
 
-    protected int getPoints() {
-        return points;
-    }
-}
+            protected int getPoints () {
+                return points;
+            }
+        }
 
 
