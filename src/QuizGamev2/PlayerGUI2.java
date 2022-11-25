@@ -26,6 +26,8 @@ public class PlayerGUI2 extends JFrame {
     Font myFont = new Font("Arial", Font.BOLD, 19);
     Font myFont2 = new Font("Arial", Font.BOLD, 15);
     Font myFont3 = new Font("Arial", Font.BOLD, 14);
+    Font myFont5 = new Font("Arial", Font.BOLD, 26);
+    Font myFont6 = new Font("Arial", Font.BOLD, 42);
     PlayerClient playerClient;
     JTextField nickNametf;
     String opponentNickname;
@@ -258,9 +260,70 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.repaint();
     }
 
-    public void setGameCompletedLayout(String nickname, String opponentNickname, int[] playerScore, int[] opponentScore) {
-        baseFrame.getContentPane().removeAll();
+    public void setGameCompletedLayout(String nickname, String opponentNickname, PlayerClient playerClient) {
 
+        baseFrame.getContentPane().removeAll();
+        JPanel gameCompletedPanel = new JPanel();
+        gameCompletedPanel.setLayout(null);
+        gameCompletedPanel.setBounds(10, 10, 320, 450);
+        gameCompletedPanel.setBorder(new EtchedBorder());
+
+        String gameResultMessage = "Du vann!";
+        JLabel gameResultLabel = new JLabel(gameResultMessage, SwingConstants.CENTER);
+        gameResultLabel.setBounds(10, 30, 300, 60);
+        gameResultLabel.setFont(myFont5);
+        gameCompletedPanel.add(gameResultLabel);
+
+        JLabel playerNickLabel = new JLabel(nickname, SwingConstants.CENTER);
+        playerNickLabel.setBounds(0, 140, 140, 50);
+        playerNickLabel.setFont(myFont2);
+        gameCompletedPanel.add(playerNickLabel);
+
+        JLabel opponentNickLabel = new JLabel(opponentNickname, SwingConstants.CENTER);
+        opponentNickLabel.setBounds(180, 140, 140, 50);
+        opponentNickLabel.setFont(myFont2);
+        gameCompletedPanel.add(opponentNickLabel);
+
+        JLabel vsLabel = new JLabel("VS", SwingConstants.CENTER);
+        vsLabel.setBounds(140, 140, 40, 50);
+        vsLabel.setFont(myFont2);
+        gameCompletedPanel.add(vsLabel);
+
+        JLabel playerScoreLabel = new JLabel("6", SwingConstants.CENTER);
+        playerScoreLabel.setBounds(0, 190, 140, 60);
+        playerScoreLabel.setFont(myFont6);
+        gameCompletedPanel.add(playerScoreLabel);
+
+        JLabel opponentScoreLabel = new JLabel("4", SwingConstants.CENTER);
+        opponentScoreLabel.setBounds(180, 190, 140, 60);
+        opponentScoreLabel.setFont(myFont6);
+        gameCompletedPanel.add(opponentScoreLabel);
+
+        JLabel hyphenLabel = new JLabel("-", SwingConstants.CENTER);
+        hyphenLabel.setBounds(140, 190, 40, 60);
+        hyphenLabel.setFont(myFont6);
+        gameCompletedPanel.add(hyphenLabel);
+
+        JLabel newGameLabel = new JLabel("Play again?", SwingConstants.CENTER);
+        newGameLabel.setBounds(0, 290, 320, 60);
+        newGameLabel.setFont(myFont5);
+        gameCompletedPanel.add(newGameLabel);
+
+        JButton yesButton = new JButton("Yes");
+        yesButton.setBounds(60, 360, 70, 50);
+        yesButton.setFont(myFont5);
+        yesButton.setBorder(new EtchedBorder());
+        yesButton.setBackground(Color.GREEN);
+        yesButton.addActionListener(playerClient);
+        gameCompletedPanel.add(yesButton);
+
+        JButton noButton = new JButton("No");
+        noButton.setBounds(180, 360, 70, 50);
+        noButton.setFont(myFont5);
+        noButton.setBorder(new EtchedBorder());
+        noButton.setBackground(Color.RED);
+        noButton.addActionListener(playerClient);
+        gameCompletedPanel.add(noButton);
 
         baseFrame.add(gameCompletedPanel);
         baseFrame.revalidate();
@@ -289,10 +352,7 @@ public class PlayerGUI2 extends JFrame {
             }
         }
 
-
         public static void main (String[]args) throws Exception {
             PlayerGUI2 g2 = new PlayerGUI2();
         }
-
-
     }
