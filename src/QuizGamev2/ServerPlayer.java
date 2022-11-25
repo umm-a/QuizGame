@@ -75,7 +75,7 @@ class ServerPlayer extends Thread {
 
             Properties properties = new Properties();
             try {
-                properties.load(new FileInputStream("C:src\\QuizGamev2\\PropertiesFile.properties"));
+                properties.load(new FileInputStream("src\\QuizGamev2\\PropertiesFile.properties"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -172,6 +172,7 @@ class ServerPlayer extends Thread {
         objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
         objectOut.flush();
         this.chosenCategory = inputbuffer.readLine();
+        opponent.chosenCategory = this.chosenCategory;
     }
     public void setCurrentRoundPlusOne(){
         this.currentRound+=1;
