@@ -136,22 +136,24 @@ class ServerPlayer extends Thread {
                                     }
                                     objectOut.flush();
                                     pointString = inputbuffer.readLine();
-                                    //  gameEngine.separateScoreString(pointString); //todo Ling, din koddel passar någonstans här <------------
+                                    System.out.println(pointString + " är mottagen");
+                                    gameEngine.addScoreToList(pointString);//todo Ling, din koddel passar någonstans här <------------
+
                                 }
                                 if (turn == 2) {
                                     gameEngine.removeContentsFromQuestionList();
-                                    // turn=1;
-                                    //    roundDone = true;
-                                    //    opponent.roundDone = true;
                                     setCategory = true;
                                     opponent.setCategory = true;
                                     setCurrentRoundPlusOne();
-                                    //       changePlayerTurn(); //eftersom vi vill att varannan spelare ska få välja kategori
-                                    //    opponent.changePlayerTurn();
                                 }
                                 //todo Ling, skicka sedan listan + "player x sent this" någonstans här <------------------
+                                objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
+                                System.out.println(gameEngine.checkPlayer(pointString) + " är skickat");
+                                objectOut.writeObject(gameEngine.addScoreToList(pointString));
                                 changePlayerTurn(); //här ändras både currentplayer och turn
                                 opponent.changePlayerTurn();
+
+                                objectOut.writeObject("Dags att byta layout till ScoreLayout");
                                 //todo skicka meddelande om att byta layout
                             }
                             //   roundDone=false;

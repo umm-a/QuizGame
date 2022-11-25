@@ -30,6 +30,8 @@ public class PlayerClient implements ActionListener {
     boolean point=false;
     int questionsPerRound;
     int rounds;
+    List<Integer> player1Scores = new ArrayList<>();
+    List<Integer> player2Scores = new ArrayList<>();
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -79,7 +81,7 @@ public class PlayerClient implements ActionListener {
                 setCurrentObject((Question) obj);
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
-            } else {
+            }   else {
                 System.out.println("This is where things tend to go wrong");
             }
             //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
@@ -97,6 +99,7 @@ public class PlayerClient implements ActionListener {
     protected void sendPoint(boolean bool){//todo poäng
         outpw.println(playerName + "," + bool);
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
+
     }
 
 
@@ -118,12 +121,16 @@ public class PlayerClient implements ActionListener {
             } else if (state==QUESTIONSTATE) {//todo OBS man ska inte kunna trycka på fler knappar när man svarat på en specifik fråga
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
+
             if ((currentObject.answerCorrect) == chosenQuestion) {
                 button.setBackground(new Color(0x9BC484));
                 point=true; //todo poäng
+                sendPoint(point);
+
             } else {
                 button.setBackground(new Color(0xF83B3B));
                 point=false; //todo poäng
+                sendPoint(point);
             }
             playerGUI2.questionPanel.repaint();
             playerGUI2.questionPanel.revalidate();
@@ -136,6 +143,10 @@ public class PlayerClient implements ActionListener {
             int delay = 500;
             timer.schedule(sendQuestionTask, delay);
 
+            state = UPDATESETSCORE;
+
         }
-        }
+
+
+    }
 }
