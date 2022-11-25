@@ -28,7 +28,7 @@ public class PlayerClient implements ActionListener {
     static final int QUESTIONSTATE = 3;
     static final int UPDATESETSCORE = 4;
     Question currentObject;
-    boolean point=false;
+    boolean point = false;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -40,7 +40,7 @@ public class PlayerClient implements ActionListener {
 
         String welcomemessage = inbuf.readLine();
         System.out.println(welcomemessage);
-        if(welcomemessage.contains("Player 1")){
+        if (welcomemessage.contains("Player 1")) {
             this.playerName = "Player 1";
         } else {
             this.playerName = "player 2";
@@ -57,15 +57,15 @@ public class PlayerClient implements ActionListener {
 
             //här hämtas lista med frågekategorier
             obj = inObj.readObject();
-            if(obj instanceof List) {
+            if (obj instanceof List) {
                 List<String> objList = new ArrayList<>((List<String>) obj);
-            if(objList.contains("CATEGORIES")){
-                objList.remove(objList.size() - 1);
-                playerGUI2.setCategoryLayout(objList, this);
-                state=SETCATEGORY;
-            }
-            } else if ((obj instanceof Question)){
-                state=QUESTIONSTATE;
+                if (objList.contains("CATEGORIES")) {
+                    objList.remove(objList.size() - 1);
+                    playerGUI2.setCategoryLayout(objList, this);
+                    state = SETCATEGORY;
+                }
+            } else if ((obj instanceof Question)) {
+                state = QUESTIONSTATE;
                 setCurrentObject((Question) obj);
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
@@ -75,16 +75,18 @@ public class PlayerClient implements ActionListener {
             //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
 
 
-
         }
     }
-    public Object getCurrentObject(){
+
+    public Object getCurrentObject() {
         return this.currentObject;
     }
-    public void setCurrentObject(Question obj){
-        this.currentObject=obj;
+
+    public void setCurrentObject(Question obj) {
+        this.currentObject = obj;
     }
-    protected void sendPoint(boolean bool){//todo poäng
+
+    protected void sendPoint(boolean bool) {//todo poäng
         outpw.println(playerName + "," + bool);
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
     }
@@ -95,24 +97,24 @@ public class PlayerClient implements ActionListener {
         if (e.getSource() == playerGUI2.startButton) {
             System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
-            if(playerName=="player 2"){
+            if (playerName == "player 2") {
                 //Watiting for opponent-ruta
-                playerGUI2.setScoreLayout(1, 1);
+                //playerGUI2.setScoreLayout(1, 1);
             }
-        } else if ((state==SETCATEGORY)) {
+        } else if ((state == SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
-                outpw.println(chosenCategory);
-                System.out.println("Test från PlayerClient: " + chosenCategory);
-            state=QUESTIONSTATE;
-            } else if (state==QUESTIONSTATE) {
+            outpw.println(chosenCategory);
+            System.out.println("Test från PlayerClient: " + chosenCategory);
+            state = QUESTIONSTATE;
+        } else if (state == QUESTIONSTATE) {
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
-            if((currentObject.answerCorrect)== chosenQuestion){
+            if ((currentObject.answerCorrect) == chosenQuestion) {
                 button.setBackground(new Color(0x9BC484));
-                point=true; //todo poäng
+                point = true; //todo poäng
             } else {
                 button.setBackground(new Color(0xF83B3B));
-                point=false; //todo poäng
+                point = false; //todo poäng
             }
             playerGUI2.questionPanel.repaint();
             playerGUI2.questionPanel.revalidate();
@@ -126,5 +128,5 @@ public class PlayerClient implements ActionListener {
             timer.schedule(sendQuestionTask, delay);
 
         }
-        }
+    }
 }
