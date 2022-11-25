@@ -125,8 +125,8 @@ class ServerPlayer extends Thread {
                                 setCategory = false;
                                 opponent.setCategory = false;
                             }
-                            if (this.equals(currentplayer)) { //&& (roundDone == false)
-                                for (int i = 0; i < questionsPerRound; i++) { //properties-filen väljer ju antal ronder samt frågor
+                            if (this.equals(currentplayer)) {
+                                for (int i = 0; i < questionsPerRound; i++) {
                                     if (turn == 1) {
                                         question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);//todo kontrollera att question inte redan använts, metod i ServerGameEngine
                                         objectOut.writeObject(question);
@@ -135,7 +135,8 @@ class ServerPlayer extends Thread {
                                         objectOut.writeObject(gameEngine.getFromQuestionList(i));
                                     }
                                     objectOut.flush();
-                                    pointString = inputbuffer.readLine(); //todo poäng
+                                    pointString = inputbuffer.readLine();
+                                    //  gameEngine.separateScoreString(pointString); //todo Ling, din koddel passar någonstans här <------------
                                 }
                                 if (turn == 2) {
                                     gameEngine.removeContentsFromQuestionList();
@@ -148,6 +149,7 @@ class ServerPlayer extends Thread {
                                     //       changePlayerTurn(); //eftersom vi vill att varannan spelare ska få välja kategori
                                     //    opponent.changePlayerTurn();
                                 }
+                                //todo Ling, skicka sedan listan + "player x sent this" någonstans här <------------------
                                 changePlayerTurn(); //här ändras både currentplayer och turn
                                 opponent.changePlayerTurn();
                                 //todo skicka meddelande om att byta layout
