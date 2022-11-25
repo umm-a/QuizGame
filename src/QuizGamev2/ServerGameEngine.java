@@ -105,7 +105,7 @@ public class ServerGameEngine{
 
         } else if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
 
-            serverPlayer.outputwriter.println("Palyer 2 wins");
+            serverPlayer.outputwriter.println("Player 2 wins");
 
         } else if (sumOfScores(player1Scores) == sumOfScores(player1Scores)) {
 
