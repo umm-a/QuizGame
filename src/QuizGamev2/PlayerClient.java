@@ -6,13 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class PlayerClient implements ActionListener {
-
     private final int PORT = 25252;
     private Socket socket;
     BufferedReader inbuf;
@@ -30,6 +28,8 @@ public class PlayerClient implements ActionListener {
     static final int UPDATESETSCORE = 4;
     Question currentObject;
     boolean point=false;
+    int questionsPerRound;
+    int rounds;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -39,12 +39,20 @@ public class PlayerClient implements ActionListener {
         inbuf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         inObj = new ObjectInputStream(socket.getInputStream());
 
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream("C:src\\QuizGamev2\\PropertiesFile.properties"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        questionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound"));
+        rounds = Integer.parseInt(properties.getProperty("rounds"));
         String welcomemessage = inbuf.readLine();
         System.out.println(welcomemessage);
         if(welcomemessage.contains("Player 1")){
-            this.playerName = "Player 1";
+            this.playerName = "player 1";
         } else {
-            this.playerName = "Player 2";
+            this.playerName = "player 2";
         }
 
 
@@ -64,6 +72,7 @@ public class PlayerClient implements ActionListener {
                 objList.remove(objList.size() - 1);
                 playerGUI2.setCategoryLayout(objList, this);
                 state=SETCATEGORY;
+                System.out.println(" IN CATEGORIES ");
             }
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
@@ -86,8 +95,7 @@ public class PlayerClient implements ActionListener {
         this.currentObject=obj;
     }
     protected void sendPoint(boolean bool){//todo poäng
-       outpw.println(playerName + "," + bool);
-
+        outpw.println(playerName + "," + bool);
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
     }
 
@@ -97,19 +105,20 @@ public class PlayerClient implements ActionListener {
         if (e.getSource() == playerGUI2.startButton) {
             System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
-            if(playerName=="Player 2"){
+            outpw.println(playerName + " is ready to play");
+            if (playerName=="player 2") {
                 //Watiting for opponent-ruta
-                playerGUI2.setScoreLayout(1, 1);
+          //      playerGUI2.setScoreLayout(1, 1);
             }
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
                 outpw.println(chosenCategory);
                 System.out.println("Test från PlayerClient: " + chosenCategory);
             state=QUESTIONSTATE;
-            } else if (state==QUESTIONSTATE) {
+            } else if (state==QUESTIONSTATE) {//todo OBS man ska inte kunna trycka på fler knappar när man svarat på en specifik fråga
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
-            if((currentObject.answerCorrect)== chosenQuestion){
+            if ((currentObject.answerCorrect) == chosenQuestion) {
                 button.setBackground(new Color(0x9BC484));
                 point=true; //todo poäng
             } else {
@@ -124,7 +133,7 @@ public class PlayerClient implements ActionListener {
                 }
             };
             java.util.Timer timer = new Timer("Timer");
-            int delay = 1500;
+            int delay = 500;
             timer.schedule(sendQuestionTask, delay);
 
         }

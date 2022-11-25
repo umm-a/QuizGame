@@ -1,7 +1,5 @@
 package QuizGamev2;
 
-import QuizGame.PlayerClient;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +10,14 @@ public class ServerGameEngine{
 
     String nickName1;
     String nickName2;
-    ServerPlayer serverPlayer = new ServerPlayer();
+    ServerPlayer serverPlayer;
     List<Question> tempQuestionList = new ArrayList<>();
 
     QuestionDatabase2 questionDatabase2;
+    boolean player1Ready = false;
+    boolean player2Ready = false;
+
+
 
 
     public ServerGameEngine(QuestionDatabase2 questionDatabase2){
@@ -26,9 +28,13 @@ public class ServerGameEngine{
         this.tempQuestionList.add(question);
     }
     public void removeContentsFromQuestionList(){
+        List<Question> toRemove = new ArrayList<>();
+
         for (Question q: tempQuestionList) {
-            this.tempQuestionList.remove(q);
+            toRemove.add(q);
         }
+
+        tempQuestionList.removeAll(toRemove);
     }
     public Question getFromQuestionList(int i){
         return tempQuestionList.get(i);
@@ -57,7 +63,7 @@ public class ServerGameEngine{
             serverPlayer.player2Scores.add(1);
             return serverPlayer.player2Scores;
         }
-        else if (playerName.equals("Player 2") && isCorrectAnswer == false){
+        else if (playerName.equals("player 2") && isCorrectAnswer == false){
             serverPlayer.player2Scores.add(0);
             return serverPlayer.player1Scores;
         }
@@ -69,6 +75,26 @@ public class ServerGameEngine{
     }
 
 
+    //
+    public int countScore(int state, boolean isCorrectAnswer, ServerPlayer player){
+        if (state == 3  && isCorrectAnswer == true){
+            player.points++;
+            scoreToString(player.points);
+        }
+        else if (state == 4){
+            scoreToString(player.points);
+        }
+        return player.points;
+    }
+
+    public String scoreToString(int points){
+
+        String pointString = "Your score: " + points;
+
+        return pointString;
+
+    }
+
 
     public void notifyWinner (List<Integer> player1Scores, List<Integer> player2Scores) {//todo behöver få info från PlayerClient
 
@@ -79,7 +105,7 @@ public class ServerGameEngine{
 
         } else if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
 
-            serverPlayer.outputwriter.println("Palyer 2 wins");
+            serverPlayer.outputwriter.println("Player 2 wins");
 
         } else if (sumOfScores(player1Scores) == sumOfScores(player1Scores)) {
 
