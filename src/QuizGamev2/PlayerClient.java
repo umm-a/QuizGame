@@ -81,7 +81,8 @@ public class PlayerClient implements ActionListener {
             } else if (obj.toString().contains("ScoreList of player")) {
                 fromPlayer = obj.toString();
                 obj = inObj.readObject();
-                List<Integer> pointsList = new ArrayList<>((List<Integer>) obj); //todo listan blir antingen bara 0 eller 1 ..???? DEN PLOCKAR BARA MED SIG SISTA FRÅN LISTAN!!
+                System.out.println(obj.toString());
+                List<Integer> pointsList = new ArrayList<>((List<Integer>) obj); //todo listan blir antingen bara 0 eller 1 ..???? DEN PLOCKAR BARA MED SIG INDEX 0?
                 for (Integer i: pointsList) { //todo denna ska ju inte bara hålla EN int...
                     System.out.println("Pointslist: " + i);
                 }
@@ -97,17 +98,9 @@ public class PlayerClient implements ActionListener {
                     System.out.println("ScoreList of player in PlayerClient has run");
             } else if (obj.toString().toLowerCase().contains("set score player 1")) {
              //   state=UPDATESETSCORE;
-            //    System.out.println("Poänglista player 1: ");
-            /*    for (Integer i: player1Scores) {
-                    System.out.println(player1Scores.get(i)-1);
-                }//todo den fylls enbart med ettor*/
                 playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
             } else if (obj.toString().toLowerCase().contains("set score player 2")) {
               //  state=UPDATESETSCORE;
-           //     System.out.println("Poänglista player 2: ");
-             /*   for (Integer i: player2Scores) {
-                    System.out.println(player2Scores.get(i)-1);
-                }//todo den blir tom*/
             playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
