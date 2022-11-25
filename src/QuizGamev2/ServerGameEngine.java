@@ -10,7 +10,7 @@ public class ServerGameEngine{
 
     String nickName1;
     String nickName2;
-    ServerPlayer serverPlayer = new ServerPlayer();
+    //ServerPlayer serverPlayer = new ServerPlayer();
     List<Question> tempQuestionList = new ArrayList<>();
 
     QuestionDatabase2 questionDatabase2;
@@ -47,20 +47,20 @@ public class ServerGameEngine{
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
 
         if (playerName.equals("player 1") && isCorrectAnswer == true){
-            serverPlayer.player1Scores.add(1);
-            return serverPlayer.player1Scores;
+            player1.player1Scores.add(1);
+            return player1.player1Scores;
         }
         else if (playerName.equals("player 1") && isCorrectAnswer == false){
-            serverPlayer.player1Scores.add(0);
-            return serverPlayer.player1Scores;
+            player1.player1Scores.add(0);
+            return player1.player1Scores;
         }
         else if (playerName.equals("player 2") && isCorrectAnswer == true) {
-            serverPlayer.player2Scores.add(1);
-            return serverPlayer.player2Scores;
+            player2.player2Scores.add(1);
+            return player2.player2Scores;
         }
         else if (playerName.equals("player 2") && isCorrectAnswer == false){
-            serverPlayer.player2Scores.add(0);
-            return serverPlayer.player1Scores;
+            player2.player2Scores.add(0);
+            return player2.player1Scores;
         }
         else {
             System.out.println("Det gick inte att lägga poäng i listan");
@@ -85,7 +85,7 @@ public class ServerGameEngine{
         }
     }
 
-
+/*
     public void notifyWinner (List<Integer> player1Scores, List<Integer> player2Scores) {//todo behöver få info från PlayerClient
 
 
@@ -104,7 +104,7 @@ public class ServerGameEngine{
         } else {
             serverPlayer.outputwriter.println("Something went wrong in notifyWinner-method of Player");
         }
-    }
+    }*/
 
     public int sumOfScores (List<Integer> scores){
 

@@ -30,6 +30,7 @@ public class PlayerClient implements ActionListener {
     boolean point=false;
     int questionsPerRound;
     int rounds;
+    String fromPlayer = "";
     List<Integer> player1Scores = new ArrayList<>();
     List<Integer> player2Scores = new ArrayList<>();
 
@@ -66,30 +67,48 @@ public class PlayerClient implements ActionListener {
 
         while (true) {
 
-            //här hämtas lista med frågekategorier
             obj = inObj.readObject();
             if(obj instanceof List) {
-                List<String> objList = new ArrayList<>((List<String>) obj);
-            if(objList.contains("CATEGORIES")){
-                objList.remove(objList.size() - 1);
-                playerGUI2.setCategoryLayout(objList, this);
-                state=SETCATEGORY;
-                System.out.println(" IN CATEGORIES ");
-            }
+                if (((List<?>) obj).contains("CATEGORIES")) {
+                    List<String> objList = new ArrayList<>((List<String>) obj);
+                    if (objList.contains("CATEGORIES")) {
+                        objList.remove(objList.size() - 1);
+                        playerGUI2.setCategoryLayout(objList, this);
+                        state = SETCATEGORY;
+                        System.out.println(" IN CATEGORIES ");
+                    }
+                }
+            } else if (obj.toString().contains("ScoreList of player")) {
+                fromPlayer = obj.toString();
+                obj = inObj.readObject();
+                List<Integer> pointsList = new ArrayList<>((List<Integer>) obj);
+                    if (fromPlayer.contains("player 1") && (this.playerName.equals("player 1"))) {
+                        setPointListToPlayer(pointsList, player1Scores);
+                    } else if (fromPlayer.contains("player 2") && (this.playerName.equals("player 2"))) {
+                        setPointListToPlayer(pointsList, player2Scores);
+                    }
+                    System.out.println("ScoreList of player in PlayerClient has run");
+            } else if (obj.toString().contains("SET SCORE") && (playerName.equals("player 1"))) {
+                state=UPDATESETSCORE;
+                playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
+            } else if (obj.toString().contains("SET SCORE") && (playerName.equals("player 2"))) {
+              //  state=UPDATESETSCORE;
+            playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
                 setCurrentObject((Question) obj);
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
-            }   else {
-                System.out.println("This is where things tend to go wrong");
+            } else {
+                    System.out.println("This is where things tend to go wrong");
+                }
             }
             //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
 
 
 
         }
-    }
+
     public Object getCurrentObject(){
         return this.currentObject;
     }
@@ -99,7 +118,11 @@ public class PlayerClient implements ActionListener {
     protected void sendPoint(boolean bool){//todo poäng
         outpw.println(playerName + "," + bool);
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
-
+    }
+    protected void setPointListToPlayer(List<Integer> theListOfPoints, List<Integer> playerXList){
+        for (Integer i: theListOfPoints) {
+            playerXList.add(i);
+        }
     }
 
 

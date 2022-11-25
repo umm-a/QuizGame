@@ -57,6 +57,9 @@ class ServerPlayer extends Thread {
         this.gameEngine = gameEngine;
         if (this.playerName.equals("Player 1")) {
             currentplayer = this;
+            gameEngine.player1=this;
+        } else {
+            gameEngine.player2=this;
         }
     }
 
@@ -136,9 +139,14 @@ class ServerPlayer extends Thread {
                                     }
                                     objectOut.flush();
                                     pointString = inputbuffer.readLine();
-                                    System.out.println(pointString + " är mottagen");
-                                    gameEngine.addScoreToList(pointString);//todo Ling, din koddel passar någonstans här <------------
+                                    System.out.println(pointString + " är mottagen");//detta fyller ingen funktion?
+                                   /* gameEngine.addScoreToList(pointString);
 
+                                    objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
+                                    objectOut.flush();
+                                    objectOut.writeObject(gameEngine.addScoreToList(pointString)); //skickar första listan, sedan kollar man av vem som skickat listan i PlayerClient via anropet nedan
+                                    objectOut.flush();*/
+                                    System.out.println(gameEngine.checkPlayer(pointString) + " är skickat");
                                 }
                                 if (turn == 2) {
                                     gameEngine.removeContentsFromQuestionList();
@@ -146,16 +154,15 @@ class ServerPlayer extends Thread {
                                     opponent.setCategory = true;
                                     setCurrentRoundPlusOne();
                                 }
-                                //todo Ling, skicka sedan listan + "player x sent this" någonstans här <------------------
-                                objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
-                                System.out.println(gameEngine.checkPlayer(pointString) + " är skickat");
-                                objectOut.writeObject(gameEngine.addScoreToList(pointString));
-                                changePlayerTurn(); //här ändras både currentplayer och turn
+                                changePlayerTurn();
                                 opponent.changePlayerTurn();
 
-                                objectOut.writeObject("Dags att byta layout till ScoreLayout");
+                               // objectOut.writeObject("SET SCORE"); todo här skulle vi vilja sätta den ene spelarens board, sedan uppdatera den andres efter rundan
+                                objectOut.flush();
                                 //todo skicka meddelande om att byta layout
                             }
+
+                       //     objectOut.writeObject("SET SCORE");todo här
                             //   roundDone=false;
                         }
                         // currentRound=0; //ska enbart sättas om vi startar nytt spel

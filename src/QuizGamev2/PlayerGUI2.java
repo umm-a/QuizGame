@@ -330,7 +330,7 @@ public class PlayerGUI2 extends JFrame {
             super();
             radie = 15;
             x = (gridwidth / 2) - radie;
-            System.out.println(gridwidth);
+          //  System.out.println(gridwidth);
             y = (gridheight / 2) - radie;
 
 
