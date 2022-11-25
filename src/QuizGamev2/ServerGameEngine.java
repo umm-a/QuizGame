@@ -7,10 +7,6 @@ public class ServerGameEngine{
 
     ServerPlayer player1;
     ServerPlayer player2;
-
-    String nickName1;
-    String nickName2;
-    //ServerPlayer serverPlayer = new ServerPlayer();
     List<Question> tempQuestionList = new ArrayList<>();
 
     QuestionDatabase2 questionDatabase2;
@@ -40,27 +36,27 @@ public class ServerGameEngine{
         return tempQuestionList.get(i);
     }
 
-    public List<Integer> addScoreToList(String pointString){
+    public List<Integer> addScoreToListAndReturnFullList(String pointString){
 
         String[] scoreString = pointString.split("," );
         String playerName = scoreString[0].trim();
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
 
-        if (playerName.equals("player 1") && isCorrectAnswer == true){
+        if (playerName.equals("player 1") && (isCorrectAnswer == true)) {
             player1.player1Scores.add(1);
             return player1.player1Scores;
         }
-        else if (playerName.equals("player 1") && isCorrectAnswer == false){
+        else if (playerName.equals("player 1") && (isCorrectAnswer == false)) {
             player1.player1Scores.add(0);
             return player1.player1Scores;
         }
-        else if (playerName.equals("player 2") && isCorrectAnswer == true) {
+        else if (playerName.equals("player 2") && (isCorrectAnswer == true)) {
             player2.player2Scores.add(1);
             return player2.player2Scores;
         }
-        else if (playerName.equals("player 2") && isCorrectAnswer == false){
+        else if (playerName.equals("player 2") && (isCorrectAnswer == false)) {
             player2.player2Scores.add(0);
-            return player2.player1Scores;
+            return player2.player2Scores;
         }
         else {
             System.out.println("Det gick inte att lägga poäng i listan");

@@ -48,7 +48,7 @@ public class PlayerGUI2 extends JFrame {
 // test slut
 
     public PlayerGUI2() throws Exception {
-    //    this.playerClient = new PlayerClient(this);
+        this.playerClient = new PlayerClient(this);
 
 //bara för test:
       /* setWelcomeLayout(playerClient);

@@ -14,9 +14,9 @@ public class ServerListener {
         try {
             while (true) {
                 ServerGameEngine gameEngine = new ServerGameEngine(new QuestionDatabase2());
-                ServerPlayer playerOne = new ServerPlayer(listener.accept(), "Player 1", gameEngine);
+                ServerPlayer playerOne = new ServerPlayer(listener.accept(), "player 1", gameEngine);
                 playerOne.start();
-                ServerPlayer playerTwo = new ServerPlayer(listener.accept(), "Player 2", gameEngine);
+                ServerPlayer playerTwo = new ServerPlayer(listener.accept(), "player 2", gameEngine);
                 playerTwo.start();
 
                 playerOne.setOpponent(playerTwo);

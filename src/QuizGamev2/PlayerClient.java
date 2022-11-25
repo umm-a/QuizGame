@@ -52,7 +52,7 @@ public class PlayerClient implements ActionListener {
         rounds = Integer.parseInt(properties.getProperty("rounds"));
         String welcomemessage = inbuf.readLine();
         System.out.println(welcomemessage);
-        if(welcomemessage.contains("Player 1")){
+        if(welcomemessage.contains("player 1")){
             this.playerName = "player 1";
         } else {
             this.playerName = "player 2";
@@ -81,18 +81,33 @@ public class PlayerClient implements ActionListener {
             } else if (obj.toString().contains("ScoreList of player")) {
                 fromPlayer = obj.toString();
                 obj = inObj.readObject();
-                List<Integer> pointsList = new ArrayList<>((List<Integer>) obj);
-                    if (fromPlayer.contains("player 1") && (this.playerName.equals("player 1"))) {
-                        setPointListToPlayer(pointsList, player1Scores);
-                    } else if (fromPlayer.contains("player 2") && (this.playerName.equals("player 2"))) {
-                        setPointListToPlayer(pointsList, player2Scores);
+                List<Integer> pointsList = new ArrayList<>((List<Integer>) obj); //todo listan blir antingen bara 0 eller 1 ..???? DEN PLOCKAR BARA MED SIG SISTA FRÅN LISTAN!!
+                for (Integer i: pointsList) { //todo denna ska ju inte bara hålla EN int...
+                    System.out.println("Pointslist: " + i);
+                }
+                    if (fromPlayer.toLowerCase().contains("player 1")) {
+                        removeContentsFromPlayer1List();
+                        this.player1Scores = new ArrayList<>(pointsList);
+                    //    setPointListToPlayer(pointsList, player1Scores);
+                    } else if (fromPlayer.toLowerCase().contains("player 2")) {
+                        removeContentsFromPlayer2List();
+                        this.player2Scores = new ArrayList<>(pointsList);
+                       // setPointListToPlayer(pointsList, player2Scores);
                     }
                     System.out.println("ScoreList of player in PlayerClient has run");
-            } else if (obj.toString().contains("SET SCORE") && (playerName.equals("player 1"))) {
-                state=UPDATESETSCORE;
+            } else if (obj.toString().toLowerCase().contains("set score player 1")) {
+             //   state=UPDATESETSCORE;
+            //    System.out.println("Poänglista player 1: ");
+            /*    for (Integer i: player1Scores) {
+                    System.out.println(player1Scores.get(i)-1);
+                }//todo den fylls enbart med ettor*/
                 playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
-            } else if (obj.toString().contains("SET SCORE") && (playerName.equals("player 2"))) {
+            } else if (obj.toString().toLowerCase().contains("set score player 2")) {
               //  state=UPDATESETSCORE;
+           //     System.out.println("Poänglista player 2: ");
+             /*   for (Integer i: player2Scores) {
+                    System.out.println(player2Scores.get(i)-1);
+                }//todo den blir tom*/
             playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
@@ -115,14 +130,30 @@ public class PlayerClient implements ActionListener {
     public void setCurrentObject(Question obj){
         this.currentObject=obj;
     }
-    protected void sendPoint(boolean bool){//todo poäng
+    protected void sendPoint(boolean bool){
         outpw.println(playerName + "," + bool);
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
     }
     protected void setPointListToPlayer(List<Integer> theListOfPoints, List<Integer> playerXList){
-        for (Integer i: theListOfPoints) {
-            playerXList.add(i);
+
+    }
+    public void removeContentsFromPlayer1List(){
+        List<Integer> toRemove = new ArrayList<>();
+
+        for (Integer q: player1Scores) {
+            toRemove.add(q);
         }
+
+        player1Scores.removeAll(toRemove);
+    }
+    public void removeContentsFromPlayer2List(){
+        List<Integer> toRemove = new ArrayList<>();
+
+        for (Integer q: player2Scores) {
+            toRemove.add(q);
+        }
+
+        player2Scores.removeAll(toRemove);
     }
 
 
@@ -132,9 +163,8 @@ public class PlayerClient implements ActionListener {
             System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
             outpw.println(playerName + " is ready to play");
-            if (playerName=="player 2") {
-                //Watiting for opponent-ruta
-          //      playerGUI2.setScoreLayout(1, 1);
+            if (playerName.equals("player 2")) {
+                playerGUI2.setWaitingLayout("Waiting for opponent to finish their turn...");
             }
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
@@ -147,26 +177,24 @@ public class PlayerClient implements ActionListener {
 
             if ((currentObject.answerCorrect) == chosenQuestion) {
                 button.setBackground(new Color(0x9BC484));
-                point=true; //todo poäng
-                sendPoint(point);
+                point=true;
 
             } else {
                 button.setBackground(new Color(0xF83B3B));
-                point=false; //todo poäng
-                sendPoint(point);
+                point=false;
             }
             playerGUI2.questionPanel.repaint();
             playerGUI2.questionPanel.revalidate();
             TimerTask sendQuestionTask = new TimerTask() {
                 public void run() {
-                    sendPoint(point);//todo poäng
+                    sendPoint(point);
                 }
             };
             java.util.Timer timer = new Timer("Timer");
             int delay = 500;
             timer.schedule(sendQuestionTask, delay);
 
-            state = UPDATESETSCORE;
+          //  state = UPDATESETSCORE;
 
         }
 

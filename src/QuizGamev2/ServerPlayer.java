@@ -17,6 +17,7 @@ class ServerPlayer extends Thread {
     BufferedReader inputbuffer;
     PrintWriter outputwriter;
     ObjectOutputStream objectOut;
+    Object stringOutObject;
 
     static final int START = 1;
     static final int SETCATEGORY = 2;
@@ -55,11 +56,11 @@ class ServerPlayer extends Thread {
         this.socket = socket;
         this.playerName = playerName;
         this.gameEngine = gameEngine;
-        if (this.playerName.equals("Player 1")) {
+        if (this.playerName.equals("player 1")) {
             currentplayer = this;
-            gameEngine.player1=this;
+            gameEngine.player1 = this;
         } else {
-            gameEngine.player2=this;
+            gameEngine.player2 = this;
         }
     }
 
@@ -82,7 +83,7 @@ class ServerPlayer extends Thread {
             Properties properties = new Properties();
             try {
                 properties.load(new FileInputStream("src\\QuizGamev2\\PropertiesFile.properties"));
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -113,88 +114,99 @@ class ServerPlayer extends Thread {
                 Thread.sleep(1000);
             }
 
-                while (true) {
-                    if (state == 2) {
-                /*    if (this.equals(currentplayer)) { //todo OM SPELAREN EJ TRYCKT "STARTA" SKA DETTA EJ SKE! PGA. Annars kan spelare2 kan välja kategori
-                        chooseCategory();
-                    }*/
-                        currentRound = 0;
-                        state = 3;
-                    } else if (state == 3) {
-                        // ServerGameEngine
-                        while (currentRound < rounds) {
-                            if ((this.equals(currentplayer)) && (setCategory == true)) {
-                                chooseCategory();
-                                setCategory = false;
-                                opponent.setCategory = false;
-                            }
-                            if (this.equals(currentplayer)) {
-                                for (int i = 0; i < questionsPerRound; i++) {
-                                    if (turn == 1) {
-                                        question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);//todo kontrollera att question inte redan använts, metod i ServerGameEngine
-                                        objectOut.writeObject(question);
-                                        gameEngine.addQuestionToList((Question) question);
-                                    } else {
-                                        objectOut.writeObject(gameEngine.getFromQuestionList(i));
-                                    }
-                                    objectOut.flush();
-                                    pointString = inputbuffer.readLine();
-                                    System.out.println(pointString + " är mottagen");//detta fyller ingen funktion?
-                                   /* gameEngine.addScoreToList(pointString);
-
-                                    objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
-                                    objectOut.flush();
-                                    objectOut.writeObject(gameEngine.addScoreToList(pointString)); //skickar första listan, sedan kollar man av vem som skickat listan i PlayerClient via anropet nedan
-                                    objectOut.flush();*/
-                                    System.out.println(gameEngine.checkPlayer(pointString) + " är skickat");
-                                }
-                                if (turn == 2) {
-                                    gameEngine.removeContentsFromQuestionList();
-                                    setCategory = true;
-                                    opponent.setCategory = true;
-                                    setCurrentRoundPlusOne();
-                                }
-                                changePlayerTurn();
-                                opponent.changePlayerTurn();
-
-                               // objectOut.writeObject("SET SCORE"); todo här skulle vi vilja sätta den ene spelarens board, sedan uppdatera den andres efter rundan
-                                objectOut.flush();
-                                //todo skicka meddelande om att byta layout
-                            }
-
-                       //     objectOut.writeObject("SET SCORE");todo här
-                            //   roundDone=false;
+            while (true) {
+                if (state == 2) {
+                    currentRound = 0;
+                    state = 3;
+                } else if (state == 3) {
+                    // ServerGameEngine
+                    while (currentRound < rounds) {
+                        if ((this.equals(currentplayer)) && (setCategory == true)) {
+                            chooseCategory();
+                            setCategory = false;
+                            opponent.setCategory = false;
                         }
-                        // currentRound=0; //ska enbart sättas om vi startar nytt spel
+                        if (this.equals(currentplayer)) {
+                            for (int i = 0; i < questionsPerRound; i++) {
+                                if (turn == 1) {
+                                    question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);//todo kontrollera att question inte redan använts, metod i ServerGameEngine
+                                    objectOut.writeObject(question);
+                                    gameEngine.addQuestionToList((Question) question);
+                                } else {
+                                    objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                                }
+                                objectOut.flush();
+                                calculateAndSendPoints();
+                            }
+                            if (turn == 2) {
+                                gameEngine.removeContentsFromQuestionList();
+                                setCategoryToTrue();
+                                setCurrentRoundPlusOne();
+                            }
+                            changePlayerTurn();
+                            opponent.changePlayerTurn();
 
-                        //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
-                        //  state = 4;
-                    } else if (state == 4) {
-                       // objectOut.writeObject(gameEngine.countScore(state, true, this));
-                        //SKICKA POÄNG TILL CLIENTSIDAN
+                            // objectOut.writeObject("SET SCORE"); todo här skulle vi vilja sätta den ene spelarens board, sedan uppdatera den andres efter rundan
+                            //   objectOut.flush();
+                            //todo skicka meddelande om att byta layout
+                            stringOutObject = "SET SCORE " + playerName;
+                            objectOut.writeObject(stringOutObject);
+                            objectOut.flush();
+                        }
+
+                        //   roundDone=false;
                     }
+                    // currentRound=0; //ska enbart sättas om vi startar nytt spel
+
+                    //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
+                    //  state = 4;
+                } else if (state == 4) {
+                    // objectOut.writeObject(gameEngine.countScore(state, true, this));
+                    //SKICKA POÄNG TILL CLIENTSIDAN
                 }
-            } catch(IOException e){
-                System.out.println("Player " + playerName + " died: " + e);
-            } catch(InterruptedException e){
-                throw new RuntimeException(e);
             }
+        } catch (IOException e) {
+            System.out.println("Player " + playerName + " died: " + e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+    }
+    protected void setCategoryToTrue(){
+        this.setCategory = true;
+        opponent.setCategory = true;
+    }
 
 
+    protected void calculateAndSendPoints() throws IOException {
+        pointString = inputbuffer.readLine();
+        System.out.println(pointString + " är mottagen");
 
-    public void chooseCategory() throws IOException {
+        objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
+        objectOut.flush();
+        objectOut.writeObject(gameEngine.addScoreToListAndReturnFullList(pointString)); //skickar lista med poäng
+        for (Integer i: player1Scores) {
+            System.out.println(i + " player1scores");
+        }
+        for (Integer i: player2Scores) {
+            System.out.println(i + " player2scores");
+        }
+        objectOut.flush();
+        System.out.println(gameEngine.checkPlayer(pointString) + " är skickat");
+    }
+
+    protected void chooseCategory() throws IOException {
         objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
         objectOut.flush();
         this.chosenCategory = inputbuffer.readLine();
         opponent.chosenCategory = this.chosenCategory;
     }
-    public void setCurrentRoundPlusOne(){
-        this.currentRound+=1;
-        opponent.currentRound+=1;
+
+    protected void setCurrentRoundPlusOne() {
+        this.currentRound += 1;
+        opponent.currentRound += 1;
     }
 
-    public void changePlayerTurn() {
+    protected void changePlayerTurn() {
         if (this.currentplayer == this) {
             currentplayer = getOpponent();
         } else {
@@ -208,17 +220,6 @@ class ServerPlayer extends Thread {
                 this.turn = 1;
             }
         }
-        //roundDone=true? för bäggedera
     }
-
-
-            protected void addOnePoint () {
-                points += 1;
-            }
-
-            protected int getPoints () {
-                return points;
-            }
-        }
-
+}
 
