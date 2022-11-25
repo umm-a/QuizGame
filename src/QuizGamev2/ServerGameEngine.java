@@ -69,26 +69,7 @@ public class ServerGameEngine{
     }
 
 
-   /* public int countScore(int state, boolean isCorrectAnswer, ServerPlayer player){
-        if (state == 3  && isCorrectAnswer == true){
-            player.points++;
-            scoreToString(player.points);
-        }
-        else if (state == 4){
-            scoreToString(player.points);
-        }
-        return player.points;
-    }
 
-    public String scoreToString(int points){
-
-        String pointString = "Your score: " + points;
-
-        return pointString;
-
-    }
-
-    */
     public void notifyWinner (List<Integer> player1Scores, List<Integer> player2Scores) {//todo behöver få info från PlayerClient
 
 
