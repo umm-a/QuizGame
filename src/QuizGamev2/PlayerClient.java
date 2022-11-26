@@ -73,7 +73,6 @@ public class PlayerClient implements ActionListener {
 
         while (true) {
 //todo skicka in nickname från ServerPlayer för att sätta in i GUI
-            //todo få motståndarens poäng till den egna layouten
             //todo efter en runda, pausa.
             obj = inObj.readObject();
             if(obj instanceof List) {
