@@ -17,7 +17,6 @@ public class PlayerClient implements ActionListener {
     BufferedReader inbuf;
     PrintWriter outpw;
     ObjectInputStream inObj;
-
     PlayerGUI2 playerGUI2;
     String chosenCategory;
     String chosenQuestion;
@@ -29,7 +28,6 @@ public class PlayerClient implements ActionListener {
     static final int UPDATESETSCORE = 4;
     Question currentObject;
     boolean point = false;
-
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
         this.playerGUI2 = playerGUI2;
@@ -46,15 +44,11 @@ public class PlayerClient implements ActionListener {
             this.playerName = "player 2";
         }
 
-
         playerGUI2.setWelcomeLayout(this);
-
 
         Object obj;
 
-
         while (true) {
-
             //här hämtas lista med frågekategorier
             obj = inObj.readObject();
             if (obj instanceof List) {
@@ -73,8 +67,6 @@ public class PlayerClient implements ActionListener {
                 System.out.println("This is where things tend to go wrong");
             }
             //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
-
-
         }
     }
 

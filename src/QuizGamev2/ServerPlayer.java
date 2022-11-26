@@ -1,7 +1,5 @@
 package QuizGamev2;
 
-
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -27,8 +25,6 @@ class ServerPlayer extends Thread {
 
     int gameround;
     String pointString;
-
-
     protected int state = 0;
     String chosenCategory;
     String chosenQuestion;
