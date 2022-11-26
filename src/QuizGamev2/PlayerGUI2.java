@@ -29,6 +29,7 @@ public class PlayerGUI2 extends JFrame {
     JLabel opponentGameScore;
     List<SmallCircle> playerDots;
     List<SmallCircle> opponentDots;
+    JButton fortsättButton;
 
 
     JTextField nickNametf;
@@ -333,6 +334,7 @@ public class PlayerGUI2 extends JFrame {
         fortsättButton.setBounds(110, 380, 100, 50);
         fortsättButton.setFont(myFont2);
         scorePanel.add(fortsättButton);
+        fortsättButton.addActionListener(playerClient);
 
         baseFrame.add(scorePanel);
         baseFrame.revalidate();

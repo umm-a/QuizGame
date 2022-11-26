@@ -56,6 +56,8 @@ class ServerPlayer extends Thread {
     List<Question> tempQuestionList = new ArrayList<>();
     ObjectInputStream inObj;
     String nextRoundMessage;
+    String roundIsDone = "roundIsDone";
+    String gameIsDone = "gameIsDone";
 
 
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
@@ -134,6 +136,8 @@ class ServerPlayer extends Thread {
 
                         while(!nextRoundMessage.equals("NEXT ROUND")){//todo här
                             Thread.sleep(100);
+                            nextRoundMessage = inputbuffer.readLine();
+                            System.out.println(nextRoundMessage);
                         }
                         if ((this.equals(currentplayer)) && (setCategory == true)) {
                             chooseCategory();
@@ -169,15 +173,20 @@ class ServerPlayer extends Thread {
 
                             if(roundDone==true){ //todo kladd kladd
                                 setScoreForBothPlayers();
+                                tellPlayerClientRoundIsDone();
+                                opponent.tellPlayerClientRoundIsDone();
                             }
                         }
                     }
+                    tellPlayerClientGameIsDone();
+                    opponent.tellPlayerClientGameIsDone();
+                    state = 4;
                     // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
                     //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
                     //  state = 4;
                 } else if (state == 4) {
-                    //vet inte riktigt
+                    //Dags att ta emot och se om spelaren vill köra igen
                 }
             }
         } catch (IOException e) {
@@ -216,6 +225,15 @@ class ServerPlayer extends Thread {
         objectOut.flush();
         opponent.objectOut.writeObject(setScoreForBothPlayers);
         objectOut.flush();
+    }
+    protected void tellPlayerClientRoundIsDone() throws IOException {
+        objectOut.writeObject(roundIsDone);
+        objectOut.flush();
+    }
+
+    protected void tellPlayerClientGameIsDone() throws IOException {
+        objectOut.writeObject(gameIsDone);
+        objectOut.flush();;
     }
 
 

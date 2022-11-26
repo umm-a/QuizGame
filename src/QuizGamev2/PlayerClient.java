@@ -34,6 +34,8 @@ public class PlayerClient implements ActionListener {
     List<Integer> player1Scores = new ArrayList<>();
     List<Integer> player2Scores = new ArrayList<>();
     ObjectOutputStream objectOut;
+    boolean roundIsDone = false;
+    boolean gameIsDone = false;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -73,7 +75,6 @@ public class PlayerClient implements ActionListener {
 
         while (true) {
 //todo skicka in nickname från ServerPlayer för att sätta in i GUI
-            //todo efter en runda, pausa.
             obj = inObj.readObject();
             if(obj instanceof List) {
                 if (((List<?>) obj).contains("CATEGORIES")) {
@@ -90,7 +91,7 @@ public class PlayerClient implements ActionListener {
                 obj = inObj.readObject();
                 System.out.println(obj.toString());
                 List<Integer> pointsList = new ArrayList<>((List<Integer>) obj);
-                    if (fromPlayer.toLowerCase().contains("player 1")) { //todo de måste bindas samman på något vis...
+                    if (fromPlayer.toLowerCase().contains("player 1")) {
                         removeContentsFromPlayer1List();
                         this.player1Scores = new ArrayList<>(pointsList);
                     //    setPointListToPlayer(pointsList, player1Scores);
@@ -117,9 +118,15 @@ public class PlayerClient implements ActionListener {
                 } else {
                     playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
                 }
+            } else if (obj.toString().equals("roundIsDone")) {
+                System.out.println("roundIsDone is recieved");
+                roundIsDone = true;
+            } else if (obj.toString().equals("gameIsDone")) {
+                System.out.println("gameIsDone is recieved");
+                gameIsDone = true;
             } else {
-                System.out.println(obj.toString());
-                System.out.println("This is where things tend to go wrong");
+                    System.out.println(obj.toString());
+                    System.out.println("This is where things tend to go wrong");
                 }
             }
             //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
@@ -196,10 +203,20 @@ public class PlayerClient implements ActionListener {
             int delay = 500;
             timer.schedule(sendQuestionTask, delay);
 
-          //  state = UPDATESETSCORE;
+            state = UPDATESETSCORE;
 
+        } else if ((state == UPDATESETSCORE) && (roundIsDone) && (gameIsDone==false)) { //todo ska bara gå om båda spelarna spelat en runda
+            if(((JButton) e.getSource()).getText().equals("Fortsätt")){
+                playerGUI2.setWaitingLayout("Waiting for opponent to finish their turn...");
+                //fortsätt-knappen ska ej gå att klicka på förrän roundDone=true
+                outpw.println("NEXT ROUND");
+                roundIsDone=false;
+                state=QUESTIONSTATE; //todo i sista rundan måste man ändra detta, kolla om det finns ett meddelande från ServerPlayer som meddelar att det är slut. Skicka detta till while-loopen här i PlayerClient, ta boolean och kolla av!
+            }
+        } else if (gameIsDone == true) {
+            if(((JButton) e.getSource()).getText().equals("Fortsätt")){
+                //spela igen-ruta
+            }
         }
-
-
     }
 }
