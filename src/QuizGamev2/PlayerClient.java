@@ -30,6 +30,10 @@ public class PlayerClient implements ActionListener {
     boolean point=false;
     int questionsPerRound;
     int rounds;
+    String fromPlayer = "";
+    List<Integer> player1Scores = new ArrayList<>();
+    List<Integer> player2Scores = new ArrayList<>();
+    ObjectOutputStream objectOut;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -38,18 +42,24 @@ public class PlayerClient implements ActionListener {
         outpw = new PrintWriter(socket.getOutputStream(), true);
         inbuf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         inObj = new ObjectInputStream(socket.getInputStream());
+        objectOut = new ObjectOutputStream(socket.getOutputStream());
 
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("C:src\\QuizGamev2\\PropertiesFile.properties"));
+            properties.load(new FileInputStream("src\\QuizGamev2\\PropertiesFile.properties"));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        String nextRound = "NEXT ROUND";
+        objectOut.writeObject(nextRound);
+        objectOut.flush();
+
         questionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound"));
         rounds = Integer.parseInt(properties.getProperty("rounds"));
         String welcomemessage = inbuf.readLine();
         System.out.println(welcomemessage);
-        if(welcomemessage.contains("Player 1")){
+        if(welcomemessage.contains("player 1")){
             this.playerName = "player 1";
         } else {
             this.playerName = "player 2";
@@ -58,45 +68,95 @@ public class PlayerClient implements ActionListener {
 
         playerGUI2.setWelcomeLayout(this);
 
-
         Object obj;
 
 
         while (true) {
-
-            //här hämtas lista med frågekategorier
+//todo skicka in nickname från ServerPlayer för att sätta in i GUI
+            //todo få motståndarens poäng till den egna layouten
+            //todo efter en runda, pausa.
             obj = inObj.readObject();
             if(obj instanceof List) {
-                List<String> objList = new ArrayList<>((List<String>) obj);
-            if(objList.contains("CATEGORIES")){
-                objList.remove(objList.size() - 1);
-                playerGUI2.setCategoryLayout(objList, this);
-                state=SETCATEGORY;
-                System.out.println(" IN CATEGORIES ");
-            }
+                if (((List<?>) obj).contains("CATEGORIES")) {
+                    List<String> objList = new ArrayList<>((List<String>) obj);
+                    if (objList.contains("CATEGORIES")) {
+                        objList.remove(objList.size() - 1);
+                        playerGUI2.setCategoryLayout(objList, this);
+                        state = SETCATEGORY;
+                        System.out.println(" IN CATEGORIES ");
+                    }
+                }
+            } else if (obj.toString().contains("ScoreList of player")) {
+                fromPlayer = obj.toString();
+                obj = inObj.readObject();
+                System.out.println(obj.toString());
+                List<Integer> pointsList = new ArrayList<>((List<Integer>) obj);
+                    if (fromPlayer.toLowerCase().contains("player 1")) { //todo de måste bindas samman på något vis...
+                        removeContentsFromPlayer1List();
+                        this.player1Scores = new ArrayList<>(pointsList);
+                    //    setPointListToPlayer(pointsList, player1Scores);
+                    } else if (fromPlayer.toLowerCase().contains("player 2")) {
+                        removeContentsFromPlayer2List();
+                        this.player2Scores = new ArrayList<>(pointsList);
+                       // setPointListToPlayer(pointsList, player2Scores);
+                    }
+                    System.out.println("ScoreList of player in PlayerClient has run");
+            } else if (obj.toString().toLowerCase().contains("set score player 1")) {
+             //   state=UPDATESETSCORE;
+                playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
+            } else if (obj.toString().toLowerCase().contains("set score player 2")) {
+              //  state=UPDATESETSCORE;
+            playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
                 setCurrentObject((Question) obj);
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
+            } else if (obj.toString().equals("SET SCORE FOR BOTH PLAYERS")) {
+                if(this.playerName.equals("player 1")){
+                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
+                } else {
+                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
+                }
             } else {
+                System.out.println(obj.toString());
                 System.out.println("This is where things tend to go wrong");
+                }
             }
             //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
 
-
-
         }
-    }
+
     public Object getCurrentObject(){
         return this.currentObject;
     }
     public void setCurrentObject(Question obj){
         this.currentObject=obj;
     }
-    protected void sendPoint(boolean bool){//todo poäng
+    protected void sendPoint(boolean bool){
         outpw.println(playerName + "," + bool);
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
+    }
+    protected void setPointListToPlayer(List<Integer> theListOfPoints, List<Integer> playerXList){
+
+    }
+    public void removeContentsFromPlayer1List(){
+        List<Integer> toRemove = new ArrayList<>();
+
+        for (Integer q: player1Scores) {
+            toRemove.add(q);
+        }
+
+        player1Scores.removeAll(toRemove);
+    }
+    public void removeContentsFromPlayer2List(){
+        List<Integer> toRemove = new ArrayList<>();
+
+        for (Integer q: player2Scores) {
+            toRemove.add(q);
+        }
+
+        player2Scores.removeAll(toRemove);
     }
 
 
@@ -106,9 +166,8 @@ public class PlayerClient implements ActionListener {
             System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
             outpw.println(playerName + " is ready to play");
-            if (playerName=="player 2") {
-                //Watiting for opponent-ruta
-          //      playerGUI2.setScoreLayout(1, 1);
+            if (playerName.equals("player 2")) {
+                playerGUI2.setWaitingLayout("Waiting for opponent to finish their turn...");
             }
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
@@ -118,24 +177,30 @@ public class PlayerClient implements ActionListener {
             } else if (state==QUESTIONSTATE) {//todo OBS man ska inte kunna trycka på fler knappar när man svarat på en specifik fråga
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
+
             if ((currentObject.answerCorrect) == chosenQuestion) {
                 button.setBackground(new Color(0x9BC484));
-                point=true; //todo poäng
+                point=true;
+
             } else {
                 button.setBackground(new Color(0xF83B3B));
-                point=false; //todo poäng
+                point=false;
             }
             playerGUI2.questionPanel.repaint();
             playerGUI2.questionPanel.revalidate();
             TimerTask sendQuestionTask = new TimerTask() {
                 public void run() {
-                    sendPoint(point);//todo poäng
+                    sendPoint(point);
                 }
             };
             java.util.Timer timer = new Timer("Timer");
             int delay = 500;
             timer.schedule(sendQuestionTask, delay);
 
+          //  state = UPDATESETSCORE;
+
         }
-        }
+
+
+    }
 }
