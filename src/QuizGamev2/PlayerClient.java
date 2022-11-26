@@ -33,6 +33,7 @@ public class PlayerClient implements ActionListener {
     String fromPlayer = "";
     List<Integer> player1Scores = new ArrayList<>();
     List<Integer> player2Scores = new ArrayList<>();
+    ObjectOutputStream objectOut;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -41,6 +42,7 @@ public class PlayerClient implements ActionListener {
         outpw = new PrintWriter(socket.getOutputStream(), true);
         inbuf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         inObj = new ObjectInputStream(socket.getInputStream());
+        objectOut = new ObjectOutputStream(socket.getOutputStream());
 
         Properties properties = new Properties();
         try {
@@ -48,6 +50,11 @@ public class PlayerClient implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        String nextRound = "NEXT ROUND";
+        objectOut.writeObject(nextRound);
+        objectOut.flush();
+
         questionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound"));
         rounds = Integer.parseInt(properties.getProperty("rounds"));
         String welcomemessage = inbuf.readLine();
@@ -61,12 +68,13 @@ public class PlayerClient implements ActionListener {
 
         playerGUI2.setWelcomeLayout(this);
 
-
         Object obj;
 
 
         while (true) {
-
+//todo skicka in nickname från ServerPlayer för att sätta in i GUI
+            //todo få motståndarens poäng till den egna layouten
+            //todo efter en runda, pausa.
             obj = inObj.readObject();
             if(obj instanceof List) {
                 if (((List<?>) obj).contains("CATEGORIES")) {
@@ -82,11 +90,8 @@ public class PlayerClient implements ActionListener {
                 fromPlayer = obj.toString();
                 obj = inObj.readObject();
                 System.out.println(obj.toString());
-                List<Integer> pointsList = new ArrayList<>((List<Integer>) obj); //todo listan blir antingen bara 0 eller 1 ..???? DEN PLOCKAR BARA MED SIG INDEX 0?
-                for (Integer i: pointsList) { //todo denna ska ju inte bara hålla EN int...
-                    System.out.println("Pointslist: " + i);
-                }
-                    if (fromPlayer.toLowerCase().contains("player 1")) {
+                List<Integer> pointsList = new ArrayList<>((List<Integer>) obj);
+                    if (fromPlayer.toLowerCase().contains("player 1")) { //todo de måste bindas samman på något vis...
                         removeContentsFromPlayer1List();
                         this.player1Scores = new ArrayList<>(pointsList);
                     //    setPointListToPlayer(pointsList, player1Scores);
@@ -107,13 +112,18 @@ public class PlayerClient implements ActionListener {
                 setCurrentObject((Question) obj);
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
+            } else if (obj.toString().equals("SET SCORE FOR BOTH PLAYERS")) {
+                if(this.playerName.equals("player 1")){
+                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
+                } else {
+                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
+                }
             } else {
-                    System.out.println("This is where things tend to go wrong");
+                System.out.println(obj.toString());
+                System.out.println("This is where things tend to go wrong");
                 }
             }
             //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
-
-
 
         }
 

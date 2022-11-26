@@ -18,6 +18,8 @@ class ServerPlayer extends Thread {
     PrintWriter outputwriter;
     ObjectOutputStream objectOut;
     Object stringOutObject;
+    String scoreListMessage;
+    List<Integer> tempList = new ArrayList<>();
 
     static final int START = 1;
     static final int SETCATEGORY = 2;
@@ -28,8 +30,9 @@ class ServerPlayer extends Thread {
     int gameround;
     String pointString;
 
-    List<Integer> player1Scores = new ArrayList<>();
-    List<Integer> player2Scores = new ArrayList<>();
+    List<Integer> currentPlayerScores = new ArrayList<>();
+   // List<Integer> player2Scores = new ArrayList<>();
+    List<Integer> opponentScores;
 
 
     protected int state = 0;
@@ -48,8 +51,11 @@ class ServerPlayer extends Thread {
 
     int currentRound = 0;
     String readyToPlay = "";
+    String setScoreForBothPlayers = "SET SCORE FOR BOTH PLAYERS";
 
     List<Question> tempQuestionList = new ArrayList<>();
+    ObjectInputStream inObj;
+    String nextRoundMessage;
 
 
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
@@ -79,6 +85,7 @@ class ServerPlayer extends Thread {
             outputwriter = new PrintWriter(socket.getOutputStream(), true);
             objectOut = new ObjectOutputStream(socket.getOutputStream());
             inputbuffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            inObj = new ObjectInputStream(socket.getInputStream());
 
             Properties properties = new Properties();
             try {
@@ -86,6 +93,9 @@ class ServerPlayer extends Thread {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            nextRoundMessage = (String) inObj.readObject();
+            System.out.println(nextRoundMessage);
 
             questionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound"));
             rounds = Integer.parseInt(properties.getProperty("rounds"));
@@ -110,17 +120,21 @@ class ServerPlayer extends Thread {
 
             System.out.println("MOTSTÅNDAREN: " + opponent.readyToPlay);//kladd
 
-            while ((!gameEngine.player2Ready)) {//innan opponent anslutet så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
+            while ((!gameEngine.player2Ready)) {//innan opponent anslutit så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
                 Thread.sleep(1000);
             }
+
 
             while (true) {
                 if (state == 2) {
                     currentRound = 0;
                     state = 3;
                 } else if (state == 3) {
-                    // ServerGameEngine
                     while (currentRound < rounds) {
+
+                        while(!nextRoundMessage.equals("NEXT ROUND")){//todo här
+                            Thread.sleep(100);
+                        }
                         if ((this.equals(currentplayer)) && (setCategory == true)) {
                             chooseCategory();
                             setCategory = false;
@@ -129,7 +143,7 @@ class ServerPlayer extends Thread {
                         if (this.equals(currentplayer)) {
                             for (int i = 0; i < questionsPerRound; i++) {
                                 if (turn == 1) {
-                                    question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);//todo kontrollera att question inte redan använts, metod i ServerGameEngine
+                                    question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
                                     objectOut.writeObject(question);
                                     gameEngine.addQuestionToList((Question) question);
                                 } else {
@@ -142,38 +156,66 @@ class ServerPlayer extends Thread {
                                 gameEngine.removeContentsFromQuestionList();
                                 setCategoryToTrue();
                                 setCurrentRoundPlusOne();
+                                roundDone=true;
                             }
                             changePlayerTurn();
                             opponent.changePlayerTurn();
+                            nextRoundMessage = "WAITING FOR NEXT ROUND";
 
-                            // objectOut.writeObject("SET SCORE"); todo här skulle vi vilja sätta den ene spelarens board, sedan uppdatera den andres efter rundan
-                            //   objectOut.flush();
-                            //todo skicka meddelande om att byta layout
+
                             stringOutObject = "SET SCORE " + playerName;
                             objectOut.writeObject(stringOutObject);
                             objectOut.flush();
-                        }
 
-                        //   roundDone=false;
+                            if(roundDone==true){ //todo kladd kladd
+                                setScoreForBothPlayers();
+                            }
+                        }
                     }
                     // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
                     //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
                     //  state = 4;
                 } else if (state == 4) {
-                    // objectOut.writeObject(gameEngine.countScore(state, true, this));
-                    //SKICKA POÄNG TILL CLIENTSIDAN
+                    //vet inte riktigt
                 }
             }
         } catch (IOException e) {
             System.out.println("Player " + playerName + " died: " + e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
     protected void setCategoryToTrue(){
         this.setCategory = true;
         opponent.setCategory = true;
+    }
+    protected void sendOpponentScore() throws IOException {
+        opponentScores = new ArrayList<>(opponent.currentPlayerScores);
+
+        if(this.playerName.equals("player 1")){
+            scoreListMessage = "ScoreList of player 2";
+        } else {
+            scoreListMessage = "ScoreList of player 1";
+        }
+        objectOut.writeObject(scoreListMessage);
+        objectOut.flush();
+
+        List<Integer> tempList = new ArrayList<>(opponent.currentPlayerScores);
+        objectOut.writeObject(tempList);
+        objectOut.flush();
+    }
+
+    protected void setScoreForBothPlayers() throws IOException {
+        sendOpponentScore();
+        opponent.sendOpponentScore();
+
+        objectOut.writeObject(setScoreForBothPlayers);
+        objectOut.flush();
+        opponent.objectOut.writeObject(setScoreForBothPlayers);
+        objectOut.flush();
     }
 
 
@@ -183,12 +225,10 @@ class ServerPlayer extends Thread {
 
         objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
         objectOut.flush();
-        objectOut.writeObject(gameEngine.addScoreToListAndReturnFullList(pointString)); //skickar lista med poäng
-        for (Integer i: player1Scores) {
-            System.out.println(i + " player1scores");
-        }
-        for (Integer i: player2Scores) {
-            System.out.println(i + " player2scores");
+        tempList = new ArrayList<>(gameEngine.addScoreToListAndReturnFullList(pointString)); //skickar lista med poäng
+        objectOut.writeObject(tempList);
+        for (Integer i: currentPlayerScores) {
+            System.out.println(i + " currentPlayerScores");
         }
         objectOut.flush();
         System.out.println(gameEngine.checkPlayer(pointString) + " är skickat");
