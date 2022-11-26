@@ -1,7 +1,6 @@
 package QuizGamev2;
 
 
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -28,18 +27,26 @@ class ServerPlayer extends Thread {
     int gameround;
     String pointString;
 
+    List<Integer> player1Scores = new ArrayList<>();
+    List<Integer> player2Scores = new ArrayList<>();
+
 
     protected int state = 0;
     String chosenCategory;
     String chosenQuestion;
     int points = 0;
-    int numberOfQuestions = 2;
+    int questionsPerRound = 0;
+    int rounds;
     int numberOfRounds;
     boolean isCorrectanswer;
-    int[] setScore = new int[numberOfQuestions];
+    int[] setScore = new int[questionsPerRound];
     int[] gameScore = new int[numberOfRounds];
     int turn = 1;
     boolean roundDone = false;
+    boolean setCategory = true;
+
+    int currentRound = 0;
+    String readyToPlay = "";
 
     List<Question> tempQuestionList = new ArrayList<>();
 
@@ -71,96 +78,130 @@ class ServerPlayer extends Thread {
 
             Properties properties = new Properties();
             try {
-                properties.load(new FileInputStream("C:src\\QuizGamev2\\PropertiesFile.properties"));
+                properties.load(new FileInputStream("src\\QuizGamev2\\PropertiesFile.properties"));
             } catch (Exception e){
                 e.printStackTrace();
             }
 
-            numberOfQuestions = Integer.parseInt(properties.getProperty("questionsPerRound"));
+            questionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound"));
+            rounds = Integer.parseInt(properties.getProperty("rounds"));
             String inputMessage = "";
 
-            outputwriter.println("Välkommen till spelet " + playerName + "!");
+            outputwriter.println("Välkommen till spelet " + playerName + "!" + " Rounds are: " + rounds);
 
-                nickName = inputbuffer.readLine();
-                state=2;
+            nickName = inputbuffer.readLine();
+            state = 2;
 
-                Object question = null;
+            Object question = null;
 
-                while(opponent==null){//innan opponent anslutet så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
-                    Thread.sleep(1000);
-                }
+
+            this.readyToPlay = inputbuffer.readLine();
+            System.out.println(readyToPlay);
+
+            if (readyToPlay.contains("player 1")) {
+                gameEngine.player1Ready = true;
+            } else if (readyToPlay.contains("player 2")) {
+                gameEngine.player2Ready = true;
+            }
+
+            System.out.println("MOTSTÅNDAREN: " + opponent.readyToPlay);//kladd
+
+            while ((!gameEngine.player2Ready)) {//innan opponent anslutet så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
+                Thread.sleep(1000);
+            }
 
                 while (true) {
                     if (state == 2) {
-                      //  objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
-
-                        if (this.equals(currentplayer)) {
-                            objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
-                            chosenCategory = inputbuffer.readLine();
-                        }
+                /*    if (this.equals(currentplayer)) { //todo OM SPELAREN EJ TRYCKT "STARTA" SKA DETTA EJ SKE! PGA. Annars kan spelare2 kan välja kategori
+                        chooseCategory();
+                    }*/
+                        currentRound = 0;
                         state = 3;
                     } else if (state == 3) {
-                        if(this.equals(currentplayer) && (roundDone == false)) { //man kan även lägga till en int för att räkna antal varv, och få dessa via antal frågor från Propertis-fil
-                            for (int i = 0; i < numberOfQuestions; i++) { //properties-filen väljer ju antal ronder samt frågor
-                                if (turn==1) {
-                                    question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
-                                    //todo kontrollera att question inte redan använts, metod i ServerGameEngine
-                                    objectOut.writeObject(question);
-                                    gameEngine.addQuestionToList((Question) question);
-                                } else {
-                                    objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                        // ServerGameEngine
+                        while (currentRound < rounds) {
+                            if ((this.equals(currentplayer)) && (setCategory == true)) {
+                                chooseCategory();
+                                setCategory = false;
+                                opponent.setCategory = false;
+                            }
+                            if (this.equals(currentplayer)) {
+                                for (int i = 0; i < questionsPerRound; i++) {
+                                    if (turn == 1) {
+                                        question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);//todo kontrollera att question inte redan använts, metod i ServerGameEngine
+                                        objectOut.writeObject(question);
+                                        gameEngine.addQuestionToList((Question) question);
+                                    } else {
+                                        objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                                    }
+                                    objectOut.flush();
+                                    pointString = inputbuffer.readLine();
+                                    //  gameEngine.separateScoreString(pointString); //todo Ling, din koddel passar någonstans här <------------
                                 }
-                                pointString = inputbuffer.readLine(); //todo poäng
+                                if (turn == 2) {
+                                    gameEngine.removeContentsFromQuestionList();
+                                    // turn=1;
+                                    //    roundDone = true;
+                                    //    opponent.roundDone = true;
+                                    setCategory = true;
+                                    opponent.setCategory = true;
+                                    setCurrentRoundPlusOne();
+                                    //       changePlayerTurn(); //eftersom vi vill att varannan spelare ska få välja kategori
+                                    //    opponent.changePlayerTurn();
+                                }
+                                //todo Ling, skicka sedan listan + "player x sent this" någonstans här <------------------
+                                changePlayerTurn(); //här ändras både currentplayer och turn
+                                opponent.changePlayerTurn();
+                                //todo skicka meddelande om att byta layout
                             }
-                            if(turn==2){
-                                gameEngine.removeContentsFromQuestionList();
-                                turn=1;
-                                roundDone=true;
-                                opponent.roundDone=true;
-                            }
-                            changePlayerTurn(); //här ändras både currentplayer och turn
-                            opponent.changePlayerTurn();
-                            //todo skicka meddelande om att byta layout
+                            //   roundDone=false;
                         }
+                        // currentRound=0; //ska enbart sättas om vi startar nytt spel
+
+                        //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
                         //  state = 4;
                     } else if (state == 4) {
+                       // objectOut.writeObject(gameEngine.countScore(state, true, this));
                         //SKICKA POÄNG TILL CLIENTSIDAN
                     }
                 }
-
-                } catch(IOException e){
-                    System.out.println("Player " + playerName + " died: " + e);
-                } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            } catch(IOException e){
+                System.out.println("Player " + playerName + " died: " + e);
+            } catch(InterruptedException e){
+                throw new RuntimeException(e);
+            }
         }
+
+
+
+    public void chooseCategory() throws IOException {
+        objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
+        objectOut.flush();
+        this.chosenCategory = inputbuffer.readLine();
+        opponent.chosenCategory = this.chosenCategory;
     }
-            public void changePlayerTurn(){
-                if(currentplayer == this){
-                    currentplayer = getOpponent();
-                } else {
-                    currentplayer = this;
-                }
+    public void setCurrentRoundPlusOne(){
+        this.currentRound+=1;
+        opponent.currentRound+=1;
+    }
 
-                if(turn==1){
-                    turn=2;
-                } else {
-                    if(turn==2){
-                        turn=1;
-                    }
-                }
-            }
+    public void changePlayerTurn() {
+        if (this.currentplayer == this) {
+            currentplayer = getOpponent();
+        } else {
+            currentplayer = this;
+        }
 
-            public void notifyWinner () {//todo behöver få info från PlayerClient
-                if (points > getOpponent().points) {
-                    outputwriter.println("Player 1 wins!"); //Ska man kunna välja användarnamn?
-                } else if (points < getOpponent().points) {
-                    outputwriter.println("Player 2 wins!");
-                } else if (points == getOpponent().points) {
-                    outputwriter.println("TIE");
-                } else {
-                    outputwriter.println("Something went wrong in notifyWinner-method of Player");
-                }
+        if (this.turn == 1) {
+            this.turn = 2;
+        } else {
+            if (this.turn == 2) {
+                this.turn = 1;
             }
+        }
+        //roundDone=true? för bäggedera
+    }
+
 
             protected void addOnePoint () {
                 points += 1;
