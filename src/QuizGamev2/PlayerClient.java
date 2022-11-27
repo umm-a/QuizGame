@@ -91,22 +91,22 @@ public class PlayerClient implements ActionListener {
                 obj = inObj.readObject();
                 System.out.println(obj.toString());
                 List<Integer> pointsList = new ArrayList<>((List<Integer>) obj);
-                    if (fromPlayer.toLowerCase().contains("player 1")) {
-                        removeContentsFromPlayer1List();
-                        this.player1Scores = new ArrayList<>(pointsList);
+                if (fromPlayer.toLowerCase().contains("player 1")) {
+                    removeContentsFromPlayer1List();
+                    this.player1Scores = new ArrayList<>(pointsList);
                     //    setPointListToPlayer(pointsList, player1Scores);
-                    } else if (fromPlayer.toLowerCase().contains("player 2")) {
-                        removeContentsFromPlayer2List();
-                        this.player2Scores = new ArrayList<>(pointsList);
-                       // setPointListToPlayer(pointsList, player2Scores);
-                    }
-                    System.out.println("ScoreList of player in PlayerClient has run");
+                } else if (fromPlayer.toLowerCase().contains("player 2")) {
+                    removeContentsFromPlayer2List();
+                    this.player2Scores = new ArrayList<>(pointsList);
+                    // setPointListToPlayer(pointsList, player2Scores);
+                }
+                System.out.println("ScoreList of player in PlayerClient has run");
             } else if (obj.toString().toLowerCase().contains("set score player 1")) {
-             //   state=UPDATESETSCORE;
+                //   state=UPDATESETSCORE;
                 playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
             } else if (obj.toString().toLowerCase().contains("set score player 2")) {
-              //  state=UPDATESETSCORE;
-            playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
+                //  state=UPDATESETSCORE;
+                playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
                 setCurrentObject((Question) obj);
@@ -125,13 +125,13 @@ public class PlayerClient implements ActionListener {
                 System.out.println("gameIsDone is recieved");
                 gameIsDone = true;
             } else {
-                    System.out.println(obj.toString());
-                    System.out.println("This is where things tend to go wrong");
-                }
+                System.out.println(obj.toString());
+                System.out.println("This is where things tend to go wrong");
             }
-            //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
-
         }
+        //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
+
+    }
 
     public Object getCurrentObject(){
         return this.currentObject;
@@ -177,10 +177,10 @@ public class PlayerClient implements ActionListener {
             }
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
-                outpw.println(chosenCategory);
-                System.out.println("Test från PlayerClient: " + chosenCategory);
+            outpw.println(chosenCategory);
+            System.out.println("Test från PlayerClient: " + chosenCategory);
             state=QUESTIONSTATE;
-            } else if (state==QUESTIONSTATE) {//todo OBS man ska inte kunna trycka på fler knappar när man svarat på en specifik fråga
+        } else if (state==QUESTIONSTATE) {//todo OBS man ska inte kunna trycka på fler knappar när man svarat på en specifik fråga
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
 

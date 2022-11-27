@@ -17,18 +17,18 @@ public class PlayerGUI2 extends JFrame {
     JPanel welcomePanel;
     JPanel categoryPanel;
     JPanel questionPanel;
-    JPanel gameCompletedPanel;
     JPanel waitingPanel;
     JPanel scorePanel;
     JButton startButton;
     List<JButton> catButtons;
-    Font myFont4 = new Font("Arial", Font.BOLD, 22);
+
     Font myFont = new Font("Arial", Font.BOLD, 19);
     Font myFont2 = new Font("Arial", Font.BOLD, 15);
     Font myFont3 = new Font("Arial", Font.BOLD, 14);
+    Font myFont4 = new Font("Arial", Font.BOLD, 22);
     Font myFont5 = new Font("Arial", Font.BOLD, 26);
     Font myFont6 = new Font("Arial", Font.BOLD, 42);
-    PlayerClient playerClient;
+
     JLabel playerGameScore;
     JLabel opponentGameScore;
     List<SmallCircle> playerDots;
@@ -38,7 +38,7 @@ public class PlayerGUI2 extends JFrame {
 
     JTextField nickNametf;
     String opponentNickname;
-
+    PlayerClient playerClient;
 
     //bara för test:
   /*  List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"));
@@ -53,7 +53,7 @@ public class PlayerGUI2 extends JFrame {
 // test slut
 
     public PlayerGUI2() throws Exception {
-         this.playerClient = new PlayerClient(this);
+        this.playerClient = new PlayerClient(this);
 
 //bara för test:
       /* setWelcomeLayout(playerClient);
@@ -64,7 +64,6 @@ public class PlayerGUI2 extends JFrame {
         sc.nextLine();
         setCategoryLayout(catlist, playerClient);
         sc.nextLine();
-        //Thread.sleep(10000);
         setQuestionLayout(qtest, playerClient);
         sc.nextLine();
         setScoreLayout(2, 4, playerScore, opponentScore, "Your turn",playerClient);
@@ -430,7 +429,7 @@ public class PlayerGUI2 extends JFrame {
             super();
             radie = 15;
             x = (gridwidth / 2) - radie;
-          //  System.out.println(gridwidth);
+            //  System.out.println(gridwidth);
             y = (gridheight / 2) - radie;
 
 
@@ -447,11 +446,7 @@ public class PlayerGUI2 extends JFrame {
             comp2D.fill(circle);
         }
     }
-
-
     public static void main(String[] args) throws Exception {
         PlayerGUI2 g2 = new PlayerGUI2();
     }
-
-
 }

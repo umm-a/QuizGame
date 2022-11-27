@@ -31,7 +31,7 @@ class ServerPlayer extends Thread {
     String pointString;
 
     List<Integer> currentPlayerScores = new ArrayList<>();
-   // List<Integer> player2Scores = new ArrayList<>();
+    // List<Integer> player2Scores = new ArrayList<>();
     List<Integer> opponentScores;
 
 
@@ -301,4 +301,3 @@ class ServerPlayer extends Thread {
         }
     }
 }
-
