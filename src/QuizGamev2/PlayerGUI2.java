@@ -304,12 +304,12 @@ public class PlayerGUI2 extends JFrame {
         hyphenLabel.setFont(myFont6);
         gameCompletedPanel.add(hyphenLabel);
 
-        JLabel newGameLabel = new JLabel("Play again?", SwingConstants.CENTER);
+        JLabel newGameLabel = new JLabel("Spela igen?", SwingConstants.CENTER);
         newGameLabel.setBounds(0, 290, 320, 60);
         newGameLabel.setFont(myFont5);
         gameCompletedPanel.add(newGameLabel);
 
-        JButton yesButton = new JButton("Yes");
+        JButton yesButton = new JButton("Ja");
         yesButton.setBounds(60, 360, 70, 50);
         yesButton.setFont(myFont5);
         yesButton.setBorder(new EtchedBorder());
@@ -317,7 +317,7 @@ public class PlayerGUI2 extends JFrame {
         yesButton.addActionListener(playerClient);
         gameCompletedPanel.add(yesButton);
 
-        JButton noButton = new JButton("No");
+        JButton noButton = new JButton("Nej");
         noButton.setBounds(180, 360, 70, 50);
         noButton.setFont(myFont5);
         noButton.setBorder(new EtchedBorder());
