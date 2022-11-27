@@ -27,15 +27,15 @@ public class PlayerClient implements ActionListener {
     static final int QUESTIONSTATE = 3;
     static final int UPDATESETSCORE = 4;
     Question currentObject;
-    boolean point=false;
+    boolean point;
     int questionsPerRound;
     int rounds;
     String fromPlayer = "";
     List<Integer> player1Scores = new ArrayList<>();
     List<Integer> player2Scores = new ArrayList<>();
     ObjectOutputStream objectOut;
-    boolean roundIsDone = false;
-    boolean gameIsDone = false;
+    boolean roundIsDone;
+    boolean gameIsDone;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -205,7 +205,7 @@ public class PlayerClient implements ActionListener {
 
             state = UPDATESETSCORE;
 
-        } else if ((state == UPDATESETSCORE) && (roundIsDone) && (gameIsDone==false)) { //todo ska bara gå om båda spelarna spelat en runda
+        } else if ((state == UPDATESETSCORE) && (roundIsDone) && (!gameIsDone)) { //todo ska bara gå om båda spelarna spelat en runda
             if(((JButton) e.getSource()).getText().equals("Fortsätt")){
                 playerGUI2.setWaitingLayout("Waiting for opponent to finish their turn...");
                 //fortsätt-knappen ska ej gå att klicka på förrän roundDone=true
@@ -213,9 +213,9 @@ public class PlayerClient implements ActionListener {
                 roundIsDone=false;
                 state=QUESTIONSTATE; //todo i sista rundan måste man ändra detta, kolla om det finns ett meddelande från ServerPlayer som meddelar att det är slut. Skicka detta till while-loopen här i PlayerClient, ta boolean och kolla av!
             }
-        } else if (gameIsDone == true) {
+        } else if (gameIsDone) {
             if(((JButton) e.getSource()).getText().equals("Fortsätt")){
-                //spela igen-ruta
+                playerGUI2.setGameCompletedLayout("test1", "test2", this, player1Scores, player2Scores);
             }
         }
     }

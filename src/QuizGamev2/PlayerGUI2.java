@@ -33,8 +33,6 @@ public class PlayerGUI2 extends JFrame {
     JLabel opponentGameScore;
     List<SmallCircle> playerDots;
     List<SmallCircle> opponentDots;
-    JButton fortsättButton;
-
 
     JTextField nickNametf;
     String opponentNickname;
@@ -346,7 +344,11 @@ public class PlayerGUI2 extends JFrame {
 
     }
 
-    public void setGameCompletedLayout(String nickname, String opponentNickname, PlayerClient playerClient) {
+    public void setGameCompletedLayout(String nickname, String opponentNickname, PlayerClient playerClient,
+                                       List<Integer> playerScore, List<Integer> opponentScore) {
+
+        int playerScoreInt = playerScore.stream().mapToInt(Integer::intValue).sum();
+        int opponentScoreInt = opponentScore.stream().mapToInt(Integer::intValue).sum();
 
         baseFrame.getContentPane().removeAll();
         JPanel gameCompletedPanel = new JPanel();
@@ -354,7 +356,13 @@ public class PlayerGUI2 extends JFrame {
         gameCompletedPanel.setBounds(10, 10, 320, 450);
         gameCompletedPanel.setBorder(new EtchedBorder());
 
-        String gameResultMessage = "Du vann!";
+        String gameResultMessage;
+        if (playerScoreInt < opponentScoreInt)
+            gameResultMessage = "Du förlorade!";
+        else if (playerScoreInt > opponentScoreInt)
+            gameResultMessage = "Du vann";
+        else
+            gameResultMessage = "Oavgjort!";
         JLabel gameResultLabel = new JLabel(gameResultMessage, SwingConstants.CENTER);
         gameResultLabel.setBounds(10, 30, 300, 60);
         gameResultLabel.setFont(myFont5);
@@ -375,12 +383,12 @@ public class PlayerGUI2 extends JFrame {
         vsLabel.setFont(myFont2);
         gameCompletedPanel.add(vsLabel);
 
-        JLabel playerScoreLabel = new JLabel("6", SwingConstants.CENTER);
+        JLabel playerScoreLabel = new JLabel(String.valueOf(playerScoreInt), SwingConstants.CENTER);
         playerScoreLabel.setBounds(0, 190, 140, 60);
         playerScoreLabel.setFont(myFont6);
         gameCompletedPanel.add(playerScoreLabel);
 
-        JLabel opponentScoreLabel = new JLabel("4", SwingConstants.CENTER);
+        JLabel opponentScoreLabel = new JLabel(String.valueOf(opponentScoreInt), SwingConstants.CENTER);
         opponentScoreLabel.setBounds(180, 190, 140, 60);
         opponentScoreLabel.setFont(myFont6);
         gameCompletedPanel.add(opponentScoreLabel);
