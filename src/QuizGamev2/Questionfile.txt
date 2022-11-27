@@ -1,33 +1,32 @@
-Djur & Natur, Vilket djur är störst?, Elefant, Hare, Myra, Katt
-Religion, Hur många gånger per dag ber en muslim?, 5, 4, 3, 2
 Teknik/Naturvetenskap, Vilket av dessa är ett programmeringsspråk?, Java, Banan, Bully, Hoppsan
-Litteratur, Vem skrev böckerna om Pippi Långstrump?, Astrid Lindgren, Michael Jackson, Stephen King, Ingvar Kamprad
-Religion, Vilken profet kom med Torah?, Moses, Jesus, Muhammed, Abraham
-Djur & Natur, Hur många timmar sover en hund per dygn?, 12-18 , 2-4 , 6-8 , 0
 Teknik/Naturvetenskap, Vad uppfanns av svensken Alfred Nobel som instiftade Nobelpriset?, Dynamiten, Kullagret, Blixtlåset, Osthyveln
 Teknik/Naturvetenskap, Vilken partikel har negativ laddning?, Elektron, Proton, Neutron, Anti-slip-partikeln
 Teknik/Naturvetenskap, Vad är det som indelas i periodiska systemet?, Grundämnen, Syror och baser, Grodor, Alfabetet
-Religion, I vilket land ligger Mekka?, Saudiarabien, Förenade Arabemiraten, Jordanien, Egypten
 Teknik/Naturvetenskap, Vilket pH-värde är neutralt?, 7, 0, 14, 5.6
-Djur & Natur, Vilket djur är störst?, Elefant, Hare, Myra, Katt
-Religion, Hur många gånger per dag ber en muslim?, 5, 4, 3, 2
-Teknik/Naturvetenskap, Vilket av dessa är ett programmeringsspråk?, Java, Banan, Bully, Hoppsan
+Teknik/Naturvetenskap, Hur många kromosomer har en människa normalt sett?, 46, 13, 86, 30
+Teknik/Naturvetenskap, Albert Einsteins relativitetsteori förklarar fysikens paradoxer. Hur ser hans berömda formel ut?, E=mc2, M=ce2, C=Me2, 2=emc
+Teknik/Naturvetenskap, För att kunna räkna ut ett föremåls densitet behöver du veta dess..., Massa och volym, Färg och form, Kraft och rörelse, Värmeledningsförmåga och vätskehalt
+Litteratur, Hur många är tornen i titeln på J.R.R. Tolkiens andra volym i serien om Härskarringen?, 2, 3, 5, 10
+Litteratur, Vem är kvinnan bakom såväl "Förnuft och känsla" som "Stolthet och fördom"?, Jane Austen, Alexandra Coelho Ahndori, Astrid Lindgren, Karin Boye
+Litteratur, Vem författade sagorna Kejsarens nya kläder och Den lilla sjöjungfrun?, H.C. Andersen, Leo Tolstoj, Ernest Hemingway, Sara Lidman
+Litteratur, Vad heter Jan Guillous delvis självbiografiska roman om livet på en internatskola?, Ondskan, Huvudvärken, Internatet, Skolplikt
+Litteratur, Vad heter en av John Steinbecks kortromaner?, Möss och människor, Människor med mössor, Tummen i fickan, Ett ögonblick i norr
+Litteratur, Karin Boye har författat dystopin..., Kallocain, Glad nöjd och tillfreds, Livet är toppen, Solstråle
 Litteratur, Vem skrev böckerna om Pippi Långstrump?, Astrid Lindgren, Michael Jackson, Stephen King, Ingvar Kamprad
-Religion, Vilken profet kom med Torah?, Moses, Jesus, Muhammed, Abraham
-Djur & Natur, Hur många timmar sover en hund per dygn?, 12-18 , 2-4 , 6-8 , 0
-Teknik/Naturvetenskap, Vad uppfanns av svensken Alfred Nobel som instiftade Nobelpriset?, Dynamiten, Kullagret, Blixtlåset, Osthyveln
-Teknik/Naturvetenskap, Vilken partikel har negativ laddning?, Elektron, Proton, Neutron, Anti-slip-partikeln
-Teknik/Naturvetenskap, Vad är det som indelas i periodiska systemet?, Grundämnen, Syror och baser, Grodor, Alfabetet
+Litteratur, Astrid Lindgren har inte författat..., Gökungen, Madicken, Pippi Långstrump, Alla vi barn Bullerbyn
 Religion, I vilket land ligger Mekka?, Saudiarabien, Förenade Arabemiraten, Jordanien, Egypten
-Teknik/Naturvetenskap, Vilket pH-värde är neutralt?, 7, 0, 14, 5.6
-Djur & Natur, Vilket djur är störst?, Elefant, Hare, Myra, Katt
+Religion, Vilken profet kom med Torah?, Mose, Jesus, Muhammed, Abraham
 Religion, Hur många gånger per dag ber en muslim?, 5, 4, 3, 2
-Teknik/Naturvetenskap, Vilket av dessa är ett programmeringsspråk?, Java, Banan, Bully, Hoppsan
-Litteratur, Vem skrev böckerna om Pippi Långstrump?, Astrid Lindgren, Michael Jackson, Stephen King, Ingvar Kamprad
-Religion, Vilken profet kom med Torah?, Moses, Jesus, Muhammed, Abraham
+Religion, Vilken religion utövar monoteism - att enbart dyrka en Gud?, Islam, Buddhism, Ateism, Hinduism
+Religion, Vad ska man inte göra enligt islam?, Dyrka någon annan än Gud, Ge i välgörenhet, Fasta, Behandla sina föräldrar väl
+Religion, På vilken dag infaller vilodagen inom Judendomen?, Lördag, Måndag, Söndag, Onsdag
+Religion, Vilken profet var en mäktig kung?, Salomo, Jesus, Abraham, Noa
+Religion, En muslim säger att Gud har..., Ingen partner, En son, En partner, En dotter
+Djur & Natur, Vad brukar Koalor äta?, Eucalyptusblad, Insekter, Rosa blommor, Bär
 Djur & Natur, Hur många timmar sover en hund per dygn?, 12-18 , 2-4 , 6-8 , 0
-Teknik/Naturvetenskap, Vad uppfanns av svensken Alfred Nobel som instiftade Nobelpriset?, Dynamiten, Kullagret, Blixtlåset, Osthyveln
-Teknik/Naturvetenskap, Vilken partikel har negativ laddning?, Elektron, Proton, Neutron, Anti-slip-partikeln
-Teknik/Naturvetenskap, Vad är det som indelas i periodiska systemet?, Grundämnen, Syror och baser, Grodor, Alfabetet
-Religion, I vilket land ligger Mekka?, Saudiarabien, Förenade Arabemiraten, Jordanien, Egypten
-Teknik/Naturvetenskap, Vilket pH-värde är neutralt?, 7, 0, 14, 5.6
+Djur & Natur, Vilket djur är störst?, Elefant, Hare, Myra, Katt
+Djur & Natur, Vilken färg har en flamingo när den är liten?, Vit/grå, Svart, Rosa, Grön
+Djur & Natur, Ur vad för slags blomma utvinns opium?, Vallmo, Tulpan, Nejliga, Ros
+Djur & Natur, Från vilken blomma får man saffran?, Krokus, Rosenspirea, Solros, Vallmo
+Djur & Natur, Vilken ätlig svamp kallas även stensopp?, Karljohan, Kantarell, Champinjon, Stolt fjällskivling
+Djur & Natur, Vad heter Europas största skalbaggeart?, Ekoxe, Storbagge, Big one, Skalbärare
