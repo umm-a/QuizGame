@@ -171,12 +171,12 @@ class ServerPlayer extends Thread {
                             objectOut.writeObject(stringOutObject);
                             objectOut.flush();
 
-                            if(roundDone==true){ //todo kladd kladd
+                            if(roundDone==true){
                                 setScoreForBothPlayers();
-                                changePlayerTurnWithinRound(); //todo
-                                opponent.changePlayerTurnWithinRound();//
-                                changePlayerTurnAfterEachRound();//
-                                opponent.changePlayerTurnAfterEachRound();//
+                                changePlayerTurnWithinRound();
+                                opponent.changePlayerTurnWithinRound();
+                                changePlayerTurnAfterEachRound();
+                                opponent.changePlayerTurnAfterEachRound();
                                 tellPlayerClientRoundIsDone();
                                 opponent.tellPlayerClientRoundIsDone();
                                 setRoundDoneFalse();
@@ -188,7 +188,6 @@ class ServerPlayer extends Thread {
                     state = 4;
                     // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
-                    //todo de ska få se scoreboard mellan varven, om de klickar "fortsätt" ska vi fortsätta!
                     //  state = 4;
                 } else if (state == 4) {
                     //Dags att ta emot och se om spelaren vill köra igen
