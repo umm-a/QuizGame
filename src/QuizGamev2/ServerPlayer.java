@@ -160,10 +160,10 @@ class ServerPlayer extends Thread {
                                 gameEngine.removeContentsFromQuestionList();
                                 setCategoryToTrue();
                                 setCurrentRoundPlusOne();
-                                roundDone=true;
+                                setRoundDoneTrue();
                             }
-                            changePlayerTurn();
-                            opponent.changePlayerTurn();
+                            changePlayerTurnWithinRound();
+                            opponent.changePlayerTurnWithinRound();
                             nextRoundMessage = "WAITING FOR NEXT ROUND";
 
 
@@ -173,8 +173,13 @@ class ServerPlayer extends Thread {
 
                             if(roundDone==true){ //todo kladd kladd
                                 setScoreForBothPlayers();
+                                changePlayerTurnWithinRound(); //todo
+                                opponent.changePlayerTurnWithinRound();//
+                                changePlayerTurnAfterEachRound();//
+                                opponent.changePlayerTurnAfterEachRound();//
                                 tellPlayerClientRoundIsDone();
                                 opponent.tellPlayerClientRoundIsDone();
+                                setRoundDoneFalse();
                             }
                         }
                     }
@@ -200,6 +205,14 @@ class ServerPlayer extends Thread {
     protected void setCategoryToTrue(){
         this.setCategory = true;
         opponent.setCategory = true;
+    }
+    protected void setRoundDoneTrue(){
+        this.roundDone=true;
+        opponent.roundDone=true;
+    }
+    protected void setRoundDoneFalse(){
+        this.roundDone=false;
+        opponent.roundDone=false;
     }
     protected void sendOpponentScore() throws IOException {
         opponentScores = new ArrayList<>(opponent.currentPlayerScores);
@@ -264,13 +277,22 @@ class ServerPlayer extends Thread {
         opponent.currentRound += 1;
     }
 
-    protected void changePlayerTurn() {
+    protected void changePlayerTurnWithinRound() {
         if (this.currentplayer == this) {
             currentplayer = getOpponent();
         } else {
             currentplayer = this;
         }
 
+        if (this.turn == 1) {
+            this.turn = 2;
+        } else {
+            if (this.turn == 2) {
+                this.turn = 1;
+            }
+        }
+    }
+    protected  void changePlayerTurnAfterEachRound() {
         if (this.turn == 1) {
             this.turn = 2;
         } else {
