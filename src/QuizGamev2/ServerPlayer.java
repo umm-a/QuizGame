@@ -58,6 +58,8 @@ class ServerPlayer extends Thread {
     String nextRoundMessage;
     String roundIsDone = "roundIsDone";
     String gameIsDone = "gameIsDone";
+    boolean wantsToPlay = true;
+    String shutdownString;
 
 
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
@@ -129,25 +131,29 @@ class ServerPlayer extends Thread {
             }
 
 
-            while (true) {
+            while (wantsToPlay) {
                 if (state == 2) {
                     currentRound = 0;
                     state = 3;
                 } else if (state == 3) {
                     while (currentRound < rounds) {
 
+                        endGameIfOpponentHasLeft();
                         while(!nextRoundMessage.equals("NEXT ROUND")){//todo här
+                            endGameIfOpponentHasLeft();
                             Thread.sleep(100);
                             nextRoundMessage = inputbuffer.readLine();
                             System.out.println(nextRoundMessage);
                         }
                         if ((this.equals(currentplayer)) && (setCategory == true)) {
+                            endGameIfOpponentHasLeft();
                             chooseCategory();
                             setCategory = false;
                             opponent.setCategory = false;
                         }
                         if (this.equals(currentplayer)) {
                             for (int i = 0; i < questionsPerRound; i++) {
+                                endGameIfOpponentHasLeft();
                                 if (turn == 1) {
                                     question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
                                     objectOut.writeObject(question);
@@ -164,6 +170,7 @@ class ServerPlayer extends Thread {
                                 setCurrentRoundPlusOne();
                                 setRoundDoneTrue();
                             }
+                            endGameIfOpponentHasLeft();
                             changePlayerTurnWithinRound();
                             opponent.changePlayerTurnWithinRound();
                             nextRoundMessage = "WAITING FOR NEXT ROUND";
@@ -192,10 +199,13 @@ class ServerPlayer extends Thread {
 
                     //  state = 4;
                 } else if (state == 4) {
+                    wantsToPlay = false;
+
                     //Dags att ta emot och se om spelaren vill köra igen
                 }
             }
         } catch (IOException e) {
+            gameEngine.shutdown = true;
             System.out.println("Player " + playerName + " died: " + e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -247,23 +257,18 @@ class ServerPlayer extends Thread {
 
     protected void tellPlayerClientGameIsDone() throws IOException {
         objectOut.writeObject(gameIsDone);
-        objectOut.flush();;
+        objectOut.flush();
     }
 
 
     protected void calculateAndSendPoints() throws IOException {
         pointString = inputbuffer.readLine();
-        System.out.println(pointString + " är mottagen");
 
         objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
         objectOut.flush();
         tempList = new ArrayList<>(gameEngine.addScoreToListAndReturnFullList(pointString)); //skickar lista med poäng
         objectOut.writeObject(tempList);
-        for (Integer i: currentPlayerScores) {
-            System.out.println(i + " currentPlayerScores");
-        }
         objectOut.flush();
-        System.out.println(gameEngine.checkPlayer(pointString) + " är skickat");
     }
 
     protected void chooseCategory() throws IOException {
@@ -300,6 +305,16 @@ class ServerPlayer extends Thread {
             if (this.turn == 2) {
                 this.turn = 1;
             }
+        }
+    }
+    protected void endGameIfOpponentHasLeft() throws IOException {
+        if(gameEngine.shutdown){
+            shutdownString = "SHUT DOWN";
+            objectOut.writeObject(shutdownString);
+            objectOut.flush();
+            objectOut.reset();
+            System.out.println("endGame has run");
+            System.exit(1);
         }
     }
 }
