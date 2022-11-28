@@ -1,4 +1,4 @@
-Teknik/Naturvetenskap, Vilket av dessa är ett programmeringsspråk?, Java, Banan, Bully, Hoppsan
+Teknik/Naturvetenskap, Vilket av dessa är ett programmeringsspråk?, Java, Banan, SnakeC, Python++#
 Teknik/Naturvetenskap, Vad uppfanns av svensken Alfred Nobel som instiftade Nobelpriset?, Dynamiten, Kullagret, Blixtlåset, Osthyveln
 Teknik/Naturvetenskap, Vilken partikel har negativ laddning?, Elektron, Proton, Neutron, Anti-slip-partikeln
 Teknik/Naturvetenskap, Vad är det som indelas i periodiska systemet?, Grundämnen, Syror och baser, Grodor, Alfabetet
@@ -30,3 +30,19 @@ Djur & Natur, Ur vad för slags blomma utvinns opium?, Vallmo, Tulpan, Nejliga,
 Djur & Natur, Från vilken blomma får man saffran?, Krokus, Rosenspirea, Solros, Vallmo
 Djur & Natur, Vilken ätlig svamp kallas även stensopp?, Karljohan, Kantarell, Champinjon, Stolt fjällskivling
 Djur & Natur, Vad heter Europas största skalbaggeart?, Ekoxe, Storbagge, Big one, Skalbärare
+Geografi, Vilken av USAs delstater har minst antal invånare?, Wyoming, Alaska, North Dakota, Maine
+Geografi, Vilket är världens till ytan näst största land?, Kanada, Brasilien, USA, Kina
+Geografi, Vilken är världens djupaste sjö?, Bajkalsjön, Viktoriasjön, Kaspiska havet, Eiresjön
+Geografi, Vad heter huvudstaden i Zimbabwe?, Harare, Kampala, Khartoum, Djibouti
+Geografi, I vilken Londonstadsdel ligger 10 Downing street?, Westminster, Lambeth, Camden, Greenwich
+Geografi, Vad heter bergkedjan som sträcker sig längs med den Italienska halvön?, Apenninerna, Karpaterna, Centralmassivet, Pyrenéerna
+Geografi, Hur många länder gränsar till Argentina?, 5, 7, 3, 2
+Geografi, Vilken sträcka är kortast?, Wien - Bratislawa, Berlin - Hamburg, Malmö - Halmstad, Stockholm - Västerås
+Musik, Vem komponerade Månskenssonaten?, Beethoven, Mozart, Schuman, Chopin
+Musik, Vad kallas den portugisiska folkmusik som karaktäriseras av sina klagofyllda melodier?, Fado, Tango, Santo, Credo
+Musik, Vilket av följande är ett Träblåsinstrument?, Klarinett, Tvärflöjt, Saxofon, Trombon
+Musik, Vem skrev 70-talsballaden Bridge over Troubled Water?, Simon & Garfunkel, Fleetwood Mac, Leonard Cohen, Joni Mitchell
+Musik, Avsluta Låttexten: I´m an Englishman in..., New York, New Delhi, New Mexico, London
+Musik, Vilket år släppte Aretha Franklin sin singel "Respect", 1967, 1959, 1972, 1963
+Musik, Vilken amerikansk stad förknippas med grupperna Nirvana och Pearl Jam?, Seattle, San Francisco, Boston, Miami
+Musik, Vad är det äldsta musikintrument som hittats?, Flöjt, Trumma, Trumpet, Fiol

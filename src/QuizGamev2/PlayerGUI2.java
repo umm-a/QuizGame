@@ -225,7 +225,7 @@ public class PlayerGUI2 extends JFrame {
 
     }
 
-    //todo ändra till list på playerscore
+
     public void setScoreLayout(int questionPerRound, int rounds, List<Integer> playerScore, List<Integer> opponentScore, String statusMessage,PlayerClient playerClient) {
 
         baseFrame.getContentPane().removeAll();
