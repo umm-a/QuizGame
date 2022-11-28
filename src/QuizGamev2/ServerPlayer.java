@@ -60,6 +60,8 @@ class ServerPlayer extends Thread {
     String gameIsDone = "gameIsDone";
 
 
+    public ServerPlayer(){};
+
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
         this.socket = socket;
         this.playerName = playerName;
@@ -90,7 +92,7 @@ class ServerPlayer extends Thread {
             inObj = new ObjectInputStream(socket.getInputStream());
 
             Properties properties = new Properties();
-            try (final FileInputStream propertiesFile = new FileInputStream("src\\QuizGamev2\\PropertiesFile.properties")){
+            try (final FileInputStream propertiesFile = new FileInputStream("src/QuizGamev2/PropertiesFile.properties")){
                 properties.load(propertiesFile);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -311,6 +313,25 @@ class ServerPlayer extends Thread {
             if (this.turn == 2) {
                 this.turn = 1;
             }
+        }
+    }
+    protected void shutdown(){
+        try{
+            if (outputwriter != null){
+                outputwriter.close();
+            }
+            if (inputbuffer != null){
+                inputbuffer.close();
+            }
+            if (objectOut != null){
+                objectOut.close();
+            }
+            if (inObj != null){
+                inObj.close();
+            }
+            socket.close();
+        } catch (IOException e) {
+            shutdown();
         }
     }
 }

@@ -47,7 +47,7 @@ public class PlayerClient implements ActionListener {
         objectOut = new ObjectOutputStream(socket.getOutputStream());
 
         Properties properties = new Properties();
-        try (final FileInputStream propertiesFile = new FileInputStream("src\\QuizGamev2\\PropertiesFile.properties")){
+        try (final FileInputStream propertiesFile = new FileInputStream("src/QuizGamev2/PropertiesFile.properties")){
             properties.load(propertiesFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
