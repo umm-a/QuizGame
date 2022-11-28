@@ -92,7 +92,9 @@ class ServerPlayer extends Thread {
             Properties properties = new Properties();
             try (final FileInputStream propertiesFile = new FileInputStream("src\\QuizGamev2\\PropertiesFile.properties")){
                 properties.load(propertiesFile);
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }catch (IOException e){
                 e.printStackTrace();
             }
 
@@ -154,6 +156,7 @@ class ServerPlayer extends Thread {
                                     objectOut.writeObject(gameEngine.getFromQuestionList(i));
                                 }
                                 objectOut.flush();
+                                objectOut.reset();
                                 calculateAndSendPoints();
                             }
                             if (turn == 2) {
@@ -170,6 +173,7 @@ class ServerPlayer extends Thread {
                             stringOutObject = "SET SCORE " + playerName;
                             objectOut.writeObject(stringOutObject);
                             objectOut.flush();
+                            objectOut.reset();
 
                             if(roundDone==true){
                                 setScoreForBothPlayers();
@@ -223,10 +227,12 @@ class ServerPlayer extends Thread {
         }
         objectOut.writeObject(scoreListMessage);
         objectOut.flush();
+        objectOut.reset();
 
         List<Integer> tempList = new ArrayList<>(opponent.currentPlayerScores);
         objectOut.writeObject(tempList);
         objectOut.flush();
+        objectOut.reset();
     }
 
     protected void setScoreForBothPlayers() throws IOException {
@@ -235,17 +241,21 @@ class ServerPlayer extends Thread {
 
         objectOut.writeObject(setScoreForBothPlayers);
         objectOut.flush();
+        objectOut.reset();
         opponent.objectOut.writeObject(setScoreForBothPlayers);
         objectOut.flush();
+        objectOut.reset();
     }
     protected void tellPlayerClientRoundIsDone() throws IOException {
         objectOut.writeObject(roundIsDone);
         objectOut.flush();
+        objectOut.reset();
     }
 
     protected void tellPlayerClientGameIsDone() throws IOException {
         objectOut.writeObject(gameIsDone);
-        objectOut.flush();;
+        objectOut.flush();
+        objectOut.reset();
     }
 
 
@@ -255,18 +265,21 @@ class ServerPlayer extends Thread {
 
         objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
         objectOut.flush();
+        objectOut.reset();
         tempList = new ArrayList<>(gameEngine.addScoreToListAndReturnFullList(pointString)); //skickar lista med poäng
         objectOut.writeObject(tempList);
         for (Integer i: currentPlayerScores) {
             System.out.println(i + " currentPlayerScores");
         }
         objectOut.flush();
+        objectOut.reset();
         System.out.println(gameEngine.checkPlayer(pointString) + " är skickat");
     }
 
     protected void chooseCategory() throws IOException {
         objectOut.writeObject(gameEngine.questionDatabase2.categoryList);
         objectOut.flush();
+        objectOut.reset();
         this.chosenCategory = inputbuffer.readLine();
         opponent.chosenCategory = this.chosenCategory;
     }
