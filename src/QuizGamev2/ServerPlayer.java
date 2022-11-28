@@ -1,6 +1,5 @@
 package QuizGamev2;
 
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -139,7 +138,7 @@ class ServerPlayer extends Thread {
                             nextRoundMessage = inputbuffer.readLine();
                             System.out.println(nextRoundMessage);
                         }
-                        if ((this.equals(currentplayer)) && (setCategory == true)) {
+                        if ((this.equals(currentplayer)) && (setCategory)) {
                             chooseCategory();
                             setCategory = false;
                             opponent.setCategory = false;
@@ -171,7 +170,7 @@ class ServerPlayer extends Thread {
                             objectOut.writeObject(stringOutObject);
                             objectOut.flush();
 
-                            if(roundDone==true){
+                            if(roundDone){
                                 setScoreForBothPlayers();
                                 changePlayerTurnWithinRound();
                                 opponent.changePlayerTurnWithinRound();

@@ -377,12 +377,24 @@ public class PlayerGUI2 extends JFrame {
         vsLabel.setFont(myFont2);
         gameCompletedPanel.add(vsLabel);
 
-        JLabel playerScoreLabel = new JLabel(String.valueOf(player1ScoreInt), SwingConstants.CENTER);
+        String playerScoreString = "";
+        String opponentScoreString = "";
+
+        if (playerClient.playerName.equals("player 1")) {
+            playerScoreString = String.valueOf(player1ScoreInt);
+            opponentScoreString = String.valueOf(player2ScoreInt);
+        }
+        else {
+            playerScoreString = String.valueOf(player2ScoreInt);
+            opponentScoreString = String.valueOf(player1ScoreInt);
+        }
+
+        JLabel playerScoreLabel = new JLabel(playerScoreString, SwingConstants.CENTER);
         playerScoreLabel.setBounds(0, 190, 140, 60);
         playerScoreLabel.setFont(myFont6);
         gameCompletedPanel.add(playerScoreLabel);
 
-        JLabel opponentScoreLabel = new JLabel(String.valueOf(player2ScoreInt), SwingConstants.CENTER);
+        JLabel opponentScoreLabel = new JLabel(opponentScoreString, SwingConstants.CENTER);
         opponentScoreLabel.setBounds(180, 190, 140, 60);
         opponentScoreLabel.setFont(myFont6);
         gameCompletedPanel.add(opponentScoreLabel);
