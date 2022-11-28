@@ -90,9 +90,11 @@ class ServerPlayer extends Thread {
             inObj = new ObjectInputStream(socket.getInputStream());
 
             Properties properties = new Properties();
-            try {
-                properties.load(new FileInputStream("src/QuizGamev2/PropertiesFile.properties"));
-            } catch (Exception e) {
+            try (final FileInputStream propertiesFile = new FileInputStream("src/QuizGamev2/PropertiesFile.properties")){
+                properties.load(propertiesFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }catch (IOException e){
                 e.printStackTrace();
             }
 
