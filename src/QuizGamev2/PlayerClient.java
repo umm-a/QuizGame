@@ -96,11 +96,9 @@ public class PlayerClient implements ActionListener {
                     if (fromPlayer.toLowerCase().contains("player 1")) {
                         removeContentsFromPlayer1List();
                         this.player1Scores = new ArrayList<>(pointsList);
-                    //    setPointListToPlayer(pointsList, player1Scores);
                     } else if (fromPlayer.toLowerCase().contains("player 2")) {
                         removeContentsFromPlayer2List();
                         this.player2Scores = new ArrayList<>(pointsList);
-                       // setPointListToPlayer(pointsList, player2Scores);
                     }
                     System.out.println("ScoreList of player in PlayerClient has run");
             } else if (obj.toString().toLowerCase().contains("set score player 1")) {
@@ -145,9 +143,7 @@ public class PlayerClient implements ActionListener {
         outpw.println(playerName + "," + bool);
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
     }
-    protected void setPointListToPlayer(List<Integer> theListOfPoints, List<Integer> playerXList){
 
-    }
     public void removeContentsFromPlayer1List(){
         List<Integer> toRemove = new ArrayList<>();
 
