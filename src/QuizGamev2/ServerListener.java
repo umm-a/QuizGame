@@ -26,8 +26,7 @@ public class ServerListener {
 
             }
         } finally {
-            ServerPlayer player = new ServerPlayer();
-            player.shutdown();
+            listener.close();
         }
 
     }
