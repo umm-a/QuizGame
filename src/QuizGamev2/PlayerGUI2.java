@@ -203,7 +203,6 @@ public class PlayerGUI2 extends JFrame {
             baseFrame.add(questionPanel);
             baseFrame.revalidate();
             baseFrame.repaint();
-
     }
 
     public void setWaitingLayout(String message){
