@@ -91,7 +91,7 @@ class ServerPlayer extends Thread {
 
             Properties properties = new Properties();
             try {
-                properties.load(new FileInputStream("src\\QuizGamev2\\PropertiesFile.properties"));
+                properties.load(new FileInputStream("src/QuizGamev2/PropertiesFile.properties"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
