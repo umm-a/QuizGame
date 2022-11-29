@@ -36,6 +36,8 @@ public class PlayerClient implements ActionListener {
     ObjectOutputStream objectOut;
     boolean roundIsDone;
     boolean gameIsDone;
+    String nickname;
+    String opponentNickname;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -86,6 +88,10 @@ public class PlayerClient implements ActionListener {
                         System.out.println(" IN CATEGORIES ");
                     }
                 }
+                if (((List<String>) obj).contains("nicknames")) {
+                    nickname = ((List<String>) obj).get(0);
+                    opponentNickname = ((List<String>) obj).get(1);
+                }
             } else if (obj.toString().contains("ScoreList of player")) {
                 fromPlayer = obj.toString();
                 obj = inObj.readObject();
@@ -103,10 +109,12 @@ public class PlayerClient implements ActionListener {
                 System.out.println("ScoreList of player in PlayerClient has run");
             } else if (obj.toString().toLowerCase().contains("set score player 1")) {
                 //   state=UPDATESETSCORE;
-                playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
+                playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores,
+                        "Player 1 Scoreboard", this, nickname, opponentNickname);
             } else if (obj.toString().toLowerCase().contains("set score player 2")) {
                 //  state=UPDATESETSCORE;
-                playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
+                playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores,
+                        "Player 2 Scoreboard", this, nickname, opponentNickname);
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
                 setCurrentObject((Question) obj);
@@ -114,9 +122,11 @@ public class PlayerClient implements ActionListener {
                 playerGUI2.setQuestionLayout((Question) obj, this);
             } else if (obj.toString().equals("SET SCORE FOR BOTH PLAYERS")) {
                 if(this.playerName.equals("player 1")){
-                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
+                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores,
+                            "Player 1 Scoreboard", this, nickname, opponentNickname);
                 } else {
-                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
+                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores,
+                            "Player 2 Scoreboard", this, nickname, opponentNickname);
                 }
             } else if (obj.toString().equals("roundIsDone")) {
                 System.out.println("roundIsDone is recieved");
@@ -125,7 +135,7 @@ public class PlayerClient implements ActionListener {
                 System.out.println("gameIsDone is recieved");
                 gameIsDone = true;
             } else {
-                System.out.println(obj.toString());
+                System.out.println(obj);
                 System.out.println("This is where things tend to go wrong");
             }
         }
@@ -215,7 +225,16 @@ public class PlayerClient implements ActionListener {
             }
         } else if (gameIsDone) {
             if(((JButton) e.getSource()).getText().equals("Fortsätt")){
-                playerGUI2.setGameCompletedLayout("test1", "test2", this, player1Scores, player2Scores);
+                playerGUI2.setGameCompletedLayout(nickname, opponentNickname, this,
+                        player1Scores, player2Scores);
+            }
+            if (((JButton) e.getSource()).getText().equals("Ja")){
+                outpw.println("ja");
+                System.out.println("Tryckt på JA");
+            }
+            if (((JButton) e.getSource()).getText().equals("Nej")){
+                outpw.println("nej");
+                System.out.println("Tryckt på NEJ");
             }
         }
     }

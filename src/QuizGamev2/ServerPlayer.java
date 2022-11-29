@@ -3,6 +3,7 @@ package QuizGamev2;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -125,6 +126,8 @@ class ServerPlayer extends Thread {
                 Thread.sleep(1000);
             }
 
+            List<String> nicknameList = Arrays.asList(nickName, opponent.nickName, "nicknames");
+            objectOut.writeObject(nicknameList);
 
             while (true) {
                 if (state == 2) {
@@ -187,7 +190,6 @@ class ServerPlayer extends Thread {
                     state = 4;
                     // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
-                    //  state = 4;
                 } else if (state == 4) {
                     //Dags att ta emot och se om spelaren vill köra igen
                 }

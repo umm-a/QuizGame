@@ -86,7 +86,7 @@ public class PlayerGUI2 extends JFrame {
 
 
     public void setWelcomeLayout(PlayerClient playerClient) {
-        baseFrame.setSize(340, 500);
+        baseFrame.setSize(352, 505);
         baseFrame.setLayout(null);
 
         welcomePanel = new JPanel();
@@ -229,7 +229,8 @@ public class PlayerGUI2 extends JFrame {
     }
 
     //todo ändra till list på playerscore
-    public void setScoreLayout(int questionPerRound, int rounds, List<Integer> playerScore, List<Integer> opponentScore, String statusMessage,PlayerClient playerClient) {
+    public void setScoreLayout(int questionPerRound, int rounds, List<Integer> playerScore, List<Integer> opponentScore,
+                               String statusMessage,PlayerClient playerClient, String nickname, String opponentNickname) {
 
         baseFrame.getContentPane().removeAll();
 
@@ -257,13 +258,13 @@ public class PlayerGUI2 extends JFrame {
         gameInfoLabel.setBorder(new EtchedBorder());
         scorePanel.add(gameInfoLabel);
 
-        playerNameLabel = new JLabel("nickname1", SwingConstants.CENTER);
+        playerNameLabel = new JLabel(nickname, SwingConstants.CENTER);
         playerNameLabel.setBounds(0, 20, 120, 30);
         playerNameLabel.setFont(myFont2);
         playerNameLabel.setBorder(new EtchedBorder());
         scorePanel.add(playerNameLabel);
 
-        opponentNameLabel = new JLabel("nickname2", SwingConstants.CENTER);
+        opponentNameLabel = new JLabel(opponentNickname, SwingConstants.CENTER);
         opponentNameLabel.setBounds(200, 20, 120, 30);
         opponentNameLabel.setFont(myFont2);
         opponentNameLabel.setBorder(new EtchedBorder());

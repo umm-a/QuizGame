@@ -42,7 +42,7 @@ public class ServerGameEngine{
         String playerName = scoreString[0].trim();
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
 
-        if (playerName.equals("player 1") && (isCorrectAnswer == true)) {
+        if (playerName.equals("player 1") && (isCorrectAnswer)) {
             player1.currentPlayerScores.add(1);
             return player1.currentPlayerScores;
         }
