@@ -113,11 +113,16 @@ public class PlayerClient implements ActionListener {
                 System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
             } else if (obj.toString().equals("SET SCORE FOR BOTH PLAYERS")) {
-                if(this.playerName.equals("player 1")){
+                if (this.playerName.equals("player 1")) {
                     playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
                 } else {
                     playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
                 }
+            }else if (obj.toString().equals("SHUT DOWN")){
+                System.out.println("Shut down-message recieved");
+                playerGUI2.setWaitingLayout("Opponent left the game... You won by default!");
+                //här kan man pausa och sedan visa resultatet. Däremot ska det ju ej gå att trycka "fortsätt" eller "spela igen", utan spelet är över. Kanske gör en kopia av scoreLayout utan for
+
             } else if (obj.toString().equals("roundIsDone")) {
                 System.out.println("roundIsDone is recieved");
                 roundIsDone = true;

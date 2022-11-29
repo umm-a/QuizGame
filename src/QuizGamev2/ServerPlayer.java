@@ -197,9 +197,12 @@ class ServerPlayer extends Thread {
             }
         } catch (IOException e) {
             System.out.println("Player " + playerName + " died: " + e);
+            opponent.opponentHasLeft();
         } catch (InterruptedException e) {
+            opponent.opponentHasLeft();
             throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
+            opponent.opponentHasLeft();
             throw new RuntimeException(e);
         }
     }
@@ -302,5 +305,21 @@ class ServerPlayer extends Thread {
             }
         }
     }
-}
+
+    protected void opponentHasLeft() {
+            String shutdownString = "SHUT DOWN";
+            try {
+                objectOut.writeObject(shutdownString);
+                objectOut.flush();
+                objectOut.reset();
+            }catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("endGame has run");
+            System.exit(1);
+        }
+    }
+
+
+
 
