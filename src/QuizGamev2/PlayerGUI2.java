@@ -326,8 +326,8 @@ public class PlayerGUI2 extends JFrame {
 
         for (int i = 0; i < opponentScore.size(); i++) {
             if (opponentScore.get(i) == 1)
-                opponentDots.get(i).color = Color.GREEN;
-            else opponentDots.get(i).color = Color.RED;
+                opponentDots.get(i).color = myGreen;
+            else opponentDots.get(i).color = myRed;
         }
 
         opponentGameScore.setText(String.valueOf(opponentGamescore));
