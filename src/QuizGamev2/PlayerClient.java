@@ -96,11 +96,9 @@ public class PlayerClient implements ActionListener {
                     if (fromPlayer.toLowerCase().contains("player 1")) {
                         removeContentsFromPlayer1List();
                         this.player1Scores = new ArrayList<>(pointsList);
-                    //    setPointListToPlayer(pointsList, player1Scores);
                     } else if (fromPlayer.toLowerCase().contains("player 2")) {
                         removeContentsFromPlayer2List();
                         this.player2Scores = new ArrayList<>(pointsList);
-                       // setPointListToPlayer(pointsList, player2Scores);
                     }
                     System.out.println("ScoreList of player in PlayerClient has run");
             } else if (obj.toString().toLowerCase().contains("set score player 1")) {
@@ -126,6 +124,10 @@ public class PlayerClient implements ActionListener {
             } else if (obj.toString().equals("gameIsDone")) {
                 System.out.println("gameIsDone is recieved");
                 gameIsDone = true;
+            } else if (obj.toString().equals("SHUT DOWN")){
+                System.out.println("Shut down-message recieved");
+                playerGUI2.setWaitingLayout("Opponent left the game... You won by default!");
+                //här kan man pausa och sedan visa resultatet. Däremot ska det ju ej gå att trycka "fortsätt" eller "spela igen", utan spelet är över. Kanske gör en kopia av scoreLayout utan fortsätt-knapp?
             } else {
                     System.out.println(obj.toString());
                     System.out.println("This is where things tend to go wrong");
@@ -145,9 +147,7 @@ public class PlayerClient implements ActionListener {
         outpw.println(playerName + "," + bool);
         System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
     }
-    protected void setPointListToPlayer(List<Integer> theListOfPoints, List<Integer> playerXList){
 
-    }
     public void removeContentsFromPlayer1List(){
         List<Integer> toRemove = new ArrayList<>();
 

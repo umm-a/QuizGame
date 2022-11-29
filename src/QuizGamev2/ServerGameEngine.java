@@ -12,6 +12,7 @@ public class ServerGameEngine{
     QuestionDatabase2 questionDatabase2;
     boolean player1Ready = false;
     boolean player2Ready = false;
+    boolean shutdown = false;
 
 
 
