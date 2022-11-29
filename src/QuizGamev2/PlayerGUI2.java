@@ -304,11 +304,14 @@ public class PlayerGUI2 extends JFrame {
             playerScorePanel.add(playerDots.get(i));
         }
 
+        Color myRed = new Color(229, 57, 53);
+        Color myGreen = new Color(67, 160, 71);
+
         //update thisPlayer scores
         for (int i = 0; i < playerScore.size(); i++) {
             if (playerScore.get(i) == 1)
-                playerDots.get(i).color = Color.GREEN;
-            else playerDots.get(i).color = Color.RED;
+                playerDots.get(i).color = myGreen;
+            else playerDots.get(i).color = myRed;
         }
 
         playerGameScore.setText(String.valueOf(playerGamescore));
