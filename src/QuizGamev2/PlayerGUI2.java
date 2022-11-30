@@ -13,20 +13,21 @@ import java.util.List;
 
 public class PlayerGUI2 extends JFrame {
 
+    GraphicsChooser graphicsChooser;
     JFrame baseFrame = new JFrame("QuizGame");
     Canvas1 welcomePanel;
     Canvas1 categoryPanel;
-    JPanel questionPanel;
-    JPanel waitingPanel;
-    JPanel scorePanel;
+    Canvas1 questionPanel;
+    Canvas1 waitingPanel;
+    Canvas1 scorePanel;
     JButton startButton;
     List<JButton> catButtons;
     Font myFont4 = new Font("Arial", Font.BOLD, 22);
     Font myFont = new Font("Arial", Font.BOLD, 19);
     Font myFont2 = new Font("Arial", Font.BOLD, 15);
     Font myFont3 = new Font("Arial", Font.BOLD, 14);
-    JLabel playerGameScore;
-    JLabel opponentGameScore;
+    MyJLabel playerGameScore;
+    MyJLabel opponentGameScore;
     List<SmallCircle> playerDots;
     List<SmallCircle> opponentDots;
     JButton fortsättButton;
@@ -37,7 +38,7 @@ public class PlayerGUI2 extends JFrame {
     PlayerClient playerClient;
 
     //bara för test:
-  /*  List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik", "Geografi"));
+    List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik"));
     List<String> catlist2 = new ArrayList<String>(Arrays.asList("Historia", "Matematik", "Geologi", "Teknik"));
     List<String> catlist3 = new ArrayList<String>(Arrays.asList("Astronomi", "Astrologi", "Religion", "Konst"));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
@@ -45,14 +46,15 @@ public class PlayerGUI2 extends JFrame {
     Question qtest3 = new Question("Historia", "Under vilket sekel levde Birger Jarl ", "1200-talet", "1700-talet", "1400-talet", "1600-talet");
     List<Integer> playerScore = new ArrayList<>(Arrays.asList(1));
     List<Integer> opponentScore = new ArrayList<>(Arrays.asList(0));
-    String waitingMessage ="Waiting for opponent to connect";*/
+    String waitingMessage ="Waiting for opponent to connect";
 // test slut
 
     public PlayerGUI2() throws Exception {
-        this.playerClient = new PlayerClient(this);
+         graphicsChooser = new GraphicsChooser();
+       // this.playerClient = new PlayerClient(this);
 
 //bara för test:
-      /* setWelcomeLayout(playerClient);
+       setWelcomeLayout(playerClient);
         opponentNickname="Tomten";
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
@@ -78,7 +80,7 @@ public class PlayerGUI2 extends JFrame {
         opponentScore = new ArrayList<>(Arrays.asList(0, 0,1));
         setScoreLayout(2, 4, playerScore, opponentScore, "Another turn",playerClient);
         sc.nextLine();
-        setCategoryLayout(catlist3, playerClient);*/
+        setCategoryLayout(catlist3, playerClient);
 //test slut
     }
 
@@ -88,25 +90,25 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.getContentPane().setBackground(Color.black);
         baseFrame.setLayout(null);
 
-        welcomePanel = new Canvas1(0,0,320,450);
-        welcomePanel.setLayout(null);
-        welcomePanel.setBounds(10, 10, 320, 450);
-        welcomePanel.setBorder(new EtchedBorder());
+        welcomePanel = new Canvas1(graphicsChooser);
+      //  welcomePanel.setLayout(null);
+       // welcomePanel.setBounds(10, 10, 320, 450);
+       // welcomePanel.setBorder(new EtchedBorder());
 
-        JLabel welcomelb = new JLabel("Välkommen till QuizGame!", SwingConstants.CENTER);
+        MyJLabel welcomelb = new MyJLabel("Välkommen till QuizGame!", SwingConstants.CENTER,welcomePanel);
         welcomelb.setBounds(10, 10, 300, 60);
         welcomelb.setFont(myFont);
-        welcomelb.setBorder(welcomePanel.s1.border1);
-        welcomelb.setBackground(welcomePanel.s1.lightcolor);
-        welcomelb.setOpaque(true);
+      //  welcomelb.setBorder(welcomePanel.shapes.border1);
+      //  welcomelb.setBackground(welcomePanel.shapes.lightcolor);
+      //  welcomelb.setOpaque(true);
         welcomePanel.add(welcomelb);
 
-        JLabel nickNamelb = new JLabel("Ange ett nickname:", SwingConstants.CENTER);
+        MyJLabel nickNamelb = new MyJLabel("Ange ett nickname:", SwingConstants.CENTER,welcomePanel);
         nickNamelb.setBounds(10, 100, 300, 40);
         nickNamelb.setFont(myFont2);
-        nickNamelb.setBackground(welcomePanel.s1.lightcolor);
-        nickNamelb.setBorder(welcomePanel.s1.border1);
-        nickNamelb.setOpaque(true);
+       // nickNamelb.setBackground(welcomePanel.shapes.lightcolor);
+       // nickNamelb.setBorder(welcomePanel.shapes.border1);
+       // nickNamelb.setOpaque(true);
         welcomePanel.add(nickNamelb);
 
         nickNametf = new JTextField("myNickname", SwingConstants.CENTER);
@@ -117,7 +119,7 @@ public class PlayerGUI2 extends JFrame {
         startButton = new JButton("START GAME");
         startButton.setBounds(60, 240, 200, 60);
         startButton.setFont(myFont);
-        startButton.setBackground(welcomePanel.s1.lightcolor);
+        startButton.setBackground(welcomePanel.shapes.lightcolor);
         welcomePanel.add(startButton);
         startButton.setOpaque(true);
         startButton.addActionListener(playerClient);
@@ -139,24 +141,24 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.getContentPane().removeAll();
 
 
-        categoryPanel = new Canvas1(0,0,320,450);
+        categoryPanel = new Canvas1(graphicsChooser);
         categoryPanel.setLayout(null);
         categoryPanel.setBounds(10, 10, 320, 450);
         categoryPanel.setBorder(new EtchedBorder());
 
-        JLabel chooseCatlb = new JLabel("Välj en Kategori", SwingConstants.CENTER);
+        MyJLabel chooseCatlb = new MyJLabel("Välj en Kategori", SwingConstants.CENTER,categoryPanel);
         chooseCatlb.setBounds(10, 10, 300, 60);
         chooseCatlb.setFont(myFont);
-        chooseCatlb.setBackground(categoryPanel.s1.lightcolor);
-        chooseCatlb.setBorder(categoryPanel.s1.border1);
-        chooseCatlb.setOpaque(true);
+      //  chooseCatlb.setBackground(categoryPanel.shapes.lightcolor);
+      //  chooseCatlb.setBorder(categoryPanel.shapes.border1);
+      //  chooseCatlb.setOpaque(true);
         categoryPanel.add(chooseCatlb);
 
 
         JPanel buttonPanel = new JPanel(new GridLayout(noOfCat, 1, 5, 5));
         buttonPanel.setBounds(10, 100, 300, 320);
-        buttonPanel.setBackground(categoryPanel.s1.darkcolor);
-        buttonPanel.setBorder(categoryPanel.s1.border1);
+        buttonPanel.setBackground(categoryPanel.shapes.darkcolor);
+        buttonPanel.setBorder(categoryPanel.shapes.border1);
         buttonPanel.setOpaque(true);
         categoryPanel.add(buttonPanel);
 
@@ -164,8 +166,8 @@ public class PlayerGUI2 extends JFrame {
             catButtons.add(new JButton(categorylist.get(i)));
             buttonPanel.add(catButtons.get(i));
             catButtons.get(i).setFont(myFont3);
-            catButtons.get(i).setBackground(categoryPanel.s1.lightcolor);
-
+            catButtons.get(i).setBackground(categoryPanel.shapes.lightcolor);
+            catButtons.get(i).setOpaque(true);
             catButtons.get(i).addActionListener(playerClient);
         }
 
@@ -179,27 +181,27 @@ public class PlayerGUI2 extends JFrame {
     public void setQuestionLayout(Question qObj, PlayerClient playerClient) {
         baseFrame.getContentPane().removeAll();
 
-        questionPanel = new JPanel();
-        questionPanel.setLayout(null);
-        questionPanel.setBounds(10, 10, 320, 450);
-        questionPanel.setBorder(new EtchedBorder());
+        questionPanel = new Canvas1(graphicsChooser);
+      //  questionPanel.setLayout(null);
+      //  questionPanel.setBounds(10, 10, 320, 450);
+      //  questionPanel.setBorder(new EtchedBorder());
 
-        JLabel categorylb = new JLabel(qObj.category, SwingConstants.CENTER);
+        MyJLabel categorylb = new MyJLabel(qObj.category, SwingConstants.CENTER,questionPanel);
         categorylb.setBounds(10, 10, 300, 50);
         categorylb.setFont(myFont);
-        categorylb.setBorder(new EtchedBorder());
+       // categorylb.setBorder(new EtchedBorder());
         questionPanel.add(categorylb);
 
-        JLabel questionlb = new JLabel("<html><body style='text-align:center'>" + qObj.question + "</body></html>", SwingConstants.CENTER);
+        MyJLabel questionlb = new MyJLabel("<html><body style='text-align:center'>" + qObj.question + "</body></html>", SwingConstants.CENTER,questionPanel);
         questionlb.setBounds(10, 80, 300, 100);
         questionlb.setFont(myFont);
-        questionlb.setBorder(new EtchedBorder());
+       // questionlb.setBorder(new EtchedBorder());
         questionPanel.add(questionlb);
 
-        JPanel qButtonPanel = new JPanel(new GridLayout(2, 2, 5, 5));
+        MyJPanel qButtonPanel = new MyJPanel(new GridLayout(2, 2, 5, 5),questionPanel);
         qButtonPanel.setBounds(10, 200, 300, 230);
         qButtonPanel.setFont(myFont2);
-        qButtonPanel.setBorder(new EtchedBorder());
+      //  qButtonPanel.setBorder(new EtchedBorder());
         questionPanel.add(qButtonPanel);
 
         List<JButton> qbuttons = new ArrayList<>();
@@ -222,15 +224,15 @@ public class PlayerGUI2 extends JFrame {
     public void setWaitingLayout(String message){
         baseFrame.getContentPane().removeAll();
 
-        waitingPanel = new JPanel();
-        waitingPanel.setLayout(null);
-        waitingPanel.setBounds(10, 10, 320, 450);
-        waitingPanel.setBorder(new EtchedBorder());
+        waitingPanel = new Canvas1(graphicsChooser);
+       // waitingPanel.setLayout(null);
+       // waitingPanel.setBounds(10, 10, 320, 450);
+       // waitingPanel.setBorder(new EtchedBorder());
 
-        JLabel waitingMessagelb = new JLabel("<html><body style='text-align:center'>" + message, SwingConstants.CENTER);
+        MyJLabel waitingMessagelb = new MyJLabel("<html><body style='text-align:center'>" + message, SwingConstants.CENTER,waitingPanel);
         waitingMessagelb.setBounds(30, 100, 260, 120);
         waitingMessagelb.setFont(myFont);
-        waitingMessagelb.setBorder(new EtchedBorder());
+       // waitingMessagelb.setBorder(new EtchedBorder());
         waitingPanel.add(waitingMessagelb);
 
         baseFrame.add(waitingPanel);
@@ -247,61 +249,61 @@ public class PlayerGUI2 extends JFrame {
         int playerGamescore = playerScore.stream().mapToInt(Integer::intValue).sum();
         int opponentGamescore = opponentScore.stream().mapToInt(Integer::intValue).sum();
 
-        JLabel gameInfoLabel;
-        JLabel playerNameLabel;
-        JLabel opponentNameLabel;
-        JPanel playerScorePanel;
-        JPanel opponentScorePanel;
+       // JLabel gameInfoLabel;
+      //  JLabel playerNameLabel;
+      //  JLabel opponentNameLabel;
+      //  JPanel playerScorePanel;
+       // JPanel opponentScorePanel;
         JButton fortsättButton;
 
         baseFrame.getContentPane().removeAll();
 
 
-        scorePanel = new JPanel();
-        scorePanel.setLayout(null);
-        scorePanel.setBounds(10, 10, 320, 450);
-        scorePanel.setBorder(new EtchedBorder());
+        scorePanel = new Canvas1(graphicsChooser);
+      //  scorePanel.setLayout(null);
+      //  scorePanel.setBounds(10, 10, 320, 450);
+      //  scorePanel.setBorder(new EtchedBorder());
 
-        gameInfoLabel = new JLabel(statusMessage, SwingConstants.CENTER);
+        MyJLabel gameInfoLabel = new MyJLabel(statusMessage, SwingConstants.CENTER,scorePanel);
         gameInfoLabel.setBounds(80, 70, 160, 30);
         gameInfoLabel.setFont(myFont2);
-        gameInfoLabel.setBorder(new EtchedBorder());
+       // gameInfoLabel.setBorder(new EtchedBorder());
         scorePanel.add(gameInfoLabel);
 
-        playerNameLabel = new JLabel("nickname1", SwingConstants.CENTER);
-        playerNameLabel.setBounds(0, 20, 120, 30);
+        MyJLabel playerNameLabel = new MyJLabel("nickname1", SwingConstants.CENTER,scorePanel);
+        playerNameLabel.setBounds(4, 20, 120, 30);
         playerNameLabel.setFont(myFont2);
-        playerNameLabel.setBorder(new EtchedBorder());
+     //   playerNameLabel.setBorder(new EtchedBorder());
         scorePanel.add(playerNameLabel);
 
-        opponentNameLabel = new JLabel("nickname2", SwingConstants.CENTER);
-        opponentNameLabel.setBounds(200, 20, 120, 30);
+        MyJLabel opponentNameLabel = new MyJLabel("nickname2", SwingConstants.CENTER,scorePanel);
+        opponentNameLabel.setBounds(196, 20, 120, 30);
         opponentNameLabel.setFont(myFont2);
-        opponentNameLabel.setBorder(new EtchedBorder());
+      //  opponentNameLabel.setBorder(new EtchedBorder());
         scorePanel.add(opponentNameLabel);
 
-        playerGameScore = new JLabel(String.valueOf(playerGamescore), SwingConstants.CENTER);
+        playerGameScore = new MyJLabel(String.valueOf(playerGamescore), SwingConstants.CENTER, scorePanel);
         playerGameScore.setBounds(40, 70, 40, 40);
         playerGameScore.setFont(myFont4);
-        playerGameScore.setBorder(new EtchedBorder());
+     //   playerGameScore.setBorder(new EtchedBorder());
         scorePanel.add(playerGameScore);
 
-        opponentGameScore = new JLabel(String.valueOf(opponentGamescore), SwingConstants.CENTER);
+        opponentGameScore = new MyJLabel(String.valueOf(opponentGamescore), SwingConstants.CENTER,scorePanel);
         opponentGameScore.setBounds(240, 70, 40, 40);
         opponentGameScore.setFont(myFont4);
-        opponentGameScore.setBorder(new EtchedBorder());
+       // opponentGameScore.setBorder(new EtchedBorder());
         scorePanel.add(opponentGameScore);
 
-        playerScorePanel = new JPanel();
-        playerScorePanel.setLayout(new GridLayout(0, questionPerRound));
-        playerScorePanel.setBounds(0, 120, 120, 240);
-        playerScorePanel.setBorder(new EtchedBorder());
+        MyJPanel playerScorePanel = new MyJPanel(new GridLayout(0, questionPerRound),scorePanel);
+       // playerScorePanel.setLayout(new GridLayout(0, questionPerRound));
+        playerScorePanel.setBounds(4, 120, 120, 240);
+      //  playerScorePanel.setBorder(new EtchedBorder());
         scorePanel.add(playerScorePanel);
 
-        opponentScorePanel = new JPanel();
-        opponentScorePanel.setLayout(new GridLayout(0, questionPerRound));
-        opponentScorePanel.setBounds(200, 120, 120, 240);
-        opponentScorePanel.setBorder(new EtchedBorder());
+        MyJPanel opponentScorePanel = new MyJPanel(new GridLayout(0, questionPerRound),scorePanel);
+       // opponentScorePanel.setLayout(new GridLayout(0, questionPerRound));
+        opponentScorePanel.setBounds(196, 120, 120, 240);
+       // opponentScorePanel.setBorder(new EtchedBorder());
         scorePanel.add(opponentScorePanel);
 
         //hämtar in griddimensioner som används av SmallCircle-klassen för centrering av cirkel i sin JPanel (måste ligga innan baseFrame.revalidate().paint().add())
@@ -314,7 +316,7 @@ public class PlayerGUI2 extends JFrame {
         playerDots = new ArrayList<>();
         for (int i = 0; i < (questionPerRound * rounds); i++) {
             playerDots.add(new SmallCircle(Color.white));
-            playerDots.get(i).setBorder(new EtchedBorder());
+            playerDots.get(i).setBorder(scorePanel.shapes.border2);
             playerScorePanel.add(playerDots.get(i));
         }
 
@@ -334,7 +336,7 @@ public class PlayerGUI2 extends JFrame {
         opponentDots = new ArrayList<>();
         for (int i = 0; i < (questionPerRound * rounds); i++) {
             opponentDots.add(new SmallCircle(Color.white));
-            opponentDots.get(i).setBorder(new EtchedBorder());
+            opponentDots.get(i).setBorder(scorePanel.shapes.border2);
             opponentScorePanel.add(opponentDots.get(i));
         }
 
@@ -349,6 +351,8 @@ public class PlayerGUI2 extends JFrame {
         fortsättButton = new JButton("Fortsätt");
         fortsättButton.setBounds(110, 380, 100, 50);
         fortsättButton.setFont(myFont2);
+        fortsättButton.setBackground(categoryPanel.shapes.lightcolor);
+        fortsättButton.setOpaque(true);
         scorePanel.add(fortsättButton);
         fortsättButton.addActionListener(playerClient);
 

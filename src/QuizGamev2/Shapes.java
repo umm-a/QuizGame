@@ -26,7 +26,7 @@ public class Shapes {
         darkcolor = new Color(mixcolor[6],mixcolor[7],mixcolor[8]);
         lightcolor = new Color(mixcolor[9],mixcolor[10],mixcolor[11]);
         border1 = BorderFactory.createLineBorder(darkcolor,4);
-        border2 = BorderFactory.createLineBorder(lightcolor,3);
+        border2 = BorderFactory.createLineBorder(darkcolor,3);
     }
 
     public void drawShapes(Graphics2D g2d){
@@ -165,7 +165,7 @@ class Shapes3 extends Shapes {
     }
 
     public void drawShapes(Graphics2D g2d){
-        g2d.setStroke(new BasicStroke(2));
+        g2d.setStroke(new BasicStroke(3));
 
         for (int i = 0; i < 30; i++) {
             Path2D.Double p = new Path2D.Double();
