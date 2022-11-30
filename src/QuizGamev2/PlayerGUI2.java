@@ -86,7 +86,7 @@ public class PlayerGUI2 extends JFrame {
 
 
     public void setWelcomeLayout(PlayerClient playerClient) {
-        baseFrame.setSize(352, 505);
+        baseFrame.setSize(340, 500);
         baseFrame.setLayout(null);
 
         welcomePanel = new JPanel();
