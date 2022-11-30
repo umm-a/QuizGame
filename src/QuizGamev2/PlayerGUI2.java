@@ -97,24 +97,15 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.setLayout(null);
 
         welcomePanel = new Canvas1(graphicsChooser);
-      //  welcomePanel.setLayout(null);
-       // welcomePanel.setBounds(10, 10, 320, 450);
-       // welcomePanel.setBorder(new EtchedBorder());
 
         MyJLabel welcomelb = new MyJLabel("Välkommen till QuizGame!", SwingConstants.CENTER,welcomePanel);
         welcomelb.setBounds(10, 10, 300, 60);
         welcomelb.setFont(myFont);
-      //  welcomelb.setBorder(welcomePanel.shapes.border1);
-      //  welcomelb.setBackground(welcomePanel.shapes.lightcolor);
-      //  welcomelb.setOpaque(true);
         welcomePanel.add(welcomelb);
 
         MyJLabel nickNamelb = new MyJLabel("Ange ett nickname:", SwingConstants.CENTER,welcomePanel);
         nickNamelb.setBounds(10, 100, 300, 40);
         nickNamelb.setFont(myFont2);
-       // nickNamelb.setBackground(welcomePanel.shapes.lightcolor);
-       // nickNamelb.setBorder(welcomePanel.shapes.border1);
-       // nickNamelb.setOpaque(true);
         welcomePanel.add(nickNamelb);
 
         nickNametf = new JTextField("myNickname", SwingConstants.CENTER);
@@ -155,9 +146,6 @@ public class PlayerGUI2 extends JFrame {
         MyJLabel chooseCatlb = new MyJLabel("Välj en Kategori", SwingConstants.CENTER,categoryPanel);
         chooseCatlb.setBounds(10, 10, 300, 60);
         chooseCatlb.setFont(myFont);
-      //  chooseCatlb.setBackground(categoryPanel.shapes.lightcolor);
-      //  chooseCatlb.setBorder(categoryPanel.shapes.border1);
-      //  chooseCatlb.setOpaque(true);
         categoryPanel.add(chooseCatlb);
 
 
@@ -188,26 +176,20 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.getContentPane().removeAll();
 
         questionPanel = new Canvas1(graphicsChooser);
-      //  questionPanel.setLayout(null);
-      //  questionPanel.setBounds(10, 10, 320, 450);
-      //  questionPanel.setBorder(new EtchedBorder());
 
         MyJLabel categorylb = new MyJLabel(qObj.category, SwingConstants.CENTER,questionPanel);
         categorylb.setBounds(10, 10, 300, 50);
         categorylb.setFont(myFont);
-       // categorylb.setBorder(new EtchedBorder());
         questionPanel.add(categorylb);
 
         MyJLabel questionlb = new MyJLabel("<html><body style='text-align:center'>" + qObj.question + "</body></html>", SwingConstants.CENTER,questionPanel);
         questionlb.setBounds(10, 80, 300, 100);
         questionlb.setFont(myFont);
-       // questionlb.setBorder(new EtchedBorder());
         questionPanel.add(questionlb);
 
         MyJPanel qButtonPanel = new MyJPanel(new GridLayout(2, 2, 5, 5),questionPanel);
         qButtonPanel.setBounds(10, 200, 300, 230);
         qButtonPanel.setFont(myFont2);
-      //  qButtonPanel.setBorder(new EtchedBorder());
         questionPanel.add(qButtonPanel);
 
         List<JButton> qbuttons = new ArrayList<>();
@@ -221,7 +203,6 @@ public class PlayerGUI2 extends JFrame {
             qButtonPanel.add(jb);
             jb.addActionListener(playerClient);
         }
-
             baseFrame.add(questionPanel);
             baseFrame.revalidate();
             baseFrame.repaint();
@@ -231,20 +212,15 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.getContentPane().removeAll();
 
         waitingPanel = new Canvas1(graphicsChooser);
-       // waitingPanel.setLayout(null);
-       // waitingPanel.setBounds(10, 10, 320, 450);
-       // waitingPanel.setBorder(new EtchedBorder());
 
         MyJLabel waitingMessagelb = new MyJLabel("<html><body style='text-align:center'>" + message, SwingConstants.CENTER,waitingPanel);
         waitingMessagelb.setBounds(30, 100, 260, 120);
         waitingMessagelb.setFont(myFont);
-       // waitingMessagelb.setBorder(new EtchedBorder());
         waitingPanel.add(waitingMessagelb);
 
         baseFrame.add(waitingPanel);
         baseFrame.revalidate();
         baseFrame.repaint();
-
     }
 
     //todo ändra till list på playerscore
@@ -256,70 +232,48 @@ public class PlayerGUI2 extends JFrame {
         int playerGamescore = playerScore.stream().mapToInt(Integer::intValue).sum();
         int opponentGamescore = opponentScore.stream().mapToInt(Integer::intValue).sum();
 
-       // JLabel gameInfoLabel;
-      //  JLabel playerNameLabel;
-      //  JLabel opponentNameLabel;
-      //  JPanel playerScorePanel;
-       // JPanel opponentScorePanel;
         JButton fortsättButton;
 
-        baseFrame.getContentPane().removeAll();
-
-
         scorePanel = new Canvas1(graphicsChooser);
-      //  scorePanel.setLayout(null);
-      //  scorePanel.setBounds(10, 10, 320, 450);
-      //  scorePanel.setBorder(new EtchedBorder());
 
         MyJLabel gameInfoLabel = new MyJLabel(statusMessage, SwingConstants.CENTER,scorePanel);
         gameInfoLabel.setBounds(80, 70, 160, 30);
         gameInfoLabel.setFont(myFont2);
-       // gameInfoLabel.setBorder(new EtchedBorder());
         scorePanel.add(gameInfoLabel);
 
         MyJLabel playerNameLabel = new MyJLabel(nickname, SwingConstants.CENTER,scorePanel);
         playerNameLabel.setBounds(4, 20, 120, 30);
 
         playerNameLabel.setFont(myFont2);
-     //   playerNameLabel.setBorder(new EtchedBorder());
         scorePanel.add(playerNameLabel);
 
         MyJLabel opponentNameLabel = new MyJLabel(opponentNickname, SwingConstants.CENTER,scorePanel);
         opponentNameLabel.setBounds(196, 20, 120, 30);
         opponentNameLabel.setFont(myFont2);
-      //  opponentNameLabel.setBorder(new EtchedBorder());
         scorePanel.add(opponentNameLabel);
 
         playerGameScore = new MyJLabel(String.valueOf(playerGamescore), SwingConstants.CENTER, scorePanel);
         playerGameScore.setBounds(40, 70, 40, 40);
         playerGameScore.setFont(myFont4);
-     //   playerGameScore.setBorder(new EtchedBorder());
         scorePanel.add(playerGameScore);
 
         opponentGameScore = new MyJLabel(String.valueOf(opponentGamescore), SwingConstants.CENTER,scorePanel);
         opponentGameScore.setBounds(240, 70, 40, 40);
         opponentGameScore.setFont(myFont4);
-       // opponentGameScore.setBorder(new EtchedBorder());
         scorePanel.add(opponentGameScore);
 
         MyJPanel playerScorePanel = new MyJPanel(new GridLayout(0, questionPerRound),scorePanel);
-       // playerScorePanel.setLayout(new GridLayout(0, questionPerRound));
         playerScorePanel.setBounds(4, 120, 120, 240);
-      //  playerScorePanel.setBorder(new EtchedBorder());
         scorePanel.add(playerScorePanel);
 
         MyJPanel opponentScorePanel = new MyJPanel(new GridLayout(0, questionPerRound),scorePanel);
-       // opponentScorePanel.setLayout(new GridLayout(0, questionPerRound));
         opponentScorePanel.setBounds(196, 120, 120, 240);
-       // opponentScorePanel.setBorder(new EtchedBorder());
         scorePanel.add(opponentScorePanel);
 
-        //hämtar in griddimensioner som används av SmallCircle-klassen för centrering av cirkel i sin JPanel (måste ligga innan baseFrame.revalidate().paint().add())
         int panelwidth = playerScorePanel.getSize().width;
         int panelheight = playerScorePanel.getSize().height;
         gridwidth = (panelwidth / questionPerRound) + 6; //adderar 6 för att kompensera för borderbortfall
         gridheight = (panelheight / rounds) + 6;  //adderar 6 för att kompensera för borderbortfall
-
 
         playerDots = new ArrayList<>();
         for (int i = 0; i < (questionPerRound * rounds); i++) {
@@ -339,7 +293,6 @@ public class PlayerGUI2 extends JFrame {
         }
 
         playerGameScore.setText(String.valueOf(playerGamescore));
-
 
         opponentDots = new ArrayList<>();
         for (int i = 0; i < (questionPerRound * rounds); i++) {
@@ -367,7 +320,6 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.add(scorePanel);
         baseFrame.revalidate();
         baseFrame.repaint();
-
     }
 
     public void setGameCompletedLayout(String nickname, String opponentNickname, PlayerClient playerClient,
@@ -375,9 +327,6 @@ public class PlayerGUI2 extends JFrame {
 
         baseFrame.getContentPane().removeAll();
         gameCompletedPanel = new Canvas1(graphicsChooser);
-      //  gameCompletedPanel.setLayout(null);
-      //  gameCompletedPanel.setBounds(10, 10, 320, 450);
-      //  gameCompletedPanel.setBorder(new EtchedBorder());
 
         int player1ScoreInt = player1Score.stream().mapToInt(Integer::intValue).sum();
         int player2ScoreInt = player2Score.stream().mapToInt(Integer::intValue).sum();
@@ -440,7 +389,7 @@ public class PlayerGUI2 extends JFrame {
         newGameLabel.setBounds(30, 290, 260, 60);
         newGameLabel.setFont(myFont5);
         gameCompletedPanel.add(newGameLabel);
-//knappfärg?
+
         JButton yesButton = new JButton("Ja");
         yesButton.setBounds(60, 360, 70, 50);
         yesButton.setFont(myFont5);
@@ -449,7 +398,7 @@ public class PlayerGUI2 extends JFrame {
         yesButton.setOpaque(true);
         yesButton.addActionListener(playerClient);
         gameCompletedPanel.add(yesButton);
-//knappfärg?
+
         JButton noButton = new JButton("Nej");
         noButton.setBounds(180, 360, 70, 50);
         noButton.setFont(myFont5);
