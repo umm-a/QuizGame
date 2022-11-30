@@ -1,9 +1,9 @@
 package QuizGamev2;
 
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -31,7 +31,7 @@ class ServerPlayer extends Thread {
     String pointString;
 
     List<Integer> currentPlayerScores = new ArrayList<>();
-   // List<Integer> player2Scores = new ArrayList<>();
+    // List<Integer> player2Scores = new ArrayList<>();
     List<Integer> opponentScores;
 
 
@@ -90,11 +90,11 @@ class ServerPlayer extends Thread {
             inObj = new ObjectInputStream(socket.getInputStream());
 
             Properties properties = new Properties();
-            try (final FileInputStream propertiesFile = new FileInputStream("src/QuizGamev2/PropertiesFile.properties")){
+            try (final FileInputStream propertiesFile = new FileInputStream("src/QuizGamev2/PropertiesFile.properties")) {
                 properties.load(propertiesFile);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -128,6 +128,8 @@ class ServerPlayer extends Thread {
                 Thread.sleep(1000);
             }
 
+            List<String> nicknameList = Arrays.asList(nickName, opponent.nickName, "nicknames");
+            objectOut.writeObject(nicknameList);
 
             while (true) {
                 if (state == 2) {
@@ -136,12 +138,12 @@ class ServerPlayer extends Thread {
                 } else if (state == 3) {
                     while (currentRound < rounds) {
 
-                        while(!nextRoundMessage.equals("NEXT ROUND")){//todo här
+                        while (!nextRoundMessage.equals("NEXT ROUND")) {//todo här
                             Thread.sleep(100);
                             nextRoundMessage = inputbuffer.readLine();
                             System.out.println(nextRoundMessage);
                         }
-                        if ((this.equals(currentplayer)) && (setCategory == true)) {
+                        if ((this.equals(currentplayer)) && (setCategory)) {
                             chooseCategory();
                             setCategory = false;
                             opponent.setCategory = false;
@@ -173,7 +175,7 @@ class ServerPlayer extends Thread {
                             objectOut.writeObject(stringOutObject);
                             objectOut.flush();
 
-                            if(roundDone==true){
+                            if (roundDone) {
                                 setScoreForBothPlayers();
                                 changePlayerTurnWithinRound();
                                 opponent.changePlayerTurnWithinRound();
@@ -190,7 +192,6 @@ class ServerPlayer extends Thread {
                     state = 4;
                     // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
-                    //  state = 4;
                 } else if (state == 4) {
                     //Dags att ta emot och se om spelaren vill köra igen
                 }
@@ -206,22 +207,26 @@ class ServerPlayer extends Thread {
             throw new RuntimeException(e);
         }
     }
-    protected void setCategoryToTrue(){
+
+    protected void setCategoryToTrue() {
         this.setCategory = true;
         opponent.setCategory = true;
     }
-    protected void setRoundDoneTrue(){
-        this.roundDone=true;
-        opponent.roundDone=true;
+
+    protected void setRoundDoneTrue() {
+        this.roundDone = true;
+        opponent.roundDone = true;
     }
-    protected void setRoundDoneFalse(){
-        this.roundDone=false;
-        opponent.roundDone=false;
+
+    protected void setRoundDoneFalse() {
+        this.roundDone = false;
+        opponent.roundDone = false;
     }
+
     protected void sendOpponentScore() throws IOException {
         opponentScores = new ArrayList<>(opponent.currentPlayerScores);
 
-        if(this.playerName.equals("player 1")){
+        if (this.playerName.equals("player 1")) {
             scoreListMessage = "ScoreList of player 2";
         } else {
             scoreListMessage = "ScoreList of player 1";
@@ -243,6 +248,7 @@ class ServerPlayer extends Thread {
         opponent.objectOut.writeObject(setScoreForBothPlayers);
         objectOut.flush();
     }
+
     protected void tellPlayerClientRoundIsDone() throws IOException {
         objectOut.writeObject(roundIsDone);
         objectOut.flush();
@@ -250,7 +256,8 @@ class ServerPlayer extends Thread {
 
     protected void tellPlayerClientGameIsDone() throws IOException {
         objectOut.writeObject(gameIsDone);
-        objectOut.flush();;
+        objectOut.flush();
+        ;
     }
 
 
@@ -262,7 +269,7 @@ class ServerPlayer extends Thread {
         objectOut.flush();
         tempList = new ArrayList<>(gameEngine.addScoreToListAndReturnFullList(pointString)); //skickar lista med poäng
         objectOut.writeObject(tempList);
-        for (Integer i: currentPlayerScores) {
+        for (Integer i : currentPlayerScores) {
             System.out.println(i + " currentPlayerScores");
         }
         objectOut.flush();
@@ -296,7 +303,8 @@ class ServerPlayer extends Thread {
             }
         }
     }
-    protected  void changePlayerTurnAfterEachRound() {
+
+    protected void changePlayerTurnAfterEachRound() {
         if (this.turn == 1) {
             this.turn = 2;
         } else {
@@ -307,19 +315,15 @@ class ServerPlayer extends Thread {
     }
 
     protected void opponentHasLeft() {
-            String shutdownString = "SHUT DOWN";
-            try {
-                objectOut.writeObject(shutdownString);
-                objectOut.flush();
-                objectOut.reset();
-            }catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println("endGame has run");
-            System.exit(1);
+        String shutdownString = "SHUT DOWN";
+        try {
+            objectOut.writeObject(shutdownString);
+            objectOut.flush();
+            objectOut.reset();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+        System.out.println("endGame has run");
+        System.exit(1);
     }
-
-
-
-
+}

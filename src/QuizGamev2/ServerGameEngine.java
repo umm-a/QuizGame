@@ -44,7 +44,7 @@ public class ServerGameEngine{
         String playerName = scoreString[0].trim();
         boolean isCorrectAnswer = Boolean.parseBoolean(scoreString[1]);
 
-        if (playerName.equals("player 1") && (isCorrectAnswer == true)) {
+        if (playerName.equals("player 1") && (isCorrectAnswer)) {
             player1.currentPlayerScores.add(1);
             return player1.currentPlayerScores;
         }
@@ -85,20 +85,12 @@ public class ServerGameEngine{
 
 /*
     public void notifyWinner (List<Integer> player1Scores, List<Integer> player2Scores) {//todo behöver få info från PlayerClient
-
-
         if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
-
             serverPlayer.outputwriter.println("Player 1 wins"); //Ska man kunna välja användarnamn?
-
         } else if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
-
             serverPlayer.outputwriter.println("Player 2 wins");
-
         } else if (sumOfScores(player1Scores) == sumOfScores(player1Scores)) {
-
             serverPlayer.outputwriter.println("TIE");
-
         } else {
             serverPlayer.outputwriter.println("Something went wrong in notifyWinner-method of Player");
         }
