@@ -42,7 +42,7 @@ public class PlayerGUI2 extends JFrame {
     PlayerClient playerClient;
 
     //bara för test:
-  /*  List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik"));
+   /* List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik"));
     List<String> catlist2 = new ArrayList<String>(Arrays.asList("Historia", "Matematik", "Geologi", "Teknik"));
     List<String> catlist3 = new ArrayList<String>(Arrays.asList("Astronomi", "Astrologi", "Religion", "Konst"));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
@@ -55,7 +55,7 @@ public class PlayerGUI2 extends JFrame {
 
     public PlayerGUI2() throws Exception {
          graphicsChooser = new GraphicsChooser();
-        this.playerClient = new PlayerClient(this);
+         this.playerClient = new PlayerClient(this);
 
 //bara för test:
       /* setWelcomeLayout(playerClient);
