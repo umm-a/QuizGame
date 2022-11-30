@@ -21,24 +21,14 @@ class ServerPlayer extends Thread {
     String scoreListMessage;
     List<Integer> tempList = new ArrayList<>();
 
-    static final int START = 1;
-    static final int SETCATEGORY = 2;
-    static final int PROCESSQUESTIONS = 3;
-    static final int UPDATESETSCORE = 4;
-    static final int UPDATEGAMESCORE = 4;
-
-    int gameround;
     String pointString;
 
     List<Integer> currentPlayerScores = new ArrayList<>();
-    // List<Integer> player2Scores = new ArrayList<>();
     List<Integer> opponentScores;
 
 
     protected int state = 0;
     String chosenCategory;
-    String chosenQuestion;
-    int points = 0;
     int questionsPerRound = 0;
     int rounds;
     int turn = 1;
@@ -252,17 +242,12 @@ class ServerPlayer extends Thread {
 
     protected void calculateAndSendPoints() throws IOException {
         pointString = inputbuffer.readLine();
-        System.out.println(pointString + " är mottagen");
 
         objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
         objectOut.flush();
         tempList = new ArrayList<>(gameEngine.addScoreToListAndReturnFullList(pointString)); //skickar lista med poäng
         objectOut.writeObject(tempList);
-        for (Integer i : currentPlayerScores) {
-            System.out.println(i + " currentPlayerScores");
-        }
         objectOut.flush();
-        System.out.println(gameEngine.checkPlayer(pointString) + " är skickat");
     }
 
     protected void chooseCategory() throws IOException {
