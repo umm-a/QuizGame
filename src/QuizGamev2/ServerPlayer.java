@@ -324,6 +324,5 @@ class ServerPlayer extends Thread {
             throw new RuntimeException(e);
         }
         System.out.println("endGame has run");
-        System.exit(1);
     }
 }
