@@ -41,10 +41,6 @@ class ServerPlayer extends Thread {
     int points = 0;
     int questionsPerRound = 0;
     int rounds;
-    int numberOfRounds;
-    boolean isCorrectanswer;
-    int[] setScore = new int[questionsPerRound];
-    int[] gameScore = new int[numberOfRounds];
     int turn = 1;
     boolean roundDone = false;
     boolean setCategory = true;
@@ -52,8 +48,6 @@ class ServerPlayer extends Thread {
     int currentRound = 0;
     String readyToPlay = "";
     String setScoreForBothPlayers = "SET SCORE FOR BOTH PLAYERS";
-
-    List<Question> tempQuestionList = new ArrayList<>();
     ObjectInputStream inObj;
     String nextRoundMessage;
     String roundIsDone = "roundIsDone";
@@ -99,7 +93,6 @@ class ServerPlayer extends Thread {
             }
 
             nextRoundMessage = (String) inObj.readObject();
-            System.out.println(nextRoundMessage);
 
             questionsPerRound = Integer.parseInt(properties.getProperty("questionsPerRound"));
             rounds = Integer.parseInt(properties.getProperty("rounds"));
@@ -110,11 +103,10 @@ class ServerPlayer extends Thread {
             nickName = inputbuffer.readLine();
             state = 2;
 
-            Object question = null;
+            Object question;
 
 
             this.readyToPlay = inputbuffer.readLine();
-            System.out.println(readyToPlay);
 
             if (readyToPlay.contains("player 1")) {
                 gameEngine.player1Ready = true;
@@ -122,9 +114,7 @@ class ServerPlayer extends Thread {
                 gameEngine.player2Ready = true;
             }
 
-            System.out.println("MOTSTÅNDAREN: " + opponent.readyToPlay);//kladd
-
-            while ((!gameEngine.player2Ready)) {//innan opponent anslutit så väntar man bara då man trycker "start game", här kan vi skicka in att vi väntar så att vi får en vänte-ruta
+            while ((!gameEngine.player2Ready)) {
                 Thread.sleep(1000);
             }
 
@@ -141,7 +131,6 @@ class ServerPlayer extends Thread {
                         while (!nextRoundMessage.equals("NEXT ROUND")) {//todo här
                             Thread.sleep(100);
                             nextRoundMessage = inputbuffer.readLine();
-                            System.out.println(nextRoundMessage);
                         }
                         if ((this.equals(currentplayer)) && (setCategory)) {
                             chooseCategory();

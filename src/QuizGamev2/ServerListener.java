@@ -18,7 +18,6 @@ public class ServerListener {
 
                 playerOne.setOpponent(playerTwo);
                 playerTwo.setOpponent(playerOne);
-                System.out.println("Loop in ServerListener has run");
             }
         }
         catch (IOException e) {

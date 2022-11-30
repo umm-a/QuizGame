@@ -13,11 +13,6 @@ public class ServerGameEngine{
     boolean player1Ready = false;
     boolean player2Ready = false;
 
-
-
-
-
-
     public ServerGameEngine(QuestionDatabase2 questionDatabase2){
         this.questionDatabase2 = questionDatabase2;
 
@@ -81,28 +76,6 @@ public class ServerGameEngine{
         else{
             return "Något gick fel i checkPlayer()";
         }
-    }
-
-/*
-    public void notifyWinner (List<Integer> player1Scores, List<Integer> player2Scores) {//todo behöver få info från PlayerClient
-        if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
-            serverPlayer.outputwriter.println("Player 1 wins"); //Ska man kunna välja användarnamn?
-        } else if (sumOfScores(player1Scores) > sumOfScores(player1Scores)) {
-            serverPlayer.outputwriter.println("Player 2 wins");
-        } else if (sumOfScores(player1Scores) == sumOfScores(player1Scores)) {
-            serverPlayer.outputwriter.println("TIE");
-        } else {
-            serverPlayer.outputwriter.println("Something went wrong in notifyWinner-method of Player");
-        }
-    }*/
-
-    public int sumOfScores (List<Integer> scores){
-
-        int sum = 0;
-        for (int i : scores){
-            sum += i;
-        }
-        return sum;
     }
 
 }

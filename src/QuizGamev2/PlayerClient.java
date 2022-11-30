@@ -21,8 +21,7 @@ public class PlayerClient implements ActionListener {
     String chosenCategory;
     String chosenQuestion;
     String playerName;
-    protected int state = 0;
-    static final int START = 1;
+    protected int state;
     static final int SETCATEGORY = 2;
     static final int QUESTIONSTATE = 3;
     static final int UPDATESETSCORE = 4;
@@ -30,7 +29,7 @@ public class PlayerClient implements ActionListener {
     boolean point;
     int questionsPerRound;
     int rounds;
-    String fromPlayer = "";
+    String fromPlayer;
     List<Integer> player1Scores = new ArrayList<>();
     List<Integer> player2Scores = new ArrayList<>();
     ObjectOutputStream objectOut;
@@ -71,15 +70,15 @@ public class PlayerClient implements ActionListener {
             this.playerName = "player 2";
         }
 
-
         playerGUI2.setWelcomeLayout(this);
 
         Object obj;
 
 
         while (true) {
-//todo skicka in nickname från ServerPlayer för att sätta in i GUI
+
             obj = inObj.readObject();
+
             if(obj instanceof List) {
                 if (((List<?>) obj).contains("CATEGORIES")) {
                     List<String> objList = new ArrayList<>((List<String>) obj);
@@ -87,7 +86,6 @@ public class PlayerClient implements ActionListener {
                         objList.remove(objList.size() - 1);
                         playerGUI2.setCategoryLayout(objList, this);
                         state = SETCATEGORY;
-                        System.out.println(" IN CATEGORIES ");
                     }
                 }
                 if (((List<String>) obj).contains("nicknames")) {
@@ -97,7 +95,6 @@ public class PlayerClient implements ActionListener {
             } else if (obj.toString().contains("ScoreList of player")) {
                 fromPlayer = obj.toString();
                 obj = inObj.readObject();
-                System.out.println(obj.toString());
                 List<Integer> pointsList = new ArrayList<>((List<Integer>) obj);
                     if (fromPlayer.toLowerCase().contains("player 1")) {
                         removeContentsFromPlayer1List();
@@ -106,19 +103,17 @@ public class PlayerClient implements ActionListener {
                         removeContentsFromPlayer2List();
                         this.player2Scores = new ArrayList<>(pointsList);
                     }
-                    System.out.println("ScoreList of player in PlayerClient has run");
             } else if (obj.toString().toLowerCase().contains("set score player 1")) {
-                //   state=UPDATESETSCORE;
+
                 playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores,
                         "Player 1 Scoreboard", this, nickname, opponentNickname);
             } else if (obj.toString().toLowerCase().contains("set score player 2")) {
-                //  state=UPDATESETSCORE;
+
                 playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores,
                         "Player 2 Scoreboard", this, nickname, opponentNickname);
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
                 setCurrentObject((Question) obj);
-                System.out.println("The obj is not a list of categories, rather these are questions to be layed out in the GUI");
                 playerGUI2.setQuestionLayout((Question) obj, this);
             } else if (obj.toString().equals("SET SCORE FOR BOTH PLAYERS")) {
                 if(this.playerName.equals("player 1")){
@@ -129,34 +124,25 @@ public class PlayerClient implements ActionListener {
                             "Player 2 Scoreboard", this, nickname, opponentNickname);
                 }
             }else if (obj.toString().equals("SHUT DOWN")){
-                System.out.println("Shut down-message recieved");
                 playerGUI2.setWaitingLayout("Opponent left the game... You won by default!");
-                //här kan man pausa och sedan visa resultatet. Däremot ska det ju ej gå att trycka "fortsätt" eller "spela igen", utan spelet är över. Kanske gör en kopia av scoreLayout utan for
 
             } else if (obj.toString().equals("roundIsDone")) {
-                System.out.println("roundIsDone is recieved");
                 roundIsDone = true;
             } else if (obj.toString().equals("gameIsDone")) {
-                System.out.println("gameIsDone is recieved");
                 gameIsDone = true;
             } else {
                 System.out.println(obj);
                 System.out.println("This is where things tend to go wrong");
             }
         }
-        //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
 
     }
 
-    public Object getCurrentObject(){
-        return this.currentObject;
-    }
     public void setCurrentObject(Question obj){
         this.currentObject=obj;
     }
     protected void sendPoint(boolean bool){
         outpw.println(playerName + "," + bool);
-        System.out.println(playerName + "," + bool + " skickades till ServerPlayer");
     }
 
     public void removeContentsFromPlayer1List(){
@@ -182,7 +168,6 @@ public class PlayerClient implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playerGUI2.startButton) {
-            System.out.println("Test: Startbutton pressed for: " + playerGUI2.nickNametf.getText());
             outpw.println(playerGUI2.nickNametf.getText());
             outpw.println(playerName + " is ready to play");
             if (playerName.equals("player 2")) {
@@ -191,9 +176,8 @@ public class PlayerClient implements ActionListener {
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
             outpw.println(chosenCategory);
-            System.out.println("Test från PlayerClient: " + chosenCategory);
             state=QUESTIONSTATE;
-        } else if (state==QUESTIONSTATE) {//todo OBS man ska inte kunna trycka på fler knappar när man svarat på en specifik fråga
+        } else if (state==QUESTIONSTATE) {
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
 
@@ -218,13 +202,13 @@ public class PlayerClient implements ActionListener {
 
             state = UPDATESETSCORE;
 
-        } else if ((state == UPDATESETSCORE) && (roundIsDone) && (!gameIsDone)) { //todo ska bara gå om båda spelarna spelat en runda
+        } else if ((state == UPDATESETSCORE) && (roundIsDone) && (!gameIsDone)) {
             if(((JButton) e.getSource()).getText().equals("Fortsätt")){
                 playerGUI2.setWaitingLayout("Waiting for opponent to finish their turn...");
-                //fortsätt-knappen ska ej gå att klicka på förrän roundDone=true
+
                 outpw.println("NEXT ROUND");
                 roundIsDone=false;
-                state=QUESTIONSTATE; //todo i sista rundan måste man ändra detta, kolla om det finns ett meddelande från ServerPlayer som meddelar att det är slut. Skicka detta till while-loopen här i PlayerClient, ta boolean och kolla av!
+                state=QUESTIONSTATE;
             }
         } else if (gameIsDone) {
             if(((JButton) e.getSource()).getText().equals("Fortsätt")){
