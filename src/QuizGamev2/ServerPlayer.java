@@ -298,5 +298,11 @@ class ServerPlayer extends Thread {
             throw new RuntimeException(e);
         }
         System.out.println("endGame has run");
+        try {
+            this.socket.close();
+            System.out.println("this socket is closed");
+        } catch (IOException e) {
+            System.out.println("this socket is closed.");
+        }
     }
 }
