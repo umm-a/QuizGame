@@ -136,7 +136,8 @@ class ServerPlayer extends Thread {
                 if (state == 2) {
                     currentRound = 0;
                     state = 3;
-                } else if (state == 3) {
+                }
+                else if (state == 3) {
                     while (currentRound < rounds) {
 
                         while (!nextRoundMessage.equals("NEXT ROUND")) {//todo här
@@ -193,8 +194,18 @@ class ServerPlayer extends Thread {
                     state = 4;
                     // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
-                } else if (state == 4) {
-                    //Dags att ta emot och se om spelaren vill köra igen
+                }
+                else if (state == 4) {
+
+                    if (nextRoundMessage.equals("ja")){
+                        System.out.println(nextRoundMessage + " in state 4");
+
+                        removElementsInScoreList();
+                        state = 2;
+                    }
+                    else if (nextRoundMessage.equals("nej")){
+                        objectOut.writeObject(playerName + " left");
+                    }
                 }
             }
         } catch (IOException e) {
@@ -203,7 +214,11 @@ class ServerPlayer extends Thread {
         } catch (InterruptedException e) {
             opponent.opponentHasLeft();
             throw new RuntimeException(e);
-        } catch (Exception e) {
+        }
+        catch (NullPointerException e) {
+            System.out.println("Waiting for an another client to connect...");
+
+        }catch(Exception e) {
             opponent.opponentHasLeft();
             throw new RuntimeException(e);
         }
@@ -314,7 +329,7 @@ class ServerPlayer extends Thread {
             }
         }
     }
-}
+
 
     protected void opponentHasLeft() {
         String shutdownString = "SHUT DOWN";
@@ -326,6 +341,20 @@ class ServerPlayer extends Thread {
             throw new RuntimeException(e);
         }
         System.out.println("endGame has run");
-        System.exit(1);
+        try {
+            this.socket.close();
+            System.out.println("this socket is closed");
+        } catch (IOException e) {
+            System.out.println("this socket is closed.");
+        }
+        //System.exit(1);
+    }
+    protected List<Integer> removElementsInScoreList(){
+        for (int i : currentPlayerScores){
+            if (currentPlayerScores != null){
+                currentPlayerScores.remove(i);
+            }
+        }
+        return currentPlayerScores;
     }
 }
