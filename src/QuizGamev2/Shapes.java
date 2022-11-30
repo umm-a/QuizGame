@@ -2,6 +2,7 @@ package QuizGamev2;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
@@ -19,6 +20,15 @@ public class Shapes {
 
     Border border1;
     Border border2;
+    Border border1Up;
+    Border border1Down;
+    Border border1Left;
+    Border border1Right;
+
+    Border border1UpLeft;
+    Border border1UpRight;
+    Border border1DownLeft;
+    Border border1DownRight;
 
 
     public Shapes(int[] mixcolor){
@@ -27,6 +37,14 @@ public class Shapes {
         lightcolor = new Color(mixcolor[9],mixcolor[10],mixcolor[11]);
         border1 = BorderFactory.createLineBorder(darkcolor,4);
         border2 = BorderFactory.createLineBorder(darkcolor,3);
+        border1Up = BorderFactory.createMatteBorder(4,0,0,0,darkcolor);
+        border1Down = BorderFactory.createMatteBorder(0,0,4,0,darkcolor);
+        border1Left = BorderFactory.createMatteBorder(0,4,0,0,darkcolor);
+        border1Right = BorderFactory.createMatteBorder(0,0,0,4,darkcolor);
+        border1UpLeft = BorderFactory.createMatteBorder(4,4,0,0,darkcolor);
+        border1UpRight = BorderFactory.createMatteBorder(4,0,0,4,darkcolor);
+        border1DownLeft = BorderFactory.createMatteBorder(0,4,4,0,darkcolor);
+        border1DownRight = BorderFactory.createMatteBorder(0,0,4,4,darkcolor);
     }
 
     public void drawShapes(Graphics2D g2d){
