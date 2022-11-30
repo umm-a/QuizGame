@@ -27,11 +27,11 @@ public class QuestionDatabase2 implements Serializable {
         String temp;
         try(BufferedReader buf = new BufferedReader(new FileReader(filename))){
             while((temp = buf.readLine()) != null){
-            String[] arr = temp.split(",");
+                String[] arr = temp.split(",");
                 for (int i = 0; i < arr.length; i++) {
                     arr[i] = arr[i].trim();
                 }
-            mylist.add(new Question(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]));
+                mylist.add(new Question(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]));
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -73,4 +73,3 @@ public class QuestionDatabase2 implements Serializable {
     }
 
 }
-

@@ -1,9 +1,9 @@
 package QuizGamev2;
 
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -31,7 +31,7 @@ class ServerPlayer extends Thread {
     String pointString;
 
     List<Integer> currentPlayerScores = new ArrayList<>();
-   // List<Integer> player2Scores = new ArrayList<>();
+    // List<Integer> player2Scores = new ArrayList<>();
     List<Integer> opponentScores;
 
 
@@ -128,6 +128,8 @@ class ServerPlayer extends Thread {
                 Thread.sleep(1000);
             }
 
+            List<String> nicknameList = Arrays.asList(nickName, opponent.nickName, "nicknames");
+            objectOut.writeObject(nicknameList);
 
             while (true) {
                 if (state == 2) {
@@ -141,7 +143,7 @@ class ServerPlayer extends Thread {
                             nextRoundMessage = inputbuffer.readLine();
                             System.out.println(nextRoundMessage);
                         }
-                        if ((this.equals(currentplayer)) && (setCategory == true)) {
+                        if ((this.equals(currentplayer)) && (setCategory)) {
                             chooseCategory();
                             setCategory = false;
                             opponent.setCategory = false;
@@ -173,7 +175,7 @@ class ServerPlayer extends Thread {
                             objectOut.writeObject(stringOutObject);
                             objectOut.flush();
 
-                            if(roundDone==true){
+                            if(roundDone){
                                 setScoreForBothPlayers();
                                 changePlayerTurnWithinRound();
                                 opponent.changePlayerTurnWithinRound();
@@ -190,7 +192,6 @@ class ServerPlayer extends Thread {
                     state = 4;
                     // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
-                    //  state = 4;
                 } else if (state == 4) {
                     //Dags att ta emot och se om spelaren vill köra igen
                 }
@@ -323,3 +324,5 @@ class ServerPlayer extends Thread {
 
 
 
+
+}
