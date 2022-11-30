@@ -42,7 +42,7 @@ public class PlayerGUI2 extends JFrame {
     PlayerClient playerClient;
 
     //bara för test:
-   /* List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik"));
+  /* List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik"));
     List<String> catlist2 = new ArrayList<String>(Arrays.asList("Historia", "Matematik", "Geologi", "Teknik"));
     List<String> catlist3 = new ArrayList<String>(Arrays.asList("Astronomi", "Astrologi", "Religion", "Konst"));
     Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
@@ -91,12 +91,20 @@ public class PlayerGUI2 extends JFrame {
     }
 
 
+    int frameWidth;
+    int frameHeight;
     public void setWelcomeLayout(PlayerClient playerClient) {
-        baseFrame.setSize(340, 500);
-        baseFrame.getContentPane().setBackground(Color.black);
-        baseFrame.setLayout(null);
+        //baseFrame.setSize(340, 500);
+        baseFrame.setPreferredSize(new Dimension(360,520));
+        baseFrame.pack();
+        baseFrame.getContentPane().setBackground(new Color(40,40,40));
+       // baseFrame.setLayout(null);
 
-        welcomePanel = new Canvas1(graphicsChooser);
+        //används till centrering av panel på frame
+        frameWidth = baseFrame.getWidth();
+        frameHeight = baseFrame.getContentPane().getHeight();
+
+        welcomePanel = new Canvas1(graphicsChooser, frameWidth,frameHeight);
 
         MyJLabel welcomelb = new MyJLabel("Välkommen till QuizGame!", SwingConstants.CENTER,welcomePanel);
         welcomelb.setBounds(10, 10, 300, 60);
@@ -128,6 +136,7 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.setLocationRelativeTo(null);
         baseFrame.setLayout(null);
         baseFrame.setVisible(true);
+        baseFrame.pack();
 
     }
 
@@ -138,16 +147,12 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.getContentPane().removeAll();
 
 
-        categoryPanel = new Canvas1(graphicsChooser);
-        categoryPanel.setLayout(null);
-        categoryPanel.setBounds(10, 10, 320, 450);
-        categoryPanel.setBorder(new EtchedBorder());
+        categoryPanel = new Canvas1(graphicsChooser,frameWidth,frameHeight);
 
         MyJLabel chooseCatlb = new MyJLabel("Välj en Kategori", SwingConstants.CENTER,categoryPanel);
         chooseCatlb.setBounds(10, 10, 300, 60);
         chooseCatlb.setFont(myFont);
         categoryPanel.add(chooseCatlb);
-
 
         JPanel buttonPanel = new JPanel(new GridLayout(noOfCat, 1, 5, 5));
         buttonPanel.setBounds(10, 100, 300, 320);
@@ -168,6 +173,8 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.add(categoryPanel);
         baseFrame.revalidate();
         baseFrame.repaint();
+        baseFrame.pack();
+
 
     }
 
@@ -175,7 +182,7 @@ public class PlayerGUI2 extends JFrame {
     public void setQuestionLayout(Question qObj, PlayerClient playerClient) {
         baseFrame.getContentPane().removeAll();
 
-        questionPanel = new Canvas1(graphicsChooser);
+        questionPanel = new Canvas1(graphicsChooser,frameWidth,frameHeight);
 
         MyJLabel categorylb = new MyJLabel(qObj.category, SwingConstants.CENTER,questionPanel);
         categorylb.setBounds(10, 10, 300, 50);
@@ -211,7 +218,7 @@ public class PlayerGUI2 extends JFrame {
     public void setWaitingLayout(String message){
         baseFrame.getContentPane().removeAll();
 
-        waitingPanel = new Canvas1(graphicsChooser);
+        waitingPanel = new Canvas1(graphicsChooser,frameWidth,frameHeight);
 
         MyJLabel waitingMessagelb = new MyJLabel("<html><body style='text-align:center'>" + message, SwingConstants.CENTER,waitingPanel);
         waitingMessagelb.setBounds(30, 100, 260, 120);
@@ -234,7 +241,7 @@ public class PlayerGUI2 extends JFrame {
 
         JButton fortsättButton;
 
-        scorePanel = new Canvas1(graphicsChooser);
+        scorePanel = new Canvas1(graphicsChooser,frameWidth,frameHeight);
 
         MyJLabel gameInfoLabel = new MyJLabel(statusMessage, SwingConstants.CENTER,scorePanel);
         gameInfoLabel.setBounds(80, 70, 160, 30);
@@ -242,13 +249,13 @@ public class PlayerGUI2 extends JFrame {
         scorePanel.add(gameInfoLabel);
 
         MyJLabel playerNameLabel = new MyJLabel(nickname, SwingConstants.CENTER,scorePanel);
-        playerNameLabel.setBounds(4, 20, 120, 30);
+        playerNameLabel.setBounds(4, 20, 140, 30);
 
         playerNameLabel.setFont(myFont2);
         scorePanel.add(playerNameLabel);
 
         MyJLabel opponentNameLabel = new MyJLabel(opponentNickname, SwingConstants.CENTER,scorePanel);
-        opponentNameLabel.setBounds(196, 20, 120, 30);
+        opponentNameLabel.setBounds(176, 20, 140, 30);
         opponentNameLabel.setFont(myFont2);
         scorePanel.add(opponentNameLabel);
 
@@ -326,7 +333,7 @@ public class PlayerGUI2 extends JFrame {
                                        List<Integer> player1Score, List<Integer> player2Score) {
 
         baseFrame.getContentPane().removeAll();
-        gameCompletedPanel = new Canvas1(graphicsChooser);
+        gameCompletedPanel = new Canvas1(graphicsChooser,frameWidth,frameHeight);
 
         int player1ScoreInt = player1Score.stream().mapToInt(Integer::intValue).sum();
         int player2ScoreInt = player2Score.stream().mapToInt(Integer::intValue).sum();
