@@ -132,81 +132,83 @@ class ServerPlayer extends Thread {
 
 
             while (wantsToPlay) {
-                if (state == 2) {
-                    currentRound = 0;
-                    state = 3;
-                } else if (state == 3) {
-                    while (currentRound < rounds) {
 
-                        endGameIfOpponentHasLeft();
-                        while(!nextRoundMessage.equals("NEXT ROUND")){//todo här
+                    if (state == 2) {
+                        currentRound = 0;
+                        state = 3;
+                    } else if (state == 3) {
+                        while (currentRound < rounds) {
+
                             endGameIfOpponentHasLeft();
-                            Thread.sleep(100);
-                            nextRoundMessage = inputbuffer.readLine();
-                            System.out.println(nextRoundMessage);
-                        }
-                        if ((this.equals(currentplayer)) && (setCategory == true)) {
-                            endGameIfOpponentHasLeft();
-                            chooseCategory();
-                            setCategory = false;
-                            opponent.setCategory = false;
-                        }
-                        if (this.equals(currentplayer)) {
-                            for (int i = 0; i < questionsPerRound; i++) {
-                                endGameIfOpponentHasLeft();
-                                if (turn == 1) {
-                                    question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
-                                    objectOut.writeObject(question);
-                                    gameEngine.addQuestionToList((Question) question);
-                                } else {
-                                    objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                            while (!nextRoundMessage.equals("NEXT ROUND")) {//todo här
+
+                                Thread.sleep(100);
+                                nextRoundMessage = inputbuffer.readLine();
+                                System.out.println(nextRoundMessage);
+                            }
+                            if ((this.equals(currentplayer)) && (setCategory == true)) {
+
+                                chooseCategory();
+                                setCategory = false;
+                                opponent.setCategory = false;
+                            }
+                            if (this.equals(currentplayer)) {
+                                for (int i = 0; i < questionsPerRound; i++) {
+
+                                    if (turn == 1) {
+                                        question = gameEngine.questionDatabase2.generateRandomQuestion(chosenCategory);
+                                        objectOut.writeObject(question);
+                                        gameEngine.addQuestionToList((Question) question);
+                                    } else {
+                                        objectOut.writeObject(gameEngine.getFromQuestionList(i));
+                                    }
+                                    objectOut.flush();
+                                    calculateAndSendPoints();
                                 }
-                                objectOut.flush();
-                                calculateAndSendPoints();
-                            }
-                            if (turn == 2) {
-                                gameEngine.removeContentsFromQuestionList();
-                                setCategoryToTrue();
-                                setCurrentRoundPlusOne();
-                                setRoundDoneTrue();
-                            }
-                            endGameIfOpponentHasLeft();
-                            changePlayerTurnWithinRound();
-                            opponent.changePlayerTurnWithinRound();
-                            nextRoundMessage = "WAITING FOR NEXT ROUND";
+                                if (turn == 2) {
+                                    gameEngine.removeContentsFromQuestionList();
+                                    setCategoryToTrue();
+                                    setCurrentRoundPlusOne();
+                                    setRoundDoneTrue();
+                                }
 
-
-                            stringOutObject = "SET SCORE " + playerName;
-                            objectOut.writeObject(stringOutObject);
-                            objectOut.flush();
-
-                            if(roundDone==true){
-                                setScoreForBothPlayers();
                                 changePlayerTurnWithinRound();
                                 opponent.changePlayerTurnWithinRound();
-                                changePlayerTurnAfterEachRound();
-                                opponent.changePlayerTurnAfterEachRound();
-                                tellPlayerClientRoundIsDone();
-                                opponent.tellPlayerClientRoundIsDone();
-                                setRoundDoneFalse();
+                                nextRoundMessage = "WAITING FOR NEXT ROUND";
+
+
+                                stringOutObject = "SET SCORE " + playerName;
+                                objectOut.writeObject(stringOutObject);
+                                objectOut.flush();
+
+                                if (roundDone == true) {
+                                    setScoreForBothPlayers();
+                                    changePlayerTurnWithinRound();
+                                    opponent.changePlayerTurnWithinRound();
+                                    changePlayerTurnAfterEachRound();
+                                    opponent.changePlayerTurnAfterEachRound();
+                                    tellPlayerClientRoundIsDone();
+                                    opponent.tellPlayerClientRoundIsDone();
+                                    setRoundDoneFalse();
+                                }
                             }
                         }
+                        tellPlayerClientGameIsDone();
+                        opponent.tellPlayerClientGameIsDone();
+                        state = 4;
+                        // currentRound=0; //ska enbart sättas om vi startar nytt spel
+
+                        //  state = 4;
+                    } else if (state == 4) {
+                        wantsToPlay = false;
+
+                        //Dags att ta emot och se om spelaren vill köra igen
                     }
-                    tellPlayerClientGameIsDone();
-                    opponent.tellPlayerClientGameIsDone();
-                    state = 4;
-                    // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
-                    //  state = 4;
-                } else if (state == 4) {
-                    wantsToPlay = false;
-
-                    //Dags att ta emot och se om spelaren vill köra igen
-                }
             }
         } catch (IOException e) {
-            gameEngine.shutdown = true;
-            System.out.println("Player " + playerName + " died: " + e);
+            System.out.println("Player " + nickName + " left the game: " + e);
+
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

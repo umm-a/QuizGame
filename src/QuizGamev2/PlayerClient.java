@@ -127,6 +127,7 @@ public class PlayerClient implements ActionListener {
             } else if (obj.toString().equals("SHUT DOWN")){
                 System.out.println("Shut down-message recieved");
                 playerGUI2.setWaitingLayout("Opponent left the game... You won by default!");
+                System.exit(0);
                 //här kan man pausa och sedan visa resultatet. Däremot ska det ju ej gå att trycka "fortsätt" eller "spela igen", utan spelet är över. Kanske gör en kopia av scoreLayout utan fortsätt-knapp?
             } else {
                     System.out.println(obj.toString());
