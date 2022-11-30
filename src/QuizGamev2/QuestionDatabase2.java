@@ -27,11 +27,11 @@ public class QuestionDatabase2 implements Serializable {
         String temp;
         try(BufferedReader buf = new BufferedReader(new FileReader(filename))){
             while((temp = buf.readLine()) != null){
-            String[] arr = temp.split(",");
+                String[] arr = temp.split(",");
                 for (int i = 0; i < arr.length; i++) {
                     arr[i] = arr[i].trim();
                 }
-            mylist.add(new Question(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]));
+                mylist.add(new Question(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]));
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -40,7 +40,7 @@ public class QuestionDatabase2 implements Serializable {
     }
 
 
-    //skapar en lista med enbart kategorier utifrån tillgängliga frågor
+    //skapar en lista med enbart kategorier utifrån tillgängliga frågor (max 4 slumpade kategorier läggs i lista)
     public List<String> createCategorylist(List<Question> qlist){
         List<String> mycategorylist = new ArrayList<>();
         for(Question q: questionlist){
@@ -48,9 +48,14 @@ public class QuestionDatabase2 implements Serializable {
                 mycategorylist.add(q.category);
             }
         }
+        Collections.shuffle(mycategorylist);
+        if(mycategorylist.size()>4)
+         mycategorylist.subList(3,mycategorylist.size()-1).clear();
+
         mycategorylist.add("CATEGORIES");
         return mycategorylist;
     }
+
 
     //genererar en random question efter vald kategori
     public Question generateRandomQuestion(String myCategory){
@@ -63,8 +68,8 @@ public class QuestionDatabase2 implements Serializable {
         Collections.shuffle(myQuestionList);
         Question questionToSend = myQuestionList.get(0);
         questionlist.remove(questionToSend);
+        categoryList = createCategorylist(questionlist);
         return questionToSend;
     }
 
 }
-

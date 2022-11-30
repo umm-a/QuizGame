@@ -27,15 +27,17 @@ public class PlayerClient implements ActionListener {
     static final int QUESTIONSTATE = 3;
     static final int UPDATESETSCORE = 4;
     Question currentObject;
-    boolean point=false;
+    boolean point;
     int questionsPerRound;
     int rounds;
     String fromPlayer = "";
     List<Integer> player1Scores = new ArrayList<>();
     List<Integer> player2Scores = new ArrayList<>();
     ObjectOutputStream objectOut;
-    boolean roundIsDone = false;
-    boolean gameIsDone = false;
+    boolean roundIsDone;
+    boolean gameIsDone;
+    String nickname;
+    String opponentNickname;
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -88,6 +90,10 @@ public class PlayerClient implements ActionListener {
                         System.out.println(" IN CATEGORIES ");
                     }
                 }
+                if (((List<String>) obj).contains("nicknames")) {
+                    nickname = ((List<String>) obj).get(0);
+                    opponentNickname = ((List<String>) obj).get(1);
+                }
             } else if (obj.toString().contains("ScoreList of player")) {
                 fromPlayer = obj.toString();
                 obj = inObj.readObject();
@@ -102,11 +108,13 @@ public class PlayerClient implements ActionListener {
                     }
                     System.out.println("ScoreList of player in PlayerClient has run");
             } else if (obj.toString().toLowerCase().contains("set score player 1")) {
-             //   state=UPDATESETSCORE;
-                playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
+                //   state=UPDATESETSCORE;
+                playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores,
+                        "Player 1 Scoreboard", this, nickname, opponentNickname);
             } else if (obj.toString().toLowerCase().contains("set score player 2")) {
-              //  state=UPDATESETSCORE;
-            playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
+                //  state=UPDATESETSCORE;
+                playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores,
+                        "Player 2 Scoreboard", this, nickname, opponentNickname);
             } else if ((obj instanceof Question)){
                 state=QUESTIONSTATE;
                 setCurrentObject((Question) obj);
@@ -114,10 +122,17 @@ public class PlayerClient implements ActionListener {
                 playerGUI2.setQuestionLayout((Question) obj, this);
             } else if (obj.toString().equals("SET SCORE FOR BOTH PLAYERS")) {
                 if(this.playerName.equals("player 1")){
-                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores, "Player 1 Scoreboard", this);
+                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player1Scores, player2Scores,
+                            "Player 1 Scoreboard", this, nickname, opponentNickname);
                 } else {
-                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores, "Player 2 Scoreboard", this);
+                    playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores,
+                            "Player 2 Scoreboard", this, nickname, opponentNickname);
                 }
+            }else if (obj.toString().equals("SHUT DOWN")){
+                System.out.println("Shut down-message recieved");
+                playerGUI2.setWaitingLayout("Opponent left the game... You won by default!");
+                //här kan man pausa och sedan visa resultatet. Däremot ska det ju ej gå att trycka "fortsätt" eller "spela igen", utan spelet är över. Kanske gör en kopia av scoreLayout utan for
+
             } else if (obj.toString().equals("roundIsDone")) {
                 System.out.println("roundIsDone is recieved");
                 roundIsDone = true;
@@ -130,13 +145,13 @@ public class PlayerClient implements ActionListener {
                 System.exit(0);
                 //här kan man pausa och sedan visa resultatet. Däremot ska det ju ej gå att trycka "fortsätt" eller "spela igen", utan spelet är över. Kanske gör en kopia av scoreLayout utan fortsätt-knapp?
             } else {
-                    System.out.println(obj.toString());
-                    System.out.println("This is where things tend to go wrong");
-                }
+                System.out.println(obj);
+                System.out.println("This is where things tend to go wrong");
             }
-            //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
-
         }
+        //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
+
+    }
 
     public Object getCurrentObject(){
         return this.currentObject;
@@ -180,10 +195,10 @@ public class PlayerClient implements ActionListener {
             }
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
-                outpw.println(chosenCategory);
-                System.out.println("Test från PlayerClient: " + chosenCategory);
+            outpw.println(chosenCategory);
+            System.out.println("Test från PlayerClient: " + chosenCategory);
             state=QUESTIONSTATE;
-            } else if (state==QUESTIONSTATE) {//todo OBS man ska inte kunna trycka på fler knappar när man svarat på en specifik fråga
+        } else if (state==QUESTIONSTATE) {//todo OBS man ska inte kunna trycka på fler knappar när man svarat på en specifik fråga
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
 
@@ -208,7 +223,7 @@ public class PlayerClient implements ActionListener {
 
             state = UPDATESETSCORE;
 
-        } else if ((state == UPDATESETSCORE) && (roundIsDone) && (gameIsDone==false)) { //todo ska bara gå om båda spelarna spelat en runda
+        } else if ((state == UPDATESETSCORE) && (roundIsDone) && (!gameIsDone)) { //todo ska bara gå om båda spelarna spelat en runda
             if(((JButton) e.getSource()).getText().equals("Fortsätt")){
                 playerGUI2.setWaitingLayout("Waiting for opponent to finish their turn...");
                 //fortsätt-knappen ska ej gå att klicka på förrän roundDone=true
@@ -216,9 +231,18 @@ public class PlayerClient implements ActionListener {
                 roundIsDone=false;
                 state=QUESTIONSTATE; //todo i sista rundan måste man ändra detta, kolla om det finns ett meddelande från ServerPlayer som meddelar att det är slut. Skicka detta till while-loopen här i PlayerClient, ta boolean och kolla av!
             }
-        } else if (gameIsDone == true) {
+        } else if (gameIsDone) {
             if(((JButton) e.getSource()).getText().equals("Fortsätt")){
-                //spela igen-ruta
+                playerGUI2.setGameCompletedLayout(nickname, opponentNickname, this,
+                        player1Scores, player2Scores);
+            }
+            if (((JButton) e.getSource()).getText().equals("Ja")){
+                outpw.println("ja");
+                System.out.println("Tryckt på JA");
+            }
+            if (((JButton) e.getSource()).getText().equals("Nej")){
+                outpw.println("nej");
+                System.out.println("Tryckt på NEJ");
             }
         }
     }
