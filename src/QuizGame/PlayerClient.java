@@ -124,7 +124,7 @@ public class PlayerClient implements ActionListener {
                             "Player 2 Scoreboard", this, nickname, opponentNickname);
                 }
             }else if (obj.toString().equals("SHUT DOWN")){
-                playerGUI.setWaitingLayout("Motståmdaren lämnade spelet... vilket betyder att DU vann!");
+                playerGUI.setWaitingLayout("Motståndaren lämnade spelet... vilket betyder att DU vann!");
 
             } else if (obj.toString().equals("roundIsDone")) {
                 roundIsDone = true;
