@@ -128,7 +128,9 @@ public class PlayerClient implements ActionListener {
                     playerGUI2.setScoreLayout(rounds, questionsPerRound, player2Scores, player1Scores,
                             "Player 2 Scoreboard", this, nickname, opponentNickname);
                 }
-            }else if (obj.toString().equals("SHUT DOWN")){
+
+            }
+            else if (obj.toString().equals("SHUT DOWN")){
                 System.out.println("Shut down-message recieved");
                 playerGUI2.setWaitingLayout("Opponent left the game... You won by default!");
                 //här kan man pausa och sedan visa resultatet. Däremot ska det ju ej gå att trycka "fortsätt" eller "spela igen", utan spelet är över. Kanske gör en kopia av scoreLayout utan for
@@ -233,6 +235,7 @@ public class PlayerClient implements ActionListener {
                 state=QUESTIONSTATE; //todo i sista rundan måste man ändra detta, kolla om det finns ett meddelande från ServerPlayer som meddelar att det är slut. Skicka detta till while-loopen här i PlayerClient, ta boolean och kolla av!
             }
         } else if (gameIsDone) {
+
             if(((JButton) e.getSource()).getText().equals("Fortsätt")){
                 playerGUI2.setGameCompletedLayout(nickname, opponentNickname, this,
                         player1Scores, player2Scores);
@@ -244,6 +247,9 @@ public class PlayerClient implements ActionListener {
             if (((JButton) e.getSource()).getText().equals("Nej")){
                 outpw.println("nej " + playerName);
                 System.out.println(playerName + "Tryckt på NEJ");
+            }
+            if (playerName.equals("player 2")) {
+
             }
         }
     }

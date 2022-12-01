@@ -191,23 +191,25 @@ class ServerPlayer extends Thread {
                     }
                     tellPlayerClientGameIsDone();
                     opponent.tellPlayerClientGameIsDone();
+
                     state = 4;
                     // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
                 }
                 else if (state == 4) {
+
                     inputMessage = inputbuffer.readLine();
-                    System.out.println(inputMessage + " in state 4");
+
+                    //System.out.println(inputMessage + " in state 4");
 
                     if (inputMessage.contains("ja")){
-                        System.out.println(playerName + " in if state 4");
+                        System.out.println(inputMessage + " in state 4");
                         //removElementsInScoreList();
                        // state = 2;
                        // currentRound = 0;
                     }
                     else if (inputMessage.contains("nej")){
-                        objectOut.writeObject(playerName + " left");
-                        System.out.println(inputMessage + " in else-if state 4");
+                        System.out.println(inputMessage + " in state 4");
                     }
                 }
             }
