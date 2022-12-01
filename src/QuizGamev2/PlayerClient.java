@@ -1,6 +1,7 @@
 package QuizGamev2;
 
 import javax.swing.*;
+import javax.swing.plaf.ToolBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +39,9 @@ public class PlayerClient implements ActionListener {
     boolean gameIsDone;
     String nickname;
     String opponentNickname;
+
+    String playAgainPlayer1 = "";
+    String playAgainPlayer2 = "";
 
 
     public PlayerClient(PlayerGUI2 playerGUI2) throws Exception {
@@ -150,6 +154,7 @@ public class PlayerClient implements ActionListener {
             else {
                 System.out.println(obj);
                 System.out.println("This is where things tend to go wrong");
+
             }
         }
         //ta emot meddelande om att rundan är klar, låt spelare2 få upp sina frågor
@@ -240,20 +245,47 @@ public class PlayerClient implements ActionListener {
                 playerGUI2.setGameCompletedLayout(nickname, opponentNickname, this,
                         player1Scores, player2Scores);
             }
-            if (((JButton) e.getSource()).getText().equals("Ja")){
+            if (((JButton) e.getSource()).getText().equals("Ja")) {
 
-                outpw.println("ja " + playerName);
-                System.out.println(playerName + "Tryckt på JA");
-                if (playerName.equals("player 1")) {
-                    outpw.println("player 1 tryckt på ja");
+               if (playerName.equals("player 1")){
+                   playAgainPlayer1 = playerName + " ja";
+                   System.out.println(playerName + " added ja");
+                   outpw.println(playAgainPlayer1);
+
+               }
+               else if (playerName.equals("player 2")){
+                   playAgainPlayer2 = playerName + " ja";
+                   System.out.println(playerName + " added ja");
+                   outpw.println(playAgainPlayer2);
+               }
+
+
+            }
+
+                /*if (playerName.equals("player 1")) {
+                    playAgainMess.add("player 1 ja");
+                    System.out.println("player 1 tryckt på ja");
 
                 }
+                else if(playerName.equals("player 2")){
+                    playAgainMess.add("player 2 ja");
+                }
+                try {
+                    objectOut.writeObject(playAgainMess);
+                    objectOut.flush();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
             }
-            if (((JButton) e.getSource()).getText().equals("Nej")){
+           /* if (((JButton) e.getSource()).getText().equals("Nej")){
                 outpw.println("nej " + playerName);
                 System.out.println(playerName + "Tryckt på NEJ");
             }
 
+            */
+
         }
     }
+
 }

@@ -59,6 +59,8 @@ class ServerPlayer extends Thread {
     String nextRoundMessage;
     String roundIsDone = "roundIsDone";
     String gameIsDone = "gameIsDone";
+    List<String> tempPlayAgainList = new ArrayList<>();
+    String playAgainMess = "";
 
 
     public ServerPlayer(Socket socket, String playerName, ServerGameEngine gameEngine) {
@@ -200,31 +202,15 @@ class ServerPlayer extends Thread {
                 }
                 else if (state == 4) {
 
-                    nextRoundMessage = inputbuffer.readLine(); //sparar input från player
-                    inputMessage = opponent.inputbuffer.readLine(); //sparar input från opponent.
-
-                    if (nextRoundMessage.contains("ja") && inputMessage.contains("ja")){
-                        System.out.println("startar om spel");
-                        //removElementsInScoreList();
-                       // state = 2;
-                       // currentRound = 0;
-                    }else{
-                        System.out.println("avslutar");
-                    }
-                    /*else if (nextRoundMessage.contains("nej")){
-                        System.out.println(nextRoundMessage + " in state 4");
-                    }
-                    if (inputMessage.contains("ja")){
-                        System.out.println(inputMessage + " in state 4");
-                        //removElementsInScoreList();
-                        // state = 2;
-                        // currentRound = 0;
-                    }
-                    else if (inputMessage.contains("nej")){
-                        System.out.println(nextRoundMessage + " in state 4");
+                    playAgainMess = inputbuffer.readLine();
+                    tempPlayAgainList.add(playAgainMess);
+                    playAgainMess = inputbuffer.readLine();
+                    tempPlayAgainList.add(playAgainMess);
+                    for (String s : tempPlayAgainList){
+                        System.out.println(s);
                     }
 
-                     */
+
                 }
             }
         } catch (IOException e) {
