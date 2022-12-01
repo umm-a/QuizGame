@@ -1,8 +1,7 @@
-package QuizGamev2;
+package QuizGame;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
@@ -62,12 +61,10 @@ public class Shapes {
 
 
     public int randx(){
-        int xr = random.nextInt(1,320);
-        return xr;
+        return random.nextInt(1,320);
     }
     public int randy(){
-        int yr = random.nextInt(1,450);
-        return yr;
+        return random.nextInt(1,450);
     }
 
 
@@ -107,12 +104,10 @@ class Shapes1 extends Shapes {
 
 
     public int randx(){
-        int xr = random.nextInt(1,320);
-        return xr;
+        return random.nextInt(1,320);
     }
     public int randy(){
-        int yr = random.nextInt(1,450);
-        return yr;
+        return random.nextInt(1,450);
     }
 
     @Override

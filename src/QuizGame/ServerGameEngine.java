@@ -1,4 +1,4 @@
-package QuizGamev2;
+package QuizGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +9,12 @@ public class ServerGameEngine{
     ServerPlayer player2;
     List<Question> tempQuestionList = new ArrayList<>();
 
-    QuestionDatabase2 questionDatabase2;
+    QuestionDatabase questionDatabase;
     boolean player1Ready = false;
     boolean player2Ready = false;
 
-    public ServerGameEngine(QuestionDatabase2 questionDatabase2){
-        this.questionDatabase2 = questionDatabase2;
+    public ServerGameEngine(QuestionDatabase questionDatabase){
+        this.questionDatabase = questionDatabase;
 
     }
     public void addQuestionToList(Question question){
@@ -43,15 +43,15 @@ public class ServerGameEngine{
             player1.currentPlayerScores.add(1);
             return player1.currentPlayerScores;
         }
-        else if (playerName.equals("player 1") && (isCorrectAnswer == false)) {
+        else if (playerName.equals("player 1") && (!isCorrectAnswer)) {
             player1.currentPlayerScores.add(0);
             return player1.currentPlayerScores;
         }
-        else if (playerName.equals("player 2") && (isCorrectAnswer == true)) {
+        else if (playerName.equals("player 2") && (isCorrectAnswer)) {
             player2.currentPlayerScores.add(1);
             return player2.currentPlayerScores;
         }
-        else if (playerName.equals("player 2") && (isCorrectAnswer == false)) {
+        else if (playerName.equals("player 2") && (!isCorrectAnswer)) {
             player2.currentPlayerScores.add(0);
             return player2.currentPlayerScores;
         }

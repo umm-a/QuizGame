@@ -1,12 +1,9 @@
-package QuizGamev2;
+package QuizGame;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;;
 
 public class Canvas1 extends JComponent  {
     int x;

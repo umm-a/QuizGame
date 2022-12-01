@@ -1,4 +1,4 @@
-package QuizGamev2;
+package QuizGame;
 
 import java.io.Serializable;
 

@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="PlayerGUI2" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="QuizGamev2.PlayerGUI2" />
+  <configuration default="false" name="PlayerGUI" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="QuizGame.PlayerGUI" />
     <module name="QuizGame" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="QuizGamev2.*" />
+        <option name="PATTERN" value="QuizGame.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

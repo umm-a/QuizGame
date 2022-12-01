@@ -1,67 +1,75 @@
 package QuizGame;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class QuestionDatabase {
-    //needs some cleaning
-    protected ArrayList<String[]> categoriesQuestions = new ArrayList<>(); //sedan kan man ju välja antal kategorier och frågor genom att ställa in vilka index som ska användas i vardera kategori
-    protected ArrayList<String[][]> categoriesAnswers = new ArrayList<>();
-    protected String[] animalQuestions = {"What do koalas typically eat?", "What color are flamingos when they are born?"};
-    protected ArrayList<String> animalStringList;
-    protected String[] religionQuestions = {"Which prophet came with the Torah?", "How many times a day does a muslim pray?"};
-    protected String[] historyQuestions = {"Fill in the blank: The 19th Amendment guarantees ____ the right to vote", "Where was the Titanic headed to before it sank?"};
+public class QuestionDatabase implements Serializable {
 
-    protected String[][] animalAnswers = {{"Eucalyptus leaves", "Wild berries", "Bugs", "Branches of the pine tree"}, {"Grey/white", "Black", "Pink", "Green"}};//platserna för dessa kan switchas upp i GUI, men index plats 0 = rätt
-    protected String[][] religionAnswers = {{"Moses", "Abraham", "Jesus", "Muhammed"}, {"5", "4", "3", "2"}};
-    protected String[][] historyAnswers = {{"Women", "Men", "A guy named Travis", "No-one"}, {"New York City", "Mexico", "North Africa", "Antarctica"}};
+    List<Question> questionlist;
+    List<String> categoryList;
+    String filename = "src/QuizGame/Questionfile.txt";
 
-    QuestionDatabase() {
-        categoriesQuestions.add(animalQuestions);
-        categoriesQuestions.add(religionQuestions);
-        //   categoriesQuestions.add(historyQuestions);
-        //  animalStringList.add("What do koalas typically eat?"); <------------------testade lite, massvis med kladd i denna klass!
-        // animalStringList.add("What color are flamingos when they are born?");
 
-        categoriesAnswers.add(animalAnswers);
-        categoriesAnswers.add(religionAnswers);
-        //  categoriesAnswers.add(historyAnswers);
+    public QuestionDatabase(){
+        questionlist = loadQuestions(filename);
+        categoryList = createCategoryList();
 
+        System.out.println(categoryList);
     }
 
-    protected String[] getAnimalQuestions() {
-        return animalQuestions;
+    //laddar frågor från textfil, detta kan i ett senare skede expanderas till egna filer per kategori
+    public List<Question> loadQuestions(String filename){
+        List<Question> mylist = new ArrayList<>();
+        String temp;
+        try(BufferedReader buf = new BufferedReader(new FileReader(filename))){
+            while((temp = buf.readLine()) != null){
+                String[] arr = temp.split(",");
+                for (int i = 0; i < arr.length; i++) {
+                    arr[i] = arr[i].trim();
+                }
+                mylist.add(new Question(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return mylist;
     }
 
-    protected String[] getReligionQuestions() {
-        return religionQuestions;
+
+    //skapar en lista med enbart kategorier utifrån tillgängliga frågor (max 4 slumpade kategorier läggs i lista)
+    public List<String> createCategoryList(){
+        List<String> mycategorylist = new ArrayList<>();
+        for(Question q: questionlist){
+            if(!mycategorylist.contains(q.category)){
+                mycategorylist.add(q.category);
+            }
+        }
+        Collections.shuffle(mycategorylist);
+        if(mycategorylist.size()>4)
+         mycategorylist.subList(3,mycategorylist.size()-1).clear();
+
+        mycategorylist.add("CATEGORIES");
+        return mycategorylist;
     }
 
-    protected String[] getHistoryQuestions() {
-        return historyQuestions;
-    }
 
-    protected String[][] getAnimalAnswers() {
-        return animalAnswers;
-    }
-
-    protected String[][] getReligionAnswers() {
-        return religionAnswers;
-    }
-
-    protected String[][] getHistoryAnswers() {
-        return historyAnswers;
-    }
-
-    protected String getCategories() {
-        return "Animals, Religion, History";
-    }
-
-    protected ArrayList<String[]> getCategoriesQuestionsArrayList() {
-        return categoriesQuestions;
-    }
-
-    protected ArrayList<String[][]> getCategoriesAnswersArrayList() {
-        return categoriesAnswers;
+    //genererar en random question efter vald kategori
+    public Question generateRandomQuestion(String myCategory){
+        List<Question> myQuestionList = new ArrayList<>();
+        for(Question q:questionlist){
+            if(myCategory.equals(q.category)){
+                myQuestionList.add(q);
+            }
+        }
+        Collections.shuffle(myQuestionList);
+        Question questionToSend = myQuestionList.get(0);
+        questionlist.remove(questionToSend);
+        categoryList = createCategoryList();
+        return questionToSend;
     }
 
 }
