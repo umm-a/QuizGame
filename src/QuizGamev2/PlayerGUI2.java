@@ -203,6 +203,8 @@ public class PlayerGUI2 extends JFrame {
         Collections.shuffle(qbuttons);
         for (JButton jb : qbuttons) {
             qButtonPanel.add(jb);
+            jb.setBackground(questionPanel.shapes.lightcolor);
+            jb.setOpaque(true);
             jb.addActionListener(playerClient);
         }
             baseFrame.add(questionPanel);
