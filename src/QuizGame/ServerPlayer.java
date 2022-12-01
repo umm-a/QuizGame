@@ -118,7 +118,7 @@ class ServerPlayer extends Thread {
                 } else if (state == 3) {
                     while (currentRound < rounds) {
 
-                        while (!nextRoundMessage.equals("NEXT ROUND")) {//todo här
+                        while (!nextRoundMessage.equals("NEXT ROUND")) {
                             Thread.sleep(100);
                             nextRoundMessage = inputbuffer.readLine();
                         }
@@ -169,7 +169,6 @@ class ServerPlayer extends Thread {
                     tellPlayerClientGameIsDone();
                     opponent.tellPlayerClientGameIsDone();
                     state = 4;
-                    // currentRound=0; //ska enbart sättas om vi startar nytt spel
 
                 } else if (state == 4) {
                     //Dags att ta emot och se om spelaren vill köra igen
@@ -243,9 +242,9 @@ class ServerPlayer extends Thread {
     protected void calculateAndSendPoints() throws IOException {
         pointString = inputbuffer.readLine();
 
-        objectOut.writeObject(gameEngine.checkPlayer(pointString));//metod som kollar vilken spelare det är
+        objectOut.writeObject(gameEngine.checkPlayer(pointString));
         objectOut.flush();
-        tempList = new ArrayList<>(gameEngine.addScoreToListAndReturnFullList(pointString)); //skickar lista med poäng
+        tempList = new ArrayList<>(gameEngine.addScoreToListAndReturnFullList(pointString));
         objectOut.writeObject(tempList);
         objectOut.flush();
     }
