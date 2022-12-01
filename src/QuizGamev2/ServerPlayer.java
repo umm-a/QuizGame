@@ -143,8 +143,10 @@ class ServerPlayer extends Thread {
                         while (!nextRoundMessage.equals("NEXT ROUND")) {//todo här
                             Thread.sleep(100);
                             nextRoundMessage = inputbuffer.readLine();
-                            System.out.println(nextRoundMessage);
+                            //System.out.println(nextRoundMessage);
                         }
+
+
                         if ((this.equals(currentplayer)) && (setCategory)) {
                             chooseCategory();
                             setCategory = false;
@@ -198,19 +200,31 @@ class ServerPlayer extends Thread {
                 }
                 else if (state == 4) {
 
-                    inputMessage = inputbuffer.readLine();
+                    nextRoundMessage = inputbuffer.readLine(); //sparar input från player
+                    inputMessage = opponent.inputbuffer.readLine(); //sparar input från opponent.
 
-                    //System.out.println(inputMessage + " in state 4");
-
-                    if (inputMessage.contains("ja")){
-                        System.out.println(inputMessage + " in state 4");
+                    if (nextRoundMessage.contains("ja") && inputMessage.contains("ja")){
+                        System.out.println("startar om spel");
                         //removElementsInScoreList();
                        // state = 2;
                        // currentRound = 0;
+                    }else{
+                        System.out.println("avslutar");
+                    }
+                    /*else if (nextRoundMessage.contains("nej")){
+                        System.out.println(nextRoundMessage + " in state 4");
+                    }
+                    if (inputMessage.contains("ja")){
+                        System.out.println(inputMessage + " in state 4");
+                        //removElementsInScoreList();
+                        // state = 2;
+                        // currentRound = 0;
                     }
                     else if (inputMessage.contains("nej")){
-                        System.out.println(inputMessage + " in state 4");
+                        System.out.println(nextRoundMessage + " in state 4");
                     }
+
+                     */
                 }
             }
         } catch (IOException e) {

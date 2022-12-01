@@ -241,16 +241,19 @@ public class PlayerClient implements ActionListener {
                         player1Scores, player2Scores);
             }
             if (((JButton) e.getSource()).getText().equals("Ja")){
+
                 outpw.println("ja " + playerName);
                 System.out.println(playerName + "Tryckt på JA");
+                if (playerName.equals("player 1")) {
+                    outpw.println("player 1 tryckt på ja");
+
+                }
             }
             if (((JButton) e.getSource()).getText().equals("Nej")){
                 outpw.println("nej " + playerName);
                 System.out.println(playerName + "Tryckt på NEJ");
             }
-            if (playerName.equals("player 2")) {
 
-            }
         }
     }
 }
