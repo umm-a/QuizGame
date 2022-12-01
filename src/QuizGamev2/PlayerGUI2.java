@@ -4,7 +4,6 @@ package QuizGamev2;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -38,7 +37,6 @@ public class PlayerGUI2 extends JFrame {
     List<SmallCircle> opponentDots;
 
     JTextField nickNametf;
-    String opponentNickname;
     PlayerClient playerClient;
 
     //bara för test:
@@ -191,14 +189,13 @@ public class PlayerGUI2 extends JFrame {
 
         MyJPanel qButtonPanel = new MyJPanel(new GridLayout(2, 2, 5, 5),questionPanel);
         qButtonPanel.setBounds(10, 200, 300, 230);
-        qButtonPanel.setFont(myFont2);
         questionPanel.add(qButtonPanel);
 
         List<JButton> qbuttons = new ArrayList<>();
-        qbuttons.add(new JButton(qObj.answerCorrect));
-        qbuttons.add(new JButton(qObj.answerOption2));
-        qbuttons.add(new JButton(qObj.answerOption3));
-        qbuttons.add(new JButton(qObj.answerOption4));
+        qbuttons.add(new JButton("<html><body style='text-align:center'>" + qObj.answerCorrect + "</body></html>"));
+        qbuttons.add(new JButton("<html><body style='text-align:center'>" + qObj.answerOption2 + "</body></html>"));
+        qbuttons.add(new JButton("<html><body style='text-align:center'>" + qObj.answerOption3 + "</body></html>"));
+        qbuttons.add(new JButton("<html><body style='text-align:center'>" + qObj.answerOption4 + "</body></html>"));
 
         Collections.shuffle(qbuttons);
         for (JButton jb : qbuttons) {
@@ -359,8 +356,8 @@ public class PlayerGUI2 extends JFrame {
         vsLabel.setBorder(gameCompletedPanel.shapes.border1Up);
         gameCompletedPanel.add(vsLabel);
 
-        String playerScoreString = "";
-        String opponentScoreString = "";
+        String playerScoreString;
+        String opponentScoreString;
 
         if (playerClient.playerName.equals("player 1")) {
             playerScoreString = String.valueOf(player1ScoreInt);
