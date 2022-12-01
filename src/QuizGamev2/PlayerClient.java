@@ -145,10 +145,6 @@ public class PlayerClient implements ActionListener {
                 System.exit(1);
                 //här kan man pausa och sedan visa resultatet. Däremot ska det ju ej gå att trycka "fortsätt" eller "spela igen", utan spelet är över. Kanske gör en kopia av scoreLayout utan fortsätt-knapp?
             }
-            else if (obj.toString().equals(playerName + " left")){
-                playerGUI2.setWaitingLayout("Opponent left the game");
-                System.exit(0);
-            }
             else {
                 System.out.println(obj);
                 System.out.println("This is where things tend to go wrong");
@@ -242,12 +238,12 @@ public class PlayerClient implements ActionListener {
                         player1Scores, player2Scores);
             }
             if (((JButton) e.getSource()).getText().equals("Ja")){
-                outpw.println("ja");
-                System.out.println("Tryckt på JA");
+                outpw.println("ja " + playerName);
+                System.out.println(playerName + "Tryckt på JA");
             }
             if (((JButton) e.getSource()).getText().equals("Nej")){
-                outpw.println("nej");
-                System.out.println("Tryckt på NEJ");
+                outpw.println("nej " + playerName);
+                System.out.println(playerName + "Tryckt på NEJ");
             }
         }
     }

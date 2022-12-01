@@ -115,7 +115,7 @@ class ServerPlayer extends Thread {
 
 
             this.readyToPlay = inputbuffer.readLine();
-            System.out.println(readyToPlay);
+            //System.out.println(readyToPlay);
 
             if (readyToPlay.contains("player 1")) {
                 gameEngine.player1Ready = true;
@@ -196,15 +196,18 @@ class ServerPlayer extends Thread {
 
                 }
                 else if (state == 4) {
+                    inputMessage = inputbuffer.readLine();
+                    System.out.println(inputMessage + " in state 4");
 
-                    if (nextRoundMessage.equals("ja")){
-                        System.out.println(nextRoundMessage + " in state 4");
-
-                        removElementsInScoreList();
-                        state = 2;
+                    if (inputMessage.contains("ja")){
+                        System.out.println(playerName + " in if state 4");
+                        //removElementsInScoreList();
+                       // state = 2;
+                       // currentRound = 0;
                     }
-                    else if (nextRoundMessage.equals("nej")){
+                    else if (inputMessage.contains("nej")){
                         objectOut.writeObject(playerName + " left");
+                        System.out.println(inputMessage + " in else-if state 4");
                     }
                 }
             }
@@ -343,6 +346,7 @@ class ServerPlayer extends Thread {
         System.out.println("endGame has run");
         try {
             this.socket.close();
+            opponent.socket.close();
             System.out.println("this socket is closed");
         } catch (IOException e) {
             System.out.println("this socket is closed.");
