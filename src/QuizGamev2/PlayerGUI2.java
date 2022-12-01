@@ -228,7 +228,7 @@ public class PlayerGUI2 extends JFrame {
     }
 
 
-    public void setScoreLayout(int questionPerRound, int rounds, List<Integer> playerScore, List<Integer> opponentScore,
+    public void setScoreLayout(int rounds,int questionPerRound, List<Integer> playerScore, List<Integer> opponentScore,
                                String statusMessage,PlayerClient playerClient, String nickname, String opponentNickname) {
 
         baseFrame.getContentPane().removeAll();

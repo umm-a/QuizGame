@@ -5,7 +5,7 @@ Teknik/Naturvetenskap, Vad är det som indelas i periodiska systemet?, Grundäm
 Teknik/Naturvetenskap, Vilket pH-värde är neutralt?, 7, 0, 14, 5.6
 Teknik/Naturvetenskap, Hur många kromosomer har en människa normalt sett?, 46, 13, 86, 30
 Teknik/Naturvetenskap, Albert Einsteins relativitetsteori förklarar fysikens paradoxer. Hur ser hans berömda formel ut?, E=mc2, M=ce2, C=Me2, 2=emc
-Teknik/Naturvetenskap, För att kunna räkna ut ett föremåls densitet behöver du veta dess..., Massa och volym, Färg och form, Kraft och rörelse, Värmeledningsförmåga och vätskehalt
+Teknik/Naturvetenskap, För att kunna räkna ut ett föremåls densitet behöver du veta dess..., Massa och volym, Färg och form, Kraft och rörelse, Värmelednings- förmåga och vätskehalt
 Litteratur, Hur många är tornen i titeln på J.R.R. Tolkiens andra volym i serien om Härskarringen?, 2, 3, 5, 10
 Litteratur, Vem är kvinnan bakom såväl "Förnuft och känsla" som "Stolthet och fördom"?, Jane Austen, Alexandra Coelho Ahndori, Astrid Lindgren, Karin Boye
 Litteratur, Vem författade sagorna Kejsarens nya kläder och Den lilla sjöjungfrun?, H.C. Andersen, Leo Tolstoj, Ernest Hemingway, Sara Lidman
