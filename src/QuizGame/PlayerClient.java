@@ -124,7 +124,7 @@ public class PlayerClient implements ActionListener {
                             "Player 2 Scoreboard", this, nickname, opponentNickname);
                 }
             }else if (obj.toString().equals("SHUT DOWN")){
-                playerGUI.setWaitingLayout("Opponent left the game... You won by default!");
+                playerGUI.setWaitingLayout("Motståmdaren lämnade spelet... vilket betyder att DU vann!");
 
             } else if (obj.toString().equals("roundIsDone")) {
                 roundIsDone = true;
@@ -205,7 +205,7 @@ public class PlayerClient implements ActionListener {
 
         } else if ((state == UPDATESETSCORE) && (roundIsDone) && (!gameIsDone)) {
             if(((JButton) e.getSource()).getText().equals("Fortsätt")){
-                playerGUI.setWaitingLayout("Waiting for opponent to finish their turn...");
+                playerGUI.setWaitingLayout("Väntar på att motståndaren ska spela klart sin runda...");
 
                 outpw.println("NEXT ROUND");
                 roundIsDone=false;
