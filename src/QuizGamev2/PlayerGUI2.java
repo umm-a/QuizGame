@@ -94,14 +94,13 @@ public class PlayerGUI2 extends JFrame {
     int frameWidth;
     int frameHeight;
     public void setWelcomeLayout(PlayerClient playerClient) {
-        //baseFrame.setSize(340, 500);
+
         baseFrame.setPreferredSize(new Dimension(360,520));
         baseFrame.pack();
         baseFrame.getContentPane().setBackground(new Color(40,40,40));
-       // baseFrame.setLayout(null);
 
         //används till centrering av panel på frame
-        frameWidth = baseFrame.getWidth();
+        frameWidth = baseFrame.getContentPane().getWidth();
         frameHeight = baseFrame.getContentPane().getHeight();
 
         welcomePanel = new Canvas1(graphicsChooser, frameWidth,frameHeight);
@@ -129,7 +128,6 @@ public class PlayerGUI2 extends JFrame {
         welcomePanel.add(startButton);
         startButton.addActionListener(playerClient);
 
-
         baseFrame.add(welcomePanel);
 
         baseFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -137,7 +135,6 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.setLayout(null);
         baseFrame.setVisible(true);
         baseFrame.pack();
-
     }
 
 
@@ -145,7 +142,6 @@ public class PlayerGUI2 extends JFrame {
         catButtons = new ArrayList<>();
         int noOfCat = categorylist.size();
         baseFrame.getContentPane().removeAll();
-
 
         categoryPanel = new Canvas1(graphicsChooser,frameWidth,frameHeight);
 
@@ -174,7 +170,6 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.revalidate();
         baseFrame.repaint();
         baseFrame.pack();
-
 
     }
 
@@ -230,7 +225,7 @@ public class PlayerGUI2 extends JFrame {
         baseFrame.repaint();
     }
 
-    //todo ändra till list på playerscore
+
     public void setScoreLayout(int questionPerRound, int rounds, List<Integer> playerScore, List<Integer> opponentScore,
                                String statusMessage,PlayerClient playerClient, String nickname, String opponentNickname) {
 
