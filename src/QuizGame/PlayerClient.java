@@ -171,7 +171,7 @@ public class PlayerClient implements ActionListener {
             outpw.println(playerGUI.nickNametf.getText());
             outpw.println(playerName + " is ready to play");
             if (playerName.equals("player 2")) {
-                playerGUI.setWaitingLayout("Waiting for opponent to finish their turn...");
+                playerGUI.setWaitingLayout("Väntar på att motståndaren ska spela klart sin runda...");
             }
         } else if ((state==SETCATEGORY)) {
             chosenCategory = ((JButton) e.getSource()).getText();
