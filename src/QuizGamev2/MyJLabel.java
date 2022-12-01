@@ -24,7 +24,7 @@ class MyJPanel extends JPanel{
     public MyJPanel(LayoutManager layout, Canvas1 canvas) {
         super(layout);
         this.canvas = canvas;
-        this.setBackground(canvas.shapes.lightcolor);
+        this.setBackground(canvas.shapes.darkcolor);
         this.setBorder(canvas.shapes.border1);
     }
 }

@@ -17,10 +17,16 @@ public class Canvas1 extends JComponent  {
 
     GraphicsChooser graphicsChooser;
 
-    public Canvas1(GraphicsChooser graphicsChooser) {
+    public Canvas1(GraphicsChooser graphicsChooser,int framewidth, int frameheight) {
+        int posx = (framewidth-320)/2;
+        int posy = (frameheight-450)/2;
         this.setLayout(null);
-        this.setBounds(10,10,320,450);
+
+        //panelens position på JFrame
+        this.setBounds(posx,posy,320,450);
         this.setBorder(new EtchedBorder());
+
+        //"Ritblockets" position på panelen
         this.x = 0;
         this.y = 0;
         this.width = 320;
