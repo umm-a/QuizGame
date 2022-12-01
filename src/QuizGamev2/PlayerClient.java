@@ -181,7 +181,8 @@ public class PlayerClient implements ActionListener {
             chosenQuestion = ((JButton) e.getSource()).getText();
             JButton button = (JButton) e.getSource();
 
-            if ((currentObject.answerCorrect) == chosenQuestion) {
+            if (Objects.equals("<html><body style='text-align:center'>" + currentObject.answerCorrect +
+                    "</body></html>", chosenQuestion)) {
                 button.setBackground(new Color(0x9BC484));
                 point=true;
 
