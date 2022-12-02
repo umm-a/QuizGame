@@ -1,7 +1,5 @@
 package QuizGame;
 
-//Ny version
-
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
@@ -35,59 +33,13 @@ public class PlayerGUI extends JFrame {
     MyJLabel opponentGameScore;
     List<SmallCircle> playerDots;
     List<SmallCircle> opponentDots;
-
     JTextField nickNametf;
     PlayerClient playerClient;
-
-    //bara för test:
-  /* List<String> catlist = new ArrayList<String>(Arrays.asList("Djur & Natur", "Religion", "Musik", "Teknik"));
-    List<String> catlist2 = new ArrayList<String>(Arrays.asList("Historia", "Matematik", "Geologi", "Teknik"));
-    List<String> catlist3 = new ArrayList<String>(Arrays.asList("Astronomi", "Astrologi", "Religion", "Konst"));
-    Question qtest = new Question("Musik & Kultur", "Från vilket land kommer Adele?", "Storbritannien", "Frankrike", "USA", "Kanada");
-    Question qtest2 = new Question("Matematik", "Vilket tal ligger närmast PI", "3.14", "5.14", "14.3", "200");
-    Question qtest3 = new Question("Historia", "Under vilket sekel levde Birger Jarl ", "1200-talet", "1700-talet", "1400-talet", "1600-talet");
-    List<Integer> playerScore = new ArrayList<>(Arrays.asList(1));
-    List<Integer> opponentScore = new ArrayList<>(Arrays.asList(0));
-    String waitingMessage ="Waiting for opponent to connect";*/
-// test slut
 
     public PlayerGUI() throws Exception {
          graphicsChooser = new GraphicsChooser();
          this.playerClient = new PlayerClient(this);
-
-//bara för test:
-      /* setWelcomeLayout(playerClient);
-        opponentNickname="Tomten";
-        Scanner sc = new Scanner(System.in);
-        sc.nextLine();
-        setWaitingLayout(waitingMessage);
-        sc.nextLine();
-        setCategoryLayout(catlist, playerClient);
-        sc.nextLine();
-        setQuestionLayout(qtest, playerClient);
-        sc.nextLine();
-        setScoreLayout(2, 4, playerScore, opponentScore, "Your turn",playerClient,"Magnus","Alexandra");
-        sc.nextLine();
-        setQuestionLayout(qtest2, playerClient);
-        sc.nextLine();
-        playerScore = new ArrayList<>(Arrays.asList(1, 1));
-        opponentScore = new ArrayList<>(Arrays.asList(0, 0));
-        setScoreLayout(2, 4, playerScore, opponentScore, "Another turn",playerClient,"Magnus","Alexandra");
-        sc.nextLine();
-        setCategoryLayout(catlist2, playerClient);
-        sc.nextLine();
-        setQuestionLayout(qtest3, playerClient);
-        sc.nextLine();
-        playerScore = new ArrayList<>(Arrays.asList(1, 1,1));
-        opponentScore = new ArrayList<>(Arrays.asList(0, 0,1));
-        setScoreLayout(2, 4, playerScore, opponentScore, "Another turn",playerClient,"Magnus","Alexandra");
-        sc.nextLine();
-        setCategoryLayout(catlist3, playerClient);
-        sc.nextLine();
-        setGameCompletedLayout("Magnus", "Alexandra",playerClient,playerScore,opponentScore);*/
-//test slut
     }
-
 
     int frameWidth;
     int frameHeight;
@@ -168,9 +120,7 @@ public class PlayerGUI extends JFrame {
         baseFrame.revalidate();
         baseFrame.repaint();
         baseFrame.pack();
-
     }
-
 
     public void setQuestionLayout(Question qObj, PlayerClient playerClient) {
         baseFrame.getContentPane().removeAll();
@@ -223,7 +173,6 @@ public class PlayerGUI extends JFrame {
         baseFrame.revalidate();
         baseFrame.repaint();
     }
-
 
     public void setScoreLayout(int rounds,int questionPerRound, List<Integer> playerScore, List<Integer> opponentScore,
                                String statusMessage,PlayerClient playerClient, String nickname, String opponentNickname) {
